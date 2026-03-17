@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABOUNA — The Story Continues</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0908;
+  --bg-warm: #131110;
+  --text: #e8e2d8;
+  --text-muted: #9a9186;
+  --accent: #c4a97d;
+  --accent-dim: #8a7a5e;
+  --green-dark: #1a2418;
+  --green-mid: #2a3a26;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Outfit', sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  font-family: var(--sans);
+  font-weight: 300;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.5rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.5s, backdrop-filter 0.5s;
+}
+
+nav.scrolled {
+  background: rgba(10,9,8,0.85);
+  backdrop-filter: blur(12px);
+}
+
+nav .logo {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-decoration: none;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 2.5rem;
+}
+
+nav a {
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+nav a:hover { color: var(--text); }
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero video {
+  position: absolute;
+  top: 50%; left: 50%;
+  min-width: 100%; min-height: 100%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  z-index: 0;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(10,9,8,0.15) 0%, rgba(10,9,8,0.05) 30%, rgba(10,9,8,0.4) 70%, rgba(10,9,8,1) 100%),
+    linear-gradient(to top, rgba(10,9,8,0.2) 0%, transparent 40%);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 2rem;
+}
+
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(4rem, 12vw, 10rem);
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  line-height: 0.9;
+  color: var(--text);
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 1.4s 0.3s ease forwards;
+}
+
+.hero-sub {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  opacity: 0;
+  animation: fadeUp 1.2s 0.8s ease forwards;
+}
+
+.hero-date {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  opacity: 0;
+  animation: fadeUp 1.2s 1s ease forwards;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0;
+  animation: fadeUp 1s 2s ease forwards;
+}
+
+.scroll-hint span {
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: var(--text-muted);
+  animation: scrollPulse 2s ease infinite;
+}
+
+/* ── SECTIONS ── */
+section {
+  padding: 8rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--accent-dim);
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--text);
+  margin-bottom: 2rem;
+}
+
+.section-body {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 650px;
+  line-height: 1.9;
+}
+
+/* ── DIVIDER ── */
+.divider {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.divider hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--accent-dim), transparent);
+  opacity: 0.3;
+}
+
+/* ── SYNOPSIS ── */
+.synopsis .logline {
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--text);
+  max-width: 700px;
+  opacity: 0.9;
+  margin-bottom: 2rem;
+}
+
+.synopsis .ep-block {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(196,169,125,0.1);
+}
+
+.synopsis .ep-label {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--accent-dim);
+  margin-bottom: 1rem;
+}
+
+.synopsis .ep-text {
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.9;
+  max-width: 700px;
+}
+
+/* ── CAST ── */
+.cast-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+  margin-top: 3rem;
+}
+
+.cast-card {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.cast-photo {
+  width: 100px;
+  height: 130px;
+  min-width: 100px;
+  background: var(--green-dark);
+  border: 1px solid rgba(196,169,125,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.cast-photo .initials {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: var(--accent-dim);
+  opacity: 0.5;
+}
+
+.cast-info {
+  padding-top: 0.3rem;
+}
+
+.cast-name {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 0.3rem;
+}
+
+.cast-name.lead {
+  font-size: 1.5rem;
+}
+
+.cast-role {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-dim);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.cast-bio-tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0.4;
+}
+
+/* ── BTS ── */
+.bts-placeholder {
+  margin-top: 3rem;
+  aspect-ratio: 16/7;
+  background: var(--green-dark);
+  border: 1px solid rgba(196,169,125,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ── ACCOLADES ── */
+.accolades-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.accolade-card {
+  padding: 1.8rem 1.5rem;
+  border: 1px solid rgba(196,169,125,0.1);
+  background: rgba(255,255,255,0.015);
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.accolade-card:hover {
+  border-color: rgba(196,169,125,0.25);
+  background: rgba(255,255,255,0.03);
+}
+
+.accolade-card .festival-name {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.accolade-card .festival-note {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.awards-block {
+  margin-top: 1rem;
+}
+
+.awards-block h3 {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--text);
+  margin-bottom: 2rem;
+}
+
+.award-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid rgba(196,169,125,0.1);
+}
+
+.award-person {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--text);
+}
+
+.award-detail {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-align: right;
+}
+
+.award-festival {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+  letter-spacing: 0.1em;
+}
+
+/* ── LORE / QUESTIONS ── */
+.lore-items {
+  margin-top: 3rem;
+}
+
+.lore-item {
+  border-bottom: 1px solid rgba(196,169,125,0.1);
+  padding: 2rem 0;
+  cursor: pointer;
+}
+
+.lore-question {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: var(--text);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lore-question::after {
+  content: '+';
+  font-family: var(--sans);
+  font-weight: 200;
+  font-size: 1.5rem;
+  color: var(--accent-dim);
+  transition: transform 0.3s;
+}
+
+.lore-item.open .lore-question::after {
+  transform: rotate(45deg);
+}
+
+.lore-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, padding 0.3s ease;
+}
+
+.lore-item.open .lore-answer {
+  max-height: 300px;
+  padding-top: 1rem;
+}
+
+.lore-answer p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.8;
+}
+
+/* ── FIRST FILM ── */
+.first-film-card {
+  margin-top: 3rem;
+  padding: 3rem;
+  background: linear-gradient(135deg, var(--green-dark), var(--bg-warm));
+  border: 1px solid rgba(196,169,125,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.first-film-info h3 {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.first-film-info p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--bg);
+  background: var(--accent);
+  transition: background 0.3s, transform 0.3s;
+  white-space: nowrap;
+  cursor: pointer;
+  border: none;
+}
+
+.btn:hover {
+  background: var(--text);
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent-dim);
+}
+
+.btn-outline:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* ── FORMS / CTA SECTION ── */
+.cta-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 8rem 2rem;
+}
+
+.cta-block .section-label { margin-bottom: 1.5rem; }
+
+.cta-block h3 {
+  font-family: var(--serif);
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: var(--text);
+  margin-bottom: 0.8rem;
+}
+
+.cta-block p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 4rem 2rem 3rem;
+  text-align: center;
+  border-top: 1px solid rgba(196,169,125,0.08);
+}
+
+.footer-title {
+  font-family: var(--serif);
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  margin-bottom: 2rem;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.social-links a {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.social-links a:hover { color: var(--accent); }
+
+.footer-copy {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+  letter-spacing: 0.1em;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  nav { padding: 1rem 1.5rem; }
+  nav ul {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: rgba(10,9,8,0.95);
+    backdrop-filter: blur(12px);
+    flex-direction: column;
+    padding: 2rem;
+    gap: 1.5rem;
+  }
+  nav ul.show { display: flex; }
+
+  section { padding: 5rem 1.5rem; }
+
+  .cast-grid { grid-template-columns: 1fr; }
+
+  .cast-card { gap: 1.2rem; }
+  .cast-photo { width: 80px; height: 105px; min-width: 80px; }
+
+  .cta-section {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+    padding: 5rem 1.5rem;
+  }
+
+  .first-film-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .award-item { flex-direction: column; gap: 0.3rem; }
+  .award-detail { text-align: left; }
+
+  .accolades-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 480px) {
+  .accolades-grid { grid-template-columns: 1fr; }
+}
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 20px;
+  height: 1px;
+  background: var(--text);
+  margin: 5px 0;
+  transition: 0.3s;
+}
+
+@media (max-width: 768px) {
+  .nav-toggle { display: block; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="logo">Abouna</a>
+  <ul>
+    <li><a href="#synopsis">Story</a></li>
+    <li><a href="#cast">Cast</a></li>
+    <li><a href="#bts">Behind the Scenes</a></li>
+    <li><a href="#accolades">Accolades</a></li>
+    <li><a href="#questions">Questions</a></li>
+    <li><a href="#showing">Screenings</a></li>
+  </ul>
+  <button class="nav-toggle" onclick="document.querySelector('nav ul').classList.toggle('show')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <video autoplay muted loop playsinline>
+    <source src="Website_Loop.m4v" type="video/mp4">
+  </video>
+  <div class="hero-content">
+    <h1 class="hero-title">ABOUNA</h1>
+    <p class="hero-sub">The Story Continues</p>
+    <p class="hero-date">5 . 15 . 2026</p>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- SYNOPSIS -->
+<section id="synopsis" class="synopsis">
+  <div class="reveal">
+    <p class="section-label">The Story</p>
+    <p class="logline">Sometimes we need others to see the fire within us.</p>
+  </div>
+  <div class="ep-block reveal">
+    <p class="ep-label">Episode One</p>
+    <p class="ep-text">In Episode 1, Father Beemen Kolta (called "Abouna" by his congregants) is a newly ordained Coptic Orthodox priest doing his best to serve the people of his church while trying to keep from feeling like he's in over his head. Through conversations with loved ones, memories of his father, and prayer, he comes to recognize that the very culture he loves might be getting in the way of his congregants' spiritual growth. By the end, he's made a decision: the barriers have to go.</p>
+  </div>
+  <div class="ep-block reveal">
+    <p class="ep-label">Episode Two</p>
+    <p class="ep-text">Now, Father Beemen is putting that conviction into action. But when a well-intentioned attempt to modernize his church backfires, he's left scrambling, navigating a high-stakes visit from an authority figure while questioning his own ability to lead. But just when he feels most lost, it takes a good friend to show him what he couldn't see on his own.</p>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- CAST -->
+<section id="cast">
+  <div class="reveal">
+    <p class="section-label">Cast</p>
+    <p class="section-body" style="color: var(--text-muted); opacity: 0.5; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase;">Coming Soon</p>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- BTS -->
+<section id="bts">
+  <div class="reveal">
+    <p class="section-label">Behind the Scenes</p>
+    <h2 class="section-title">Making Abouna</h2>
+    <p class="section-body">A look at the people, places, and moments that brought the story to life.</p>
+  </div>
+  <div class="bts-placeholder reveal">
+    Gallery Coming Soon
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- ACCOLADES -->
+<section id="accolades">
+  <div class="reveal">
+    <p class="section-label">Accolades</p>
+    <h2 class="section-title">Episode One Festival Run</h2>
+  </div>
+
+  <div class="accolades-grid">
+    <div class="accolade-card reveal">
+      <p class="festival-name">Beacon of Light Coptic Film Festival</p>
+      <p class="festival-note">Best Feature</p>
+    </div>
+    <div class="accolade-card reveal">
+      <p class="festival-name">Mosaic Film Festival 2024</p>
+      <p class="festival-note">Best Feature</p>
+    </div>
+    <div class="accolade-card reveal">
+      <p class="festival-name">Davis Film Festival 2023</p>
+      <p class="festival-note">3rd Place</p>
+    </div>
+    <div class="accolade-card reveal">
+      <p class="festival-name">Great Lakes Christian Film Festival 2024</p>
+      <p class="festival-note">Official Selection</p>
+    </div>
+    <div class="accolade-card reveal">
+      <p class="festival-name">Atlanta Christian Film Festival 2024</p>
+      <p class="festival-note">Official Selection</p>
+    </div>
+    <div class="accolade-card reveal">
+      <p class="festival-name">Riverside International Film Festival 2024</p>
+      <p class="festival-note">Official Selection</p>
+    </div>
+    <div class="accolade-card reveal">
+      <p class="festival-name">Nieves Christian Film Festival 2024</p>
+      <p class="festival-note">Official Selection</p>
+    </div>
+    <div class="accolade-card reveal">
+      <p class="festival-name">Faith Fest 2024</p>
+      <p class="festival-note">Official Selection</p>
+    </div>
+    <div class="accolade-card reveal">
+      <p class="festival-name">Perth Christian Film Festival 2024</p>
+      <p class="festival-note">Official Selection</p>
+    </div>
+    <div class="accolade-card reveal">
+      <p class="festival-name">World Culture Film Festival LA 2024</p>
+      <p class="festival-note">Official Selection</p>
+    </div>
+  </div>
+
+  <div class="awards-block reveal">
+    <h3>Individual Awards</h3>
+    <div class="award-item">
+      <span class="award-person">Dina Hanna</span>
+      <span class="award-detail">Best Actress<span class="award-festival">Atlanta Christian Film Festival</span></span>
+    </div>
+    <div class="award-item">
+      <span class="award-person">Andrew Ishak</span>
+      <span class="award-detail">Best Director<span class="award-festival">Atlanta Christian Film Festival</span></span>
+    </div>
+    <div class="award-item">
+      <span class="award-person">Andrew Ishak</span>
+      <span class="award-detail">Best Director<span class="award-festival">Beacon of Light Festival</span></span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- QUESTIONS -->
+<section id="questions">
+  <div class="reveal">
+    <p class="section-label">FAQ</p>
+    <h2 class="section-title">Questions About Abouna</h2>
+  </div>
+  <div class="lore-items">
+    <div class="lore-item reveal" onclick="this.classList.toggle('open')">
+      <div class="lore-question">What does "Abouna" mean?</div>
+      <div class="lore-answer"><p>"Abouna" is Arabic for "our father." In the Coptic Orthodox tradition, it's the title congregants use when addressing their priest.</p></div>
+    </div>
+    <div class="lore-item reveal" onclick="this.classList.toggle('open')">
+      <div class="lore-question">Do I need to watch Episode One first?</div>
+      <div class="lore-answer"><p>Episode Two picks up where Episode One left off. You'll get the most out of it by watching them in order, but new viewers will still be able to follow along.</p></div>
+    </div>
+    <div class="lore-item reveal" onclick="this.classList.toggle('open')">
+      <div class="lore-question">Where was Abouna filmed?</div>
+      <div class="lore-answer"><p>[Filming location placeholder.]</p></div>
+    </div>
+    <div class="lore-item reveal" onclick="this.classList.toggle('open')">
+      <div class="lore-question">Will there be more episodes?</div>
+      <div class="lore-answer"><p>[Future episodes placeholder.]</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- FIRST FILM -->
+<section id="first-film">
+  <div class="reveal">
+    <p class="section-label">Where It Began</p>
+    <h2 class="section-title">Episode One</h2>
+    <p class="section-body" style="margin-bottom: 2rem;">Watch the first chapter of the Abouna series before Episode Two arrives.</p>
+  </div>
+  <div class="first-film-card reveal">
+    <div class="first-film-info">
+      <h3>Abouna: Episode One</h3>
+      <p>Available now to stream.</p>
+    </div>
+    <a href="#" class="btn">Watch Now</a>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- SCREENINGS + ALERTS -->
+<div class="cta-section" id="showing">
+  <div class="cta-block reveal">
+    <p class="section-label">Screenings</p>
+    <h3>Request a Showing</h3>
+    <p>Bring Abouna to your community, church, or organization. Fill out a short form and we'll be in touch.</p>
+    <a href="#" class="btn" target="_blank" rel="noopener">Request a Showing</a>
+  </div>
+  <div class="cta-block reveal">
+    <p class="section-label">Stay Close</p>
+    <h3>Get Alerts</h3>
+    <p>Be the first to hear about screenings, trailers, and new episodes.</p>
+    <a href="#" class="btn btn-outline" target="_blank" rel="noopener">Sign Up for Alerts</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p class="footer-title">ABOUNA</p>
+  <div class="social-links">
+    <a href="#">Instagram</a>
+    <a href="#">YouTube</a>
+    <a href="#">Facebook</a>
+    <a href="#">X</a>
+  </div>
+  <p class="footer-copy">&copy; 2026 Abouna. Created by Andrew Ishak. All rights reserved.</p>
+</footer>
+
+<script>
+// Nav background on scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 80);
+});
+
+// Scroll reveal with stagger
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = `${(i % 4) * 0.1}s`;
+  observer.observe(el);
+});
+</script>
+
+</body>
+</html>
