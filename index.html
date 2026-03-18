@@ -556,6 +556,92 @@ section {
   color: var(--text-muted);
 }
 
+/* ── LIGHTBOX ── */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(10,9,8,0.95);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.lightbox.open {
+  display: flex;
+}
+
+.lightbox img {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  font-family: var(--sans);
+  font-size: 1.5rem;
+  font-weight: 200;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.lightbox-close:hover { color: var(--text); }
+
+/* ── PODCASTS ── */
+.podcasts-list {
+  margin-top: 2rem;
+}
+
+.podcast-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(196,169,125,0.1);
+  gap: 2rem;
+}
+
+.podcast-info {
+  flex: 1;
+}
+
+.podcast-name {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 0.3rem;
+}
+
+.podcast-hosts {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.podcast-link {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.3s;
+}
+
+.podcast-link:hover { color: var(--text); }
+
+@media (max-width: 768px) {
+  .podcast-item { flex-direction: column; gap: 0.5rem; }
+}
+
 /* ── ABOUT ── */
 .about-content {
   display: grid;
@@ -566,7 +652,7 @@ section {
 }
 
 .about-photo {
-  width: 240px;
+  width: 340px;
   height: auto;
 }
 
@@ -607,7 +693,7 @@ section {
   }
   .about-photo {
     width: 100%;
-    max-width: 240px;
+    max-width: 340px;
   }
 }
 
@@ -988,6 +1074,31 @@ footer {
       <div class="lore-answer"><p>We're taking this one episode at a time, but we're hoping to make more with your continued support.</p></div>
     </div>
   </div>
+
+  <div class="podcasts-list reveal">
+    <p class="section-body" style="margin-bottom: 0.5rem;">For more about the making of Abouna, check out one of these podcasts:</p>
+    <div class="podcast-item">
+      <div class="podcast-info">
+        <p class="podcast-name">Reintroduction Podcast</p>
+        <p class="podcast-hosts">with Fr Elijah Esefanous and Mina Sawires</p>
+      </div>
+      <a href="https://www.youtube.com/watch?v=x_k24S_6lkI" target="_blank" rel="noopener" class="podcast-link">Watch &rarr;</a>
+    </div>
+    <div class="podcast-item">
+      <div class="podcast-info">
+        <p class="podcast-name">Coptic Dad and Mom Podcast</p>
+        <p class="podcast-hosts">with Laura Michael and Madona Lawindy</p>
+      </div>
+      <a href="https://www.copticdadandmom.com/podcast/64" target="_blank" rel="noopener" class="podcast-link">Listen &rarr;</a>
+    </div>
+    <div class="podcast-item">
+      <div class="podcast-info">
+        <p class="podcast-name">Beyond the Walls Podcast (Australia)</p>
+        <p class="podcast-hosts">with students from Saint Mark's Coptic Orthodox College, Sydney</p>
+      </div>
+      <a href="https://www.youtube.com/watch?v=my0SrwcTIjE" target="_blank" rel="noopener" class="podcast-link">Watch &rarr;</a>
+    </div>
+  </div>
 </section>
 
 <div class="divider"><hr></div>
@@ -1048,6 +1159,12 @@ footer {
   </div>
 </div>
 
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="this.classList.remove('open')">
+  <button class="lightbox-close">&times;</button>
+  <img id="lightboxImg" src="" alt="Behind the scenes">
+</div>
+
 <!-- FOOTER -->
 <footer>
   <p class="footer-title">ABOUNA</p>
@@ -1080,6 +1197,22 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach((el, i) => {
   el.style.transitionDelay = `${(i % 4) * 0.1}s`;
   observer.observe(el);
+});
+
+// BTS lightbox
+const lightbox = document.getElementById('lightbox');
+const lightboxImg = document.getElementById('lightboxImg');
+
+document.querySelectorAll('.bts-carousel img').forEach(img => {
+  img.style.cursor = 'pointer';
+  img.addEventListener('click', () => {
+    lightboxImg.src = img.src;
+    lightbox.classList.add('open');
+  });
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') lightbox.classList.remove('open');
 });
 </script>
 
