@@ -141,6 +141,18 @@ nav a:hover { color: var(--text); }
   padding: 2rem;
 }
 
+.hero-credit {
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 1.2s 0.1s ease forwards;
+}
+
 .hero-title {
   font-family: 'Libre Baskerville', Georgia, serif;
   font-size: clamp(4rem, 12vw, 10rem);
@@ -923,6 +935,7 @@ footer {
     <source src="Website_Loop.m4v" type="video/mp4">
   </video>
   <div class="hero-content">
+    <p class="hero-credit">A Series by Andrew Ishak</p>
     <h1 class="hero-title">ABOUNA</h1>
     <p class="hero-sub">The Story Continues</p>
     <p class="hero-date">5 . 15 . 2026</p>
@@ -936,7 +949,6 @@ footer {
 <!-- SYNOPSIS -->
 <section id="synopsis" class="synopsis">
   <div class="reveal">
-    <p class="section-label">The Story</p>
     <p class="logline">Sometimes we need others to see the fire within us.</p>
   </div>
   <div class="ep-block reveal">
