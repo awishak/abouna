@@ -145,12 +145,22 @@ nav a:hover { color: var(--text); }
   font-family: var(--sans);
   font-size: 0.65rem;
   font-weight: 400;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin-bottom: 1.5rem;
   opacity: 0;
-  animation: fadeUp 1.2s 0.1s ease forwards;
+  animation: fadeUp 1s 2s ease forwards;
+}
+
+.scroll-more {
+  font-family: var(--sans);
+  font-size: 0.55rem;
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0;
+  animation: fadeUp 1s 2.3s ease forwards;
 }
 
 .hero-title {
@@ -203,10 +213,9 @@ nav a:hover { color: var(--text); }
 
 .scroll-hint span {
   font-size: 0.6rem;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
   color: var(--text-muted);
-  transform: translateX(-40px);
 }
 
 .scroll-line {
@@ -214,7 +223,6 @@ nav a:hover { color: var(--text); }
   height: 40px;
   background: var(--text-muted);
   animation: scrollPulse 2s ease infinite;
-  transform: translateX(-40px);
 }
 
 /* ── SECTIONS ── */
@@ -938,18 +946,16 @@ footer {
     <h1 class="hero-title">ABOUNA</h1>
     <p class="hero-sub">The Story Continues</p>
     <p class="hero-date">5 . 15 . 2026</p>
+    <p class="hero-credit" style="margin-top: 14rem;">A Series by Andrew Ishak</p>
+    <p class="scroll-more">Scroll to see more</p>
   </div>
   <div class="scroll-hint">
-    <span>A Series by Andrew Ishak</span>
     <div class="scroll-line"></div>
   </div>
 </section>
 
 <!-- SYNOPSIS -->
 <section id="synopsis" class="synopsis">
-  <div class="reveal">
-    <p class="logline">Sometimes we need others to see the fire within us.</p>
-  </div>
   <div class="ep-block reveal">
     <p class="ep-label">Episode One</p>
     <p class="ep-text">In Episode 1, Father Beemen Kolta (called "<strong style="color: var(--text)">Abouna</strong>" by his congregants) is a newly ordained Coptic Orthodox priest doing his best to serve the people of his church while feeling like he's in over his head. Through conversations with loved ones and memories of his childhood and father, he comes to recognize that the very culture he loves might be getting in the way of his congregants' spiritual growth. By the end, he's made a decision about how to make Christ's message more accessible to everyone.</p>
