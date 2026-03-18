@@ -907,11 +907,10 @@ footer {
   <a href="#" class="logo">Abouna <span class="nav-spring">Continuing This Spring</span></a>
   <ul>
     <li><a href="#synopsis">Story</a></li>
-    <li><a href="#cast">Cast</a></li>
+    <li><a href="#screenings">Screenings</a></li>
     <li><a href="#bts">Behind the Scenes</a></li>
     <li><a href="#accolades">Accolades</a></li>
     <li><a href="#questions">Questions</a></li>
-    <li><a href="#showing">Screenings</a></li>
   </ul>
   <button class="nav-toggle" onclick="document.querySelector('nav ul').classList.toggle('show')" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -952,11 +951,26 @@ footer {
 
 <div class="divider"><hr></div>
 
-<!-- CAST -->
-<section id="cast">
+<!-- SCREENINGS -->
+<section id="screenings">
   <div class="reveal">
-    <p class="section-label">Cast</p>
-    <p class="section-body" style="color: var(--text-muted); opacity: 0.5; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase;">Coming Soon</p>
+    <p class="section-label">Screenings</p>
+    <h2 class="section-title">See Abouna</h2>
+  </div>
+  <div class="lore-items" style="margin-top: 1rem;">
+    <div class="reveal" style="padding: 1.5rem 0; border-bottom: 1px solid rgba(196,169,125,0.1); display: flex; justify-content: space-between; align-items: baseline;">
+      <span style="font-family: var(--serif); font-size: 1.3rem; font-weight: 400; color: var(--text);">San Jose, CA</span>
+      <span style="font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);">May 15, 2026</span>
+    </div>
+    <div class="reveal" style="padding: 1.5rem 0; border-bottom: 1px solid rgba(196,169,125,0.1); display: flex; justify-content: space-between; align-items: baseline;">
+      <span style="font-family: var(--serif); font-size: 1.3rem; font-weight: 400; color: var(--text);">New York</span>
+      <span style="font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);">Late May</span>
+    </div>
+  </div>
+  <p class="reveal" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2rem; line-height: 1.8;">Information about other screenings coming soon.</p>
+  <div class="reveal" style="margin-top: 2.5rem; display: flex; gap: 1.5rem; flex-wrap: wrap;">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeQ2EcPrbPRz-rezuI9qXZhsGR72A5iyel6qwP5sTvjB9a6fA/viewform" class="btn" target="_blank" rel="noopener">Request a Screening</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdTZSgPbm46I1Q7_P8v8LfOfIPTmRfkcg3_4m9UAR8KQaq0og/viewform" class="btn btn-outline" target="_blank" rel="noopener">Stay Updated</a>
   </div>
 </section>
 
@@ -1152,24 +1166,6 @@ footer {
     </div>
   </div>
 </section>
-
-<div class="divider"><hr></div>
-
-<!-- SCREENINGS + ALERTS -->
-<div class="cta-section" id="showing">
-  <div class="cta-block reveal">
-    <p class="section-label">Screenings</p>
-    <h3>Request a Showing</h3>
-    <p>Bring Abouna to your community, church, or organization. Fill out a short form and we'll be in touch.</p>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeQ2EcPrbPRz-rezuI9qXZhsGR72A5iyel6qwP5sTvjB9a6fA/viewform" class="btn" target="_blank" rel="noopener">Request a Showing</a>
-  </div>
-  <div class="cta-block reveal">
-    <p class="section-label">Stay Updated</p>
-    <h3>Get Alerts</h3>
-    <p>Be the first to hear about screenings, trailers, and new episodes.</p>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdTZSgPbm46I1Q7_P8v8LfOfIPTmRfkcg3_4m9UAR8KQaq0og/viewform" class="btn btn-outline" target="_blank" rel="noopener">Sign Up for Alerts</a>
-  </div>
-</div>
 
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="this.classList.remove('open')">
