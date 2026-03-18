@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ABOUNA — The Story Continues</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Libre+Baskerville:wght@400;700&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -54,9 +54,9 @@ nav.scrolled {
 }
 
 nav .logo {
-  font-family: var(--serif);
+  font-family: 'Libre Baskerville', Georgia, serif;
   font-size: 1.1rem;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--text);
@@ -80,6 +80,16 @@ nav a {
 }
 
 nav a:hover { color: var(--text); }
+
+.nav-spring {
+  font-family: var(--sans);
+  font-size: 0.55rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-left: 1rem;
+}
 
 /* ── HERO ── */
 .hero {
@@ -120,9 +130,9 @@ nav a:hover { color: var(--text); }
 }
 
 .hero-title {
-  font-family: var(--serif);
+  font-family: 'Libre Baskerville', Georgia, serif;
   font-size: clamp(4rem, 12vw, 10rem);
-  font-weight: 300;
+  font-weight: 700;
   letter-spacing: 0.05em;
   line-height: 0.9;
   color: var(--text);
@@ -137,17 +147,17 @@ nav a:hover { color: var(--text); }
   font-weight: 300;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text);
   margin-bottom: 0.5rem;
   opacity: 0;
   animation: fadeUp 1.2s 0.8s ease forwards;
 }
 
 .hero-date {
-  font-family: var(--serif);
-  font-size: 1.5rem;
-  font-weight: 400;
-  letter-spacing: 0.1em;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 300;
+  letter-spacing: 0.25em;
   color: var(--text);
   opacity: 0;
   animation: fadeUp 1.2s 1s ease forwards;
@@ -172,6 +182,7 @@ nav a:hover { color: var(--text); }
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--text-muted);
+  transform: translateX(-40px);
 }
 
 .scroll-line {
@@ -179,6 +190,7 @@ nav a:hover { color: var(--text); }
   height: 40px;
   background: var(--text-muted);
   animation: scrollPulse 2s ease infinite;
+  transform: translateX(-40px);
 }
 
 /* ── SECTIONS ── */
@@ -329,19 +341,64 @@ section {
   opacity: 0.4;
 }
 
-/* ── BTS ── */
-.bts-placeholder {
+/* ── BTS CAROUSEL ── */
+.bts-carousel-wrap {
   margin-top: 3rem;
-  aspect-ratio: 16/7;
-  background: var(--green-dark);
-  border: 1px solid rgba(196,169,125,0.1);
+  position: relative;
+}
+
+.bts-carousel {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 1rem;
+}
+
+.bts-carousel::-webkit-scrollbar { display: none; }
+
+.bts-carousel img {
+  flex: 0 0 auto;
+  width: 400px;
+  height: 280px;
+  object-fit: cover;
+  border: 1px solid rgba(196,169,125,0.08);
+  scroll-snap-align: start;
+}
+
+.carousel-nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.carousel-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(196,169,125,0.2);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 1rem;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-muted);
+  transition: border-color 0.3s, color 0.3s;
+}
+
+.carousel-btn:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  .bts-carousel img {
+    width: 300px;
+    height: 210px;
+  }
 }
 
 /* ── ACCOLADES ── */
@@ -478,7 +535,7 @@ section {
 .first-film-card {
   margin-top: 3rem;
   padding: 3rem;
-  background: linear-gradient(135deg, var(--green-dark), var(--bg-warm));
+  background: linear-gradient(rgba(10,9,8,0.65), rgba(10,9,8,0.65)), url('ep1-hero.png') center/cover no-repeat;
   border: 1px solid rgba(196,169,125,0.1);
   display: flex;
   justify-content: space-between;
@@ -497,6 +554,61 @@ section {
 .first-film-info p {
   font-size: 0.9rem;
   color: var(--text-muted);
+}
+
+/* ── ABOUT ── */
+.about-content {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 3rem;
+  margin-top: 3rem;
+  align-items: start;
+}
+
+.about-photo {
+  width: 240px;
+  height: auto;
+}
+
+.about-photo img {
+  width: 100%;
+  height: auto;
+  border: 1px solid rgba(196,169,125,0.12);
+  display: block;
+}
+
+.about-caption {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  opacity: 0.6;
+  margin-top: 0.6rem;
+  line-height: 1.5;
+}
+
+.about-text p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  line-height: 1.9;
+  margin-bottom: 1.5rem;
+}
+
+.about-text p:last-child {
+  margin-bottom: 0;
+}
+
+.about-text strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .about-content {
+    grid-template-columns: 1fr;
+  }
+  .about-photo {
+    width: 100%;
+    max-width: 240px;
+  }
 }
 
 /* ── BUTTONS ── */
@@ -568,9 +680,9 @@ footer {
 }
 
 .footer-title {
-  font-family: var(--serif);
+  font-family: 'Libre Baskerville', Georgia, serif;
   font-size: 2rem;
-  font-weight: 300;
+  font-weight: 700;
   letter-spacing: 0.1em;
   color: var(--text);
   margin-bottom: 2rem;
@@ -686,6 +798,7 @@ footer {
 
 @media (max-width: 768px) {
   .nav-toggle { display: block; }
+  .nav-spring { display: none; }
 }
 </style>
 </head>
@@ -693,7 +806,7 @@ footer {
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#" class="logo">Abouna</a>
+  <a href="#" class="logo">Abouna <span class="nav-spring">Continuing This Spring</span></a>
   <ul>
     <li><a href="#synopsis">Story</a></li>
     <li><a href="#cast">Cast</a></li>
@@ -731,11 +844,11 @@ footer {
   </div>
   <div class="ep-block reveal">
     <p class="ep-label">Episode One</p>
-    <p class="ep-text">In Episode 1, Father Beemen Kolta (called "Abouna" by his congregants) is a newly ordained Coptic Orthodox priest doing his best to serve the people of his church while trying to keep from feeling like he's in over his head. Through conversations with loved ones, memories of his father, and prayer, he comes to recognize that the very culture he loves might be getting in the way of his congregants' spiritual growth. By the end, he's made a decision: the barriers have to go.</p>
+    <p class="ep-text">In Episode 1, Father Beemen Kolta (called "<strong style="color: var(--text)">Abouna</strong>" by his congregants) is a newly ordained Coptic Orthodox priest doing his best to serve the people of his church while feeling like he's in over his head. Through conversations with loved ones and memories of his childhood and father, he comes to recognize that the very culture he loves might be getting in the way of his congregants' spiritual growth. By the end, he's made a decision about how to make Christ's message more accessible to everyone.</p>
   </div>
   <div class="ep-block reveal">
     <p class="ep-label">Episode Two</p>
-    <p class="ep-text">Now, Father Beemen is putting that conviction into action. But when a well-intentioned attempt to modernize his church backfires, he's left scrambling, navigating a high-stakes visit from an authority figure while questioning his own ability to lead. But just when he feels most lost, it takes a good friend to show him what he couldn't see on his own.</p>
+    <p class="ep-text">Now, Father Beemen is putting that conviction into action. But when a well-intentioned attempt to modernize his church backfires, he's left scrambling, navigating a high-stakes visit from an authority figure while questioning his own ability to lead. And just when he feels most lost, it takes a good friend to show him what he couldn't see on his own.</p>
   </div>
 </section>
 
@@ -758,8 +871,25 @@ footer {
     <h2 class="section-title">Making Abouna</h2>
     <p class="section-body">A look at the people, places, and moments that brought the story to life.</p>
   </div>
-  <div class="bts-placeholder reveal">
-    Gallery Coming Soon
+  <div class="bts-carousel-wrap reveal">
+    <div class="bts-carousel" id="btsCarousel">
+      <img src="bts-12.jpeg" alt="Behind the scenes" loading="lazy">
+      <img src="bts-01.jpg" alt="Behind the scenes" loading="lazy">
+      <img src="bts-02.jpeg" alt="Behind the scenes" loading="lazy">
+      <img src="bts-09.jpeg" alt="Behind the scenes" loading="lazy">
+      <img src="bts-11.jpeg" alt="Behind the scenes" loading="lazy">
+      <img src="bts-04.jpeg" alt="Behind the scenes" loading="lazy">
+      <img src="bts-06.jpeg" alt="Behind the scenes" loading="lazy">
+      <img src="bts-05.jpeg" alt="Behind the scenes" loading="lazy">
+      <img src="bts-03.jpeg" alt="Behind the scenes" loading="lazy">
+      <img src="bts-07.jpeg" alt="Behind the scenes" loading="lazy">
+      <img src="bts-10.jpeg" alt="Behind the scenes" loading="lazy">
+      <img src="bts-08.jpeg" alt="Behind the scenes" loading="lazy">
+    </div>
+    <div class="carousel-nav">
+      <button class="carousel-btn" onclick="document.getElementById('btsCarousel').scrollBy({left: -420, behavior: 'smooth'})">&larr;</button>
+      <button class="carousel-btn" onclick="document.getElementById('btsCarousel').scrollBy({left: 420, behavior: 'smooth'})">&rarr;</button>
+    </div>
   </div>
 </section>
 
@@ -851,11 +981,11 @@ footer {
     </div>
     <div class="lore-item reveal" onclick="this.classList.toggle('open')">
       <div class="lore-question">Where was Abouna filmed?</div>
-      <div class="lore-answer"><p>[Filming location placeholder.]</p></div>
+      <div class="lore-answer"><p>Abouna Episode 2 was filmed in various locations in the San Francisco Bay Area, including Oakland, Santa Cruz, Santa Clara, San Jose, and Los Gatos.</p></div>
     </div>
     <div class="lore-item reveal" onclick="this.classList.toggle('open')">
       <div class="lore-question">Will there be more episodes?</div>
-      <div class="lore-answer"><p>[Future episodes placeholder.]</p></div>
+      <div class="lore-answer"><p>We're taking this one episode at a time, but we're hoping to make more with your continued support.</p></div>
     </div>
   </div>
 </section>
@@ -874,7 +1004,29 @@ footer {
       <h3>Abouna: Episode One</h3>
       <p>Available now to stream.</p>
     </div>
-    <a href="#" class="btn">Watch Now</a>
+    <a href="https://www.youtube.com/watch?v=4N2Zf_vJ8cY" target="_blank" rel="noopener" class="btn">Watch Now</a>
+  </div>
+</section>
+
+<div class="divider"><hr></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <p class="section-label">About the Creator</p>
+  </div>
+  <div class="about-content reveal">
+    <div class="about-photo">
+      <img src="creator-photo.png" alt="Andrew Ishak as a child">
+      <p class="about-caption">Andrew Ishak, right, with his brother and two friends Anthony and Paul.</p>
+    </div>
+    <div class="about-text">
+      <p>A note from the creator: I grew up in the Coptic churches of Northern California, a religious community defined by family bonds, spirituality, and identity. I always loved making films with my friends, including a mockumentary about an Egyptian boy band called "The Sphinxters."</p>
+      <p>I'm also obsessed with research. I earned a PhD in Organizational Communication at the University of Texas, and I currently serve as a teaching professor at Santa Clara University, where I explore and teach how cultural elements shape the way we communicate.</p>
+      <p><strong>Abouna</strong> is the result of blending the Coptic experience with academic research and filmmaking. As the series' creator, writer, and director, I have been really careful to ensure that this project is based on real experiences, which is why I've spent countless hours interviewing, observing and reading about the Coptic experience. At the same time, this is no one priest's experience; it's a story I'm telling that is meant to be something that resonates with those who have grown up in an ethno-religious community.</p>
+      <p>I'm thankful that the series has resonated globally; the first episode screened at ten festivals and numerous churches across three continents, taking home Best Feature at the Beacon of Light and Mosaic Film Festivals. It also earned Best Director honors in Atlanta and at the Beacon of Light Festival. It means a lot to me that people would spend time watching this project, and I appreciate you taking the time to read more about it.</p>
+      <p>The story continues this spring.</p>
+    </div>
   </div>
 </section>
 
@@ -900,10 +1052,9 @@ footer {
 <footer>
   <p class="footer-title">ABOUNA</p>
   <div class="social-links">
-    <a href="#">Instagram</a>
-    <a href="#">YouTube</a>
-    <a href="#">Facebook</a>
-    <a href="#">X</a>
+    <a href="https://www.instagram.com/andrewishak/" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://youtube.com/@andrewishak?si=ly_Z8EOMj9YxARSd" target="_blank" rel="noopener">YouTube</a>
+    <a href="https://www.facebook.com/andrewishak" target="_blank" rel="noopener">Facebook</a>
   </div>
   <p class="footer-copy">&copy; 2026 Abouna. Created by Andrew Ishak. All rights reserved.</p>
 </footer>
@@ -911,6 +1062,7 @@ footer {
 <script>
 // Nav background on scroll
 const nav = document.getElementById('nav');
+
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 80);
 });
