@@ -6,16 +6,16 @@
 <title>ABOUNA — The Story Continues</title>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta property="og:title" content="ABOUNA - The Story Continues May 2026">
+<meta property="og:title" content="ABOUNA - The Story Continues October 2026">
 <meta property="og:description" content="A film series by Andrew Ishak">
 <meta property="og:image" content="https://watchabouna.com/og-image.png">
 <meta property="og:url" content="https://watchabouna.com">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ABOUNA - The Story Continues May 2026">
+<meta name="twitter:title" content="ABOUNA - The Story Continues October 2026">
 <meta name="twitter:description" content="A film series by Andrew Ishak">
 <meta name="twitter:image" content="https://watchabouna.com/og-image.png">
-<meta name="description" content="A film series by Andrew Ishak. Continuing Spring 2026.">
+<meta name="description" content="A film series by Andrew Ishak. Continuing October 2026.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Libre+Baskerville:wght@400;700&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -674,6 +674,147 @@ section {
   .podcast-item { flex-direction: column; gap: 0.5rem; }
 }
 
+/* ── SCREENINGS ── */
+.screening-list { margin-top: 1rem; }
+
+.screening-item {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(196,169,125,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 2rem;
+}
+
+.screening-info { flex: 1; }
+
+.screening-city {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--text);
+}
+
+.screening-venue {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+}
+
+.screening-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.7rem;
+}
+
+.screening-tag {
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-dim);
+  border: 1px solid rgba(196,169,125,0.25);
+  padding: 0.25rem 0.6rem;
+}
+
+.screening-meta {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.screening-date {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.screening-time {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+}
+
+.screening-tickets {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.screening-tickets:hover { color: var(--text); }
+
+.screening-item.past { opacity: 0.45; }
+.screening-item.past .screening-date { color: var(--text-muted); }
+
+.screening-note {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 2rem;
+  line-height: 1.8;
+}
+
+.screening-empty {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(196,169,125,0.1);
+}
+
+/* ── PROMO VIDEOS ── */
+.promo-list { margin-top: 2rem; }
+
+.promo-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(196,169,125,0.1);
+  gap: 2rem;
+}
+
+.promo-info { flex: 1; }
+
+.promo-name {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--text);
+}
+
+.promo-kind {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 0.4rem;
+}
+
+.promo-link {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.3s;
+}
+
+.promo-link:hover { color: var(--text); }
+
+@media (max-width: 768px) {
+  .screening-item, .promo-item { flex-direction: column; gap: 0.6rem; }
+  .screening-meta { text-align: left; }
+}
+
 /* ── ABOUT ── */
 .about-content {
   display: grid;
@@ -924,10 +1065,11 @@ footer {
 
 <!-- NAV -->
 <nav id="nav">
-  <a href="#" class="logo">Abouna <span class="nav-spring">Continuing This Spring</span></a>
+  <a href="#" class="logo">Abouna <span class="nav-spring">Continuing This Fall</span></a>
   <ul>
     <li><a href="#synopsis">Story</a></li>
     <li><a href="#screenings">Screenings</a></li>
+    <li id="navPromos" hidden><a href="#promos">Watch</a></li>
     <li><a href="#bts">Behind the Scenes</a></li>
     <li><a href="#accolades">Accolades</a></li>
     <li><a href="#questions">Questions</a></li>
@@ -945,7 +1087,7 @@ footer {
   <div class="hero-content">
     <h1 class="hero-title">ABOUNA</h1>
     <p class="hero-sub">The Story Continues</p>
-    <p class="hero-date">5 . 15 . 2026</p>
+    <p class="hero-date">OCTOBER 2026</p>
     <p class="hero-credit" style="margin-top: 14rem;">A Series by Andrew Ishak</p>
     <p class="scroll-more">Scroll to see more</p>
   </div>
@@ -974,17 +1116,8 @@ footer {
     <p class="section-label">Screenings</p>
     <h2 class="section-title">See Abouna</h2>
   </div>
-  <div class="lore-items" style="margin-top: 1rem;">
-    <div class="reveal" style="padding: 1.5rem 0; border-bottom: 1px solid rgba(196,169,125,0.1); display: flex; justify-content: space-between; align-items: baseline;">
-      <span style="font-family: var(--serif); font-size: 1.3rem; font-weight: 400; color: var(--text);">San Jose, CA</span>
-      <span style="font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);">May 15, 2026</span>
-    </div>
-    <div class="reveal" style="padding: 1.5rem 0; border-bottom: 1px solid rgba(196,169,125,0.1); display: flex; justify-content: space-between; align-items: baseline;">
-      <span style="font-family: var(--serif); font-size: 1.3rem; font-weight: 400; color: var(--text);">New York</span>
-      <span style="font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);">Late May</span>
-    </div>
-  </div>
-  <p class="reveal" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 2rem; line-height: 1.8;">Information about other screenings coming soon.</p>
+  <div class="screening-list" id="screeningList"></div>
+  <p class="screening-note reveal">Information about other screenings coming soon.</p>
   <div class="reveal" style="margin-top: 2.5rem; display: flex; gap: 1.5rem; flex-wrap: wrap;">
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSeQ2EcPrbPRz-rezuI9qXZhsGR72A5iyel6qwP5sTvjB9a6fA/viewform" class="btn" target="_blank" rel="noopener">Request a Screening</a>
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSdTZSgPbm46I1Q7_P8v8LfOfIPTmRfkcg3_4m9UAR8KQaq0og/viewform" class="btn btn-outline" target="_blank" rel="noopener">Stay Updated</a>
@@ -998,6 +1131,18 @@ footer {
 </section>
 
 <div class="divider"><hr></div>
+
+<!-- PROMO VIDEOS -->
+<section id="promos" hidden>
+  <div class="reveal">
+    <p class="section-label">Watch</p>
+    <h2 class="section-title">Promo Videos</h2>
+    <p class="section-body">Trailers, clips, and teasers from the Abouna series.</p>
+  </div>
+  <div class="promo-list" id="promoList"></div>
+</section>
+
+<div class="divider" id="promosDivider" hidden><hr></div>
 
 <!-- BTS -->
 <section id="bts">
@@ -1185,7 +1330,7 @@ footer {
       <p>I'm also obsessed with research. I earned a PhD in Organizational Communication at the University of Texas, and I currently serve as a teaching professor at Santa Clara University, where I explore and teach how cultural elements shape the way we communicate.</p>
       <p><strong>Abouna</strong> is the result of blending the Coptic experience with academic research and filmmaking. As the series' creator, writer, and director, I have been really careful to ensure that this project is based on real experiences, which is why I've spent countless hours interviewing, observing and reading about the Coptic experience. At the same time, this is no one priest's experience; it's a story I'm telling that is meant to be something that resonates with those who have grown up in an ethno-religious community.</p>
       <p>I'm thankful that the series has resonated globally; the first episode screened at ten festivals and numerous churches across three continents, taking home Best Feature at the Beacon of Light and Mosaic Film Festivals. It also earned Best Director honors in Atlanta and at the Beacon of Light Festival. It means a lot to me that people would spend time watching this project, and I appreciate you taking the time to read more about it.</p>
-      <p>The story continues this spring.</p>
+      <p>The story continues this fall.</p>
     </div>
   </div>
 </section>
@@ -1208,6 +1353,116 @@ footer {
 </footer>
 
 <script>
+// ── Screening schedule ──────────────────────────────────────────────
+// To add a screening, add an object to this list. Everything is optional
+// except city; leave a field as '' and that part is left off the page.
+//   date     'YYYY-MM-DD'. Leave '' and the row reads "Date TBA".
+//   time     free text, e.g. '7:00 PM'
+//   venue    free text, e.g. 'St Mark Coptic Orthodox Church'
+//   tickets  full URL. The Tickets link is hidden once the date has passed.
+//   free     true adds a "Free admission" tag
+//   qa       true adds a "Q&A with director" tag
+//   note     any extra tag, e.g. 'Sold out' or 'Doors 6:30 PM'
+// Upcoming screenings sort by date first, undated ones last, past ones dim
+// and drop to the bottom on their own.
+const SCREENINGS = [
+  { city: 'San Jose, CA', venue: '', date: '', time: '', tickets: '', free: false, qa: false, note: '' },
+  { city: 'New York, NY', venue: '', date: '', time: '', tickets: '', free: false, qa: false, note: '' },
+];
+
+// ── Promo videos ────────────────────────────────────────────────────
+// Add a video here and the "Promo Videos" section and its nav link appear.
+// Leave the list empty and the whole section stays hidden.
+//   kind  short label under the title, e.g. 'Trailer', 'Clip', 'Teaser'
+const PROMOS = [
+  // { title: 'Episode Two Trailer', kind: 'Trailer', url: 'https://www.youtube.com/watch?v=...' },
+];
+
+const esc = (t) => String(t).replace(/[&<>"]/g, (c) =>
+  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+(function renderScreenings() {
+  const list = document.getElementById('screeningList');
+  if (!list) return;
+
+  if (!SCREENINGS.length) {
+    list.innerHTML = '<p class="screening-empty reveal">Screening dates will be announced soon.</p>';
+    return;
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const fmt = (iso) => {
+    const [y, m, d] = iso.split('-').map(Number);
+    return new Date(y, m - 1, d).toLocaleDateString('en-US',
+      { month: 'long', day: 'numeric', year: 'numeric' });
+  };
+
+  const rows = SCREENINGS.map((s) => {
+    const dt = s.date ? new Date(s.date + 'T00:00:00') : null;
+    return Object.assign({}, s, { dt: dt, past: dt ? dt < today : false });
+  });
+
+  rows.sort((a, b) => {
+    if (a.past !== b.past) return a.past ? 1 : -1;
+    if (!a.dt && !b.dt) return 0;
+    if (!a.dt) return 1;
+    if (!b.dt) return -1;
+    return a.dt - b.dt;
+  });
+
+  list.innerHTML = rows.map((s) => {
+    const tags = [];
+    if (s.free) tags.push('Free admission');
+    if (s.qa) tags.push('Q&amp;A with director');
+    if (s.note) tags.push(esc(s.note));
+
+    return '' +
+      '<div class="screening-item reveal' + (s.past ? ' past' : '') + '">' +
+        '<div class="screening-info">' +
+          '<div class="screening-city">' + esc(s.city) + '</div>' +
+          (s.venue ? '<div class="screening-venue">' + esc(s.venue) + '</div>' : '') +
+          (tags.length
+            ? '<div class="screening-tags">' +
+                tags.map((t) => '<span class="screening-tag">' + t + '</span>').join('') +
+              '</div>'
+            : '') +
+        '</div>' +
+        '<div class="screening-meta">' +
+          '<div class="screening-date">' + (s.dt ? fmt(s.date) : 'Date TBA') + '</div>' +
+          (s.time ? '<div class="screening-time">' + esc(s.time) + '</div>' : '') +
+          (s.tickets && !s.past
+            ? '<a class="screening-tickets" href="' + esc(s.tickets) +
+              '" target="_blank" rel="noopener">Tickets &rarr;</a>'
+            : '') +
+        '</div>' +
+      '</div>';
+  }).join('');
+})();
+
+(function renderPromos() {
+  const list = document.getElementById('promoList');
+  if (!list || !PROMOS.length) return;
+
+  list.innerHTML = PROMOS.map((v) => '' +
+    '<div class="promo-item reveal">' +
+      '<div class="promo-info">' +
+        '<p class="promo-name">' + esc(v.title) + '</p>' +
+        (v.kind ? '<p class="promo-kind">' + esc(v.kind) + '</p>' : '') +
+      '</div>' +
+      '<a class="promo-link" href="' + esc(v.url) +
+        '" target="_blank" rel="noopener">Watch &rarr;</a>' +
+    '</div>').join('');
+
+  document.getElementById('promos').hidden = false;
+  const divider = document.getElementById('promosDivider');
+  const navItem = document.getElementById('navPromos');
+  if (divider) divider.hidden = false;
+  if (navItem) navItem.hidden = false;
+})();
+
+
 // Nav background on scroll
 const nav = document.getElementById('nav');
 
