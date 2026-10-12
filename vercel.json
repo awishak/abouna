@@ -1,4 +1,11 @@
 {
+  "redirects": [
+    {
+      "source": "/design",
+      "destination": "/design/",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/signup",
