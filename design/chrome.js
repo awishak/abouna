@@ -9,8 +9,7 @@
   bar.id = 'mockbar';
   bar.innerHTML = '<a class="mb-index" href="/design/">Options</a>' +
     ['a', 'b', 'c'].map((k) => '<a class="mb-opt' + (k === here ? ' on' : '') + '" href="/design/' + k + '.html#home">' + names[k] + '</a>').join('') +
-    '<span class="mb-gap"></span>' +
-    '<a class="mb-page" data-page="home" href="#home">Home</a><a class="mb-page" data-page="screenings" href="#screenings">Screenings</a>';
+    '';
   document.body.prepend(bar);
   const views = Array.from(document.querySelectorAll('[data-view]'));
   function pageFor(hash) {
@@ -26,7 +25,6 @@
     const page = pageFor(location.hash);
     if (page !== current) {
       views.forEach((v) => { v.hidden = v.dataset.view !== page; });
-      bar.querySelectorAll('.mb-page').forEach((a) => a.classList.toggle('on', a.dataset.page === page));
       bar.querySelectorAll('.mb-opt').forEach((a) => { a.href = a.href.split('#')[0] + '#' + page; });
       current = page;
       if (page === 'screenings' && window.drawMap) window.drawMap();
