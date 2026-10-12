@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Stay updated | ABOUNA</title>
+<meta name="description" content="Sign up for news about Abouna: screenings, the next episode, and when it streams.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.ico">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* The site's tokens, from index.html. One form, on the dark ground, posted straight to Mailchimp. */
+  :root { --bg: #0a0908; --bg-warm: #131110; --text: #e8e2d8; --text-muted: #b3a99c; --accent: #c4a97d; --line: rgba(196,169,125,0.25); --serif: 'Cormorant Garamond', Georgia, serif; --sans: 'Outfit', sans-serif; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-weight: 300; font-size: 17px; line-height: 1.5; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px 16px calc(24px + env(safe-area-inset-bottom, 0px)); }
+  main { width: 100%; max-width: 440px; }
+  .brand { font-family: var(--sans); font-size: 13px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
+  .brand a { color: inherit; text-decoration: none; }
+  h1 { font-family: var(--serif); font-weight: 400; font-size: 44px; line-height: 1.05; margin: 0 0 12px; letter-spacing: -0.01em; }
+  .lead { margin: 0 0 28px; color: var(--text-muted); }
+  form { display: grid; gap: 16px; }
+  label { display: grid; gap: 6px; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+  input { font: inherit; font-size: 17px; font-weight: 300; color: var(--text); background: var(--bg-warm); border: 1px solid var(--line); border-radius: 4px; min-height: 48px; padding: 0 14px; width: 100%; }
+  input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+  input::placeholder { color: var(--text-muted); opacity: 0.7; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 380px) { .row { grid-template-columns: 1fr; } }
+  button { font-family: var(--sans); font-size: 13px; font-weight: 500; letter-spacing: 0.25em; text-transform: uppercase; color: var(--bg); background: var(--accent); border: 0; border-radius: 4px; min-height: 52px; padding: 0 32px; cursor: pointer; margin-top: 8px; }
+  button:hover { background: #d4bb90; }
+  button:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+  .fine { font-size: 13px; color: var(--text-muted); margin: 20px 0 0; }
+  .fine a { color: var(--accent); }
+  .trap { position: absolute; left: -5000px; }
+</style>
+</head>
+<body>
+<main>
+  <p class="brand"><a href="/">Abouna</a></p>
+  <h1>Stay updated</h1>
+  <p class="lead">Screenings near you, the next episode, and the day it streams. A few emails a year, nothing more.</p>
+  <form action="https://andrewishak.us12.list-manage.com/subscribe/post?u=caee0847b18352e02c6931496&id=f3ff251967&f_id=00ea10e9f0" method="post" novalidate="">
+    <label>Email
+      <input type="email" name="EMAIL" required autocomplete="email" inputmode="email" placeholder="you@example.com">
+    </label>
+    <div class="row">
+      <label>First name
+        <input type="text" name="MMERGE1" autocomplete="given-name">
+      </label>
+      <label>Last name
+        <input type="text" name="MMERGE2" autocomplete="family-name">
+      </label>
+    </div>
+    <label>Where you are
+      <input type="text" name="MMERGE6" autocomplete="address-level2" placeholder="City, or church">
+    </label>
+    <div class="trap" aria-hidden="true"><input type="text" name="b_caee0847b18352e02c6931496_f3ff251967" tabindex="-1" value="" autocomplete="off"></div>
+    <button type="submit" name="subscribe">Sign up</button>
+  </form>
+  <p class="fine">Mailchimp keeps the list. Every email has an unsubscribe link. <a href="/">Back to the film</a>.</p>
+</main>
+</body>
+</html>
