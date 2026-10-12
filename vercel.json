@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/signup",
+      "destination": "https://docs.google.com/forms/d/e/1FAIpQLSdTZSgPbm46I1Q7_P8v8LfOfIPTmRfkcg3_4m9UAR8KQaq0og/viewform",
+      "permanent": false
+    }
+  ]
+}
