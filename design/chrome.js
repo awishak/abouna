@@ -32,8 +32,9 @@
     }
     const target = id && id !== 'home' && id !== 'screenings' ? document.getElementById(id) : null;
     if (target) {
-      const top = target.getBoundingClientRect().top + window.scrollY - bar.offsetHeight - 8;
-      window.scrollTo({ top, behavior: 'smooth' });
+      const nav = document.querySelector('[data-view]:not([hidden]) .nav');
+      const top = target.getBoundingClientRect().top + window.scrollY - bar.offsetHeight - (nav ? nav.offsetHeight : 0) - 8;
+      window.scrollTo({ top, behavior: 'instant' });
     } else window.scrollTo({ top: 0, behavior: 'instant' });
   }
   window.addEventListener('hashchange', show);

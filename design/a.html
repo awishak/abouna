@@ -32,34 +32,46 @@
   .tile .big { font-family: var(--serif); font-size: 40px; font-weight: 600; line-height: 1; }
   .tile .line { color: var(--ink2); font-size: 18px; }
   .tile .go { color: var(--gold); font-size: 16px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; margin-top: var(--s1); }
-  @media (max-width: 760px) { .tiles { grid-template-columns: 1fr; } .tile { min-height: 0; } }
+  .tile.pic { background-size: cover; background-position: center; position: relative; overflow: hidden; min-height: 320px; }
+  .tile.pic::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,9,8,0.1), rgba(10,9,8,0.92)); }
+  .tile.pic > * { position: relative; }
+  @media (max-width: 760px) { .tiles { grid-template-columns: 1fr; } .tile { min-height: 0; } .tile.pic { min-height: 220px; } }
   .rows { border-top: 1px solid var(--line); }
   .row { display: grid; grid-template-columns: 1fr auto; gap: var(--s2); align-items: baseline; padding: var(--s2) 0; border-bottom: 1px solid var(--line); color: inherit; text-decoration: none; }
   .row b { font-size: 22px; font-weight: 500; }
   .row span { color: var(--ink2); font-size: 18px; text-align: right; }
   .row .gold { color: var(--gold); }
   .two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); }
+  .names { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--s3) var(--s4); }
+  .names b { display: block; font-family: var(--serif); font-size: 34px; font-weight: 600; line-height: 1; }
+  .names span { color: var(--ink2); font-size: 18px; }
   @media (max-width: 760px) { .two { grid-template-columns: 1fr; } .row { grid-template-columns: 1fr; gap: 2px; } .row span { text-align: left; } }
   .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 56px; padding: 0 28px; border-radius: 6px; background: var(--gold); color: var(--gold-ink); font-weight: 600; font-size: 17px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; }
   .btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
   .nav { position: sticky; top: 52px; z-index: 20; background: rgba(10,9,8,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
-  .nav .wrap { display: flex; align-items: center; gap: var(--s1); min-height: 64px; }
-  .nav .word { font-family: var(--serif); font-size: 26px; font-weight: 600; letter-spacing: 0.18em; color: var(--ink); text-decoration: none; margin-right: auto; }
-  .nav a.l { color: var(--ink); text-decoration: none; font-size: 17px; font-weight: 500; padding: 10px 12px; min-height: 44px; display: inline-flex; align-items: center; }
+  .nav .wrap { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--s1) var(--s3); min-height: 64px; }
+  .nav .word { display: none; }
+  .nav a.l { color: var(--ink); text-decoration: none; font-size: 15px; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 600; padding: 10px 4px; min-height: 44px; display: inline-flex; align-items: center; }
   .nav a.l.gold { color: var(--gold); }
-  @media (max-width: 720px) { .nav a.l:not(.gold) { display: none; } }
-  .hero { position: relative; min-height: 86vh; display: grid; align-items: end; overflow: hidden; padding: 0; border: 0; }
+  @media (max-width: 720px) { .nav a.l { font-size: 15px; letter-spacing: 0.16em; padding: 6px 4px; min-height: 40px; } .nav .wrap { gap: 0 var(--s2); padding-top: 4px; padding-bottom: 4px; } }
+  .hero { position: relative; min-height: 86vh; display: grid; align-items: stretch; overflow: hidden; padding: 0; border: 0; }
   .hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.55); }
   .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,9,8,0.05) 30%, rgba(10,9,8,0.96) 100%); }
-  .hero .wrap { position: relative; z-index: 1; padding-bottom: var(--s4); display: grid; gap: var(--s2); }
+  .hero .wrap { position: relative; z-index: 1; padding-top: var(--s4); padding-bottom: var(--s4); display: grid; gap: var(--s2); align-content: space-between; min-height: 86vh; }
+  .hero .lower { display: grid; gap: var(--s2); }
   .hero h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(88px, 18vw, 200px); line-height: 0.9; letter-spacing: 0.06em; margin: 0; }
   .hero .sub { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: clamp(26px, 3.4vw, 38px); line-height: 1.2; }
   .hero .cta { display: flex; flex-wrap: wrap; gap: var(--s2); }
   .doors { border: 0; padding-top: var(--s3); }
-  .strip { display: flex; gap: var(--s2); overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 var(--s3) var(--s2); }
-  .strip img { height: 300px; width: auto; flex: none; scroll-snap-align: start; border-radius: 6px; }
-  @media (max-width: 760px) { .strip img { height: 220px; } }
+  .sheet { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); align-items: start; }
+  .sheet img { width: 100%; height: auto; border-radius: 6px; }
+  @media (max-width: 640px) { .sheet { grid-template-columns: 1fr; } }
   .story p { font-size: 20px; color: var(--ink2); }
+  .alt { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); align-items: center; }
+  .alt + .alt { margin-top: var(--s4); }
+  .alt img { border-radius: 6px; aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+  .alt.flip img { order: 2; }
+  @media (max-width: 760px) { .alt { grid-template-columns: 1fr; } .alt.flip img { order: 0; } }
   details { border-bottom: 1px solid var(--line); }
   summary { cursor: pointer; list-style: none; font-size: 22px; font-weight: 500; padding: var(--s2) 0; display: flex; justify-content: space-between; gap: var(--s2); }
   summary::-webkit-details-marker { display: none; }
@@ -93,6 +105,9 @@
   .show .what span { display: block; color: var(--ink2); font-size: 18px; margin-top: 2px; }
   .show .btn { min-height: 48px; padding: 0 20px; font-size: 16px; }
   @media (max-width: 640px) { .show { grid-template-columns: 72px 1fr; } .show .btn { grid-column: 2; justify-self: start; } .show .day b { font-size: 44px; } }
+  .poster2 { display: grid; grid-template-columns: 240px 1fr; gap: var(--s4); align-items: start; }
+  .poster2 img { border-radius: 6px; border: 1px solid var(--line); }
+  @media (max-width: 640px) { .poster2 { grid-template-columns: 1fr; } .poster2 img { width: 200px; } }
   .request { background: var(--tile); border: 1px solid var(--line); border-radius: 6px; padding: var(--s4); }
   .request form { display: grid; gap: var(--s2); grid-template-columns: 1fr 1fr; }
   .request label { display: grid; gap: 6px; font-size: 15px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink2); font-weight: 600; }
@@ -116,56 +131,34 @@
   <section class="hero">
     <video autoplay muted loop playsinline><source src="../Website_Loop.m4v" type="video/mp4"></video>
     <div class="wrap">
-      <p class="label">A Series by Andrew Ishak</p>
-      <h1>ABOUNA</h1>
-      <p class="sub">The Story Continues</p>
+      <div><p class="label">A Series by Andrew Ishak</p><h1>ABOUNA</h1></div>
+      <div class="lower"><p class="sub">The Story Continues</p>
       <p class="label">This Fall</p>
-      <div class="cta"><a class="btn" href="#screenings">See Abouna</a><a class="btn ghost" href="https://www.youtube.com/watch?v=4N2Zf_vJ8cY" target="_blank" rel="noopener">Watch Now</a></div>
+      <div class="cta"><a class="btn" href="#screenings">See Abouna</a><a class="btn ghost" href="https://www.youtube.com/watch?v=4N2Zf_vJ8cY" target="_blank" rel="noopener">Watch Now</a></div></div>
     </div>
   </section>
 
   <section class="doors"><div class="wrap"><div class="tiles">
-    <a class="tile" href="#screenings"><span class="label">Screenings</span><span class="big">See Abouna</span><span class="line">Information about other screenings coming soon.</span><span class="go">→</span></a>
-    <a class="tile" href="https://www.youtube.com/watch?v=4N2Zf_vJ8cY" target="_blank" rel="noopener"><span class="label">Where It Began</span><span class="big">Episode One</span><span class="line">Available now to stream.</span><span class="go">Watch Now →</span></a>
-    <a class="tile" href="#crew"><span class="label">Behind the Scenes</span><span class="big">Cast and Crew</span><span class="go">→</span></a>
+    <a class="tile pic" href="#screenings" style="background-image:url('../bts-07.jpeg')"><span class="label">Screenings</span><span class="big">See Abouna</span><span class="line">Information about other screenings coming soon.</span><span class="go">→</span></a>
+    <a class="tile pic" href="https://www.youtube.com/watch?v=4N2Zf_vJ8cY" target="_blank" rel="noopener" style="background-image:url('../ep1-hero.png')"><span class="label">Where It Began</span><span class="big">Episode One</span><span class="line">Available now to stream.</span><span class="go">Watch Now →</span></a>
+    <a class="tile pic" href="#crew" style="background-image:url('../bts-04.jpeg')"><span class="label">Behind the Scenes</span><span class="big">Cast and Crew</span><span class="go">→</span></a>
   </div></div></section>
 
   <section class="story" id="story"><div class="wrap">
     <div class="head"><p class="label">Story</p><h2>The Story Continues</h2></div>
-    <div class="two">
-      <div><h3>Episode One</h3><p>In Episode 1, Father Beemen Kolta (called "Abouna" by his congregants) is a newly ordained Coptic Orthodox priest doing his best to serve the people of his church while feeling like he's in over his head. Through conversations with loved ones and memories of his childhood and father, he comes to recognize that the very culture he loves might be getting in the way of his congregants' spiritual growth. By the end, he's made a decision about how to make Christ's message more accessible to everyone.</p></div>
-      <div><h3>Episode Two</h3><p>Now, Father Beemen is putting that conviction into action. But when a well-intentioned attempt to modernize his church backfires, he's left scrambling, navigating a high-stakes visit from an authority figure while questioning his own ability to lead. And just when he feels most lost, it takes a good friend to show him what he couldn't see on his own.</p></div>
-    </div>
+    <div class="alt"><img src="../ep1-hero.png" alt=""><div><p class="label">Where It Began</p><h3>Episode One</h3><p>In Episode 1, Father Beemen Kolta (called "Abouna" by his congregants) is a newly ordained Coptic Orthodox priest doing his best to serve the people of his church while feeling like he's in over his head. Through conversations with loved ones and memories of his childhood and father, he comes to recognize that the very culture he loves might be getting in the way of his congregants' spiritual growth. By the end, he's made a decision about how to make Christ's message more accessible to everyone.</p></div></div>
+    <div class="alt flip"><img src="../bts-06.jpeg" alt=""><div><p class="label">This Fall</p><h3>Episode Two</h3><p>Now, Father Beemen is putting that conviction into action. But when a well-intentioned attempt to modernize his church backfires, he's left scrambling, navigating a high-stakes visit from an authority figure while questioning his own ability to lead. And just when he feels most lost, it takes a good friend to show him what he couldn't see on his own.</p></div></div>
   </div></section>
 
-  <section id="bts" style="padding-bottom:80px">
+  <section id="bts">
     <div class="wrap"><div class="head"><p class="label">Behind the Scenes</p><h2>Making Abouna</h2><p class="lead">A look at the people, places, and moments that brought the story to life.</p></div></div>
-    <div class="strip"><img src="../bts-02.jpeg" alt=""><img src="../bts-03.jpeg" alt=""><img src="../bts-05.jpeg" alt=""><img src="../bts-06.jpeg" alt=""><img src="../bts-07.jpeg" alt=""><img src="../bts-08.jpeg" alt=""><img src="../bts-09.jpeg" alt=""><img src="../bts-10.jpeg" alt=""></div>
+    <div class="wrap"><div class="sheet"><img src="../bts-02.jpeg" alt=""><img src="../bts-03.jpeg" alt=""><img src="../bts-05.jpeg" alt=""><img src="../bts-06.jpeg" alt=""><img src="../bts-07.jpeg" alt=""><img src="../bts-08.jpeg" alt=""><img src="../bts-09.jpeg" alt=""><img src="../bts-10.jpeg" alt=""></div></div>
   </section>
 
   <section id="crew"><div class="wrap">
     <div class="head"><p class="label">Behind the Scenes</p><h2>Cast and Crew</h2></div>
-    <div class="two">
-      <div class="rows">
-        <div class="row"><b>Andrew Ishak</b><span>Beemen · Writer · Editor · Camera</span></div>
-        <div class="row"><b>Dina Hanna</b><span>Sarah</span></div>
-        <div class="row"><b>Sandra Adly</b><span>Mira</span></div>
-        <div class="row"><b>Sandy Elgendy</b><span>Sandy</span></div>
-        <div class="row"><b>Mario Yany</b><span>Mario</span></div>
-        <div class="row"><b>Samar Wahba</b><span>Tasoni</span></div>
-        <div class="row"><b>Ragaa Ishak</b><span>Mona</span></div>
-        <div class="row"><b>Mary Moussa</b><span>Mary</span></div>
-      </div>
-      <div class="rows">
-        <div class="row"><b>Emad Gad</b><span>Emad</span></div>
-        <div class="row"><b>Hanni Fakhoury</b><span>Mark</span></div>
-        <div class="row"><b>Andrew Moussa</b><span>Samuel</span></div>
-        <div class="row"><b>Heather Ishak</b><span>Crew · Script Advisor</span></div>
-        <div class="row"><b>Joe Hanna</b><span>Script Advisor</span></div>
-        <div class="row"><b>Sandra Saad</b><span>Script Advisor</span></div>
-        <div class="row"><b>Theo Ishak</b><span>Crew</span></div>
-        <div class="row"><b>Andrew Abdelmalak</b><span>Camera</span></div>
-      </div>
+    <div class="names">
+      <div><b>Andrew Ishak</b><span>Beemen · Writer · Editor · Camera</span></div><div><b>Dina Hanna</b><span>Sarah</span></div><div><b>Sandra Adly</b><span>Mira</span></div><div><b>Sandy Elgendy</b><span>Sandy</span></div><div><b>Mario Yany</b><span>Mario</span></div><div><b>Samar Wahba</b><span>Tasoni</span></div><div><b>Ragaa Ishak</b><span>Mona</span></div><div><b>Mary Moussa</b><span>Mary</span></div><div><b>Emad Gad</b><span>Emad</span></div><div><b>Hanni Fakhoury</b><span>Mark</span></div><div><b>Andrew Moussa</b><span>Samuel</span></div><div><b>Heather Ishak</b><span>Crew · Script Advisor</span></div><div><b>Joe Hanna</b><span>Script Advisor</span></div><div><b>Sandra Saad</b><span>Script Advisor</span></div><div><b>Theo Ishak</b><span>Crew</span></div><div><b>Andrew Abdelmalak</b><span>Camera</span></div>
     </div>
   </div></section>
 
@@ -243,14 +236,13 @@
     <a class="l" href="#home">Story</a>
     <a class="l gold" href="#request">Request a Screening</a>
   </div></nav>
-  <section class="shead"><div class="wrap">
+  <section class="shead"><div class="wrap"><div class="poster2"><img src="../ep2-poster.png" alt=""><div>
     <div class="head"><p class="label">Screenings</p><h2>See Abouna</h2><p class="lead">Information about other screenings coming soon.</p></div>
-  </div></section>
-  <div id="map"></div>
-  <section style="padding-top:var(--s4);border:0"><div class="wrap">
     <div class="show"><div class="day"><b>6</b><span>Nov</span></div><div class="what"><b>New York, NY</b><span>Beacon of Faith Conference · Venue to be announced · Q&amp;A with director</span></div><a class="btn ghost" href="../signup">Stay Updated</a></div>
     <div class="show"><div class="day"><b>?</b><span>TBA</span></div><div class="what"><b>Bay Area, CA</b><span>Date TBA · To be announced</span></div><a class="btn ghost" href="../signup">Stay Updated</a></div>
-  </div></section>
+    <p style="margin-top:var(--s4)"><a class="btn" href="#request">Request a Screening</a></p>
+  </div></div></div></section>
+  <div id="map"></div>
   <section id="request"><div class="wrap">
     <div class="head"><h2>Request a Screening</h2></div>
     <div class="request"><form onsubmit="return false">
