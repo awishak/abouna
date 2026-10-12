@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Option A, Cathedral | Abouna redesign</title>
+<title>ABOUNA — The Story Continues</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="../favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,10 +11,6 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="chrome.css">
 <style>
-  /* A. Cathedral, second pass. One system: every section is label, title, lead, then
-     content built from two parts only, a tile and a row. Three colours of text: white
-     for reading, a lighter cream for the second line, gold for what you can press.
-     One rhythm: 96px between sections, 24px inside. Nothing grey on black. */
   :root { --bg: #0a0908; --tile: #15120f; --ink: #f6f1e8; --ink2: #e2d9cb; --gold: #d9c08f; --gold-ink: #0a0908; --line: rgba(217,192,143,0.28);
     --serif: 'Cormorant Garamond', Georgia, serif; --sans: 'Outfit', -apple-system, sans-serif;
     --s1: 8px; --s2: 16px; --s3: 24px; --s4: 40px; --s5: 96px; --col: 1080px; }
@@ -25,54 +21,44 @@
   a { color: var(--gold); }
   p { margin: 0; }
   .wrap { max-width: var(--col); margin: 0 auto; padding: 0 var(--s3); }
-
-  /* the one section header */
   section { padding: var(--s5) 0; border-top: 1px solid var(--line); }
   .head { display: grid; gap: var(--s1); margin-bottom: var(--s4); }
   .label { font-size: 15px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
   h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(44px, 6vw, 68px); line-height: 1; margin: 0; }
+  h3 { font-family: var(--serif); font-size: 34px; font-weight: 600; margin: 0 0 var(--s1); }
   .lead { font-size: 21px; color: var(--ink2); max-width: 60ch; }
-
-  /* the two parts: a tile and a row */
   .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s2); }
   .tile { display: grid; gap: var(--s1); align-content: end; min-height: 240px; padding: var(--s3); background: var(--tile); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); text-decoration: none; }
-  .tile .label { margin-bottom: var(--s1); }
   .tile .big { font-family: var(--serif); font-size: 40px; font-weight: 600; line-height: 1; }
   .tile .line { color: var(--ink2); font-size: 18px; }
   .tile .go { color: var(--gold); font-size: 16px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; margin-top: var(--s1); }
   @media (max-width: 760px) { .tiles { grid-template-columns: 1fr; } .tile { min-height: 0; } }
   .rows { border-top: 1px solid var(--line); }
-  .row { display: grid; grid-template-columns: 1fr auto; gap: var(--s2); align-items: baseline; padding: var(--s2) 0; border-bottom: 1px solid var(--line); }
+  .row { display: grid; grid-template-columns: 1fr auto; gap: var(--s2); align-items: baseline; padding: var(--s2) 0; border-bottom: 1px solid var(--line); color: inherit; text-decoration: none; }
   .row b { font-size: 22px; font-weight: 500; }
   .row span { color: var(--ink2); font-size: 18px; text-align: right; }
+  .row .gold { color: var(--gold); }
   .two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); }
   @media (max-width: 760px) { .two { grid-template-columns: 1fr; } .row { grid-template-columns: 1fr; gap: 2px; } .row span { text-align: left; } }
   .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 56px; padding: 0 28px; border-radius: 6px; background: var(--gold); color: var(--gold-ink); font-weight: 600; font-size: 17px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; }
   .btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
-
-  /* nav: one bar, used by both pages */
   .nav { position: sticky; top: 52px; z-index: 20; background: rgba(10,9,8,0.9); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
   .nav .wrap { display: flex; align-items: center; gap: var(--s1); min-height: 64px; }
   .nav .word { font-family: var(--serif); font-size: 26px; font-weight: 600; letter-spacing: 0.18em; color: var(--ink); text-decoration: none; margin-right: auto; }
   .nav a.l { color: var(--ink); text-decoration: none; font-size: 17px; font-weight: 500; padding: 10px 12px; min-height: 44px; display: inline-flex; align-items: center; }
   .nav a.l.gold { color: var(--gold); }
   @media (max-width: 720px) { .nav a.l:not(.gold) { display: none; } }
-
-  /* hero */
   .hero { position: relative; min-height: 86vh; display: grid; align-items: end; overflow: hidden; padding: 0; border: 0; }
   .hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.55); }
   .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,9,8,0.05) 30%, rgba(10,9,8,0.96) 100%); }
   .hero .wrap { position: relative; z-index: 1; padding-bottom: var(--s4); display: grid; gap: var(--s2); }
   .hero h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(88px, 18vw, 200px); line-height: 0.9; letter-spacing: 0.06em; margin: 0; }
-  .hero .sub { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: clamp(26px, 3.4vw, 38px); line-height: 1.2; max-width: 24ch; }
+  .hero .sub { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: clamp(26px, 3.4vw, 38px); line-height: 1.2; }
   .hero .cta { display: flex; flex-wrap: wrap; gap: var(--s2); }
-
   .doors { border: 0; padding-top: var(--s3); }
   .strip { display: flex; gap: var(--s2); overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 var(--s3) var(--s2); }
   .strip img { height: 300px; width: auto; flex: none; scroll-snap-align: start; border-radius: 6px; }
   @media (max-width: 760px) { .strip img { height: 220px; } }
-  .stills { padding-bottom: calc(var(--s5) - var(--s2)); }
-  .story h3 { font-family: var(--serif); font-size: 34px; font-weight: 600; margin: 0 0 var(--s1); }
   .story p { font-size: 20px; color: var(--ink2); }
   details { border-bottom: 1px solid var(--line); }
   summary { cursor: pointer; list-style: none; font-size: 22px; font-weight: 500; padding: var(--s2) 0; display: flex; justify-content: space-between; gap: var(--s2); }
@@ -82,13 +68,12 @@
   details p { color: var(--ink2); font-size: 19px; padding-bottom: var(--s2); max-width: 64ch; }
   .about .grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: var(--s4); align-items: start; }
   .about img { border-radius: 6px; }
+  .about figcaption { color: var(--ink2); font-size: 16px; margin-top: var(--s1); }
   .about p { color: var(--ink2); margin-bottom: var(--s2); }
   @media (max-width: 760px) { .about .grid { grid-template-columns: 1fr; } }
   footer { padding: var(--s4) 0 80px; border-top: 1px solid var(--line); color: var(--ink2); font-size: 17px; }
   footer a { color: var(--ink); text-decoration: none; margin-right: 18px; font-weight: 500; }
   footer p { margin-top: var(--s2); }
-
-  /* screenings page: the same header, the map, then rows */
   .shead { padding-top: var(--s4); padding-bottom: var(--s4); border: 0; }
   .shead .head { margin-bottom: 0; }
   #map { height: 440px; background: #141210; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
@@ -99,14 +84,13 @@
   .leaflet-popup-tip { background: var(--tile); }
   .leaflet-popup-content { font-size: 16px; line-height: 1.4; }
   .leaflet-control-attribution { font-size: 13px !important; }
-  .month { font-family: var(--serif); font-size: 32px; font-weight: 600; margin: var(--s4) 0 var(--s1); }
   .show { display: grid; grid-template-columns: 88px 1fr auto; gap: var(--s2); align-items: center; padding: var(--s3) 0; border-top: 1px solid var(--line); }
+  .show:last-of-type { border-bottom: 1px solid var(--line); }
   .show .day { text-align: center; line-height: 1; }
   .show .day b { display: block; font-family: var(--serif); font-size: 52px; font-weight: 600; }
   .show .day span { font-size: 15px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
   .show .what b { display: block; font-size: 24px; font-weight: 500; line-height: 1.2; }
   .show .what span { display: block; color: var(--ink2); font-size: 18px; margin-top: 2px; }
-  .show .what .ex { color: var(--gold); font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; margin-top: var(--s1); }
   .show .btn { min-height: 48px; padding: 0 20px; font-size: 16px; }
   @media (max-width: 640px) { .show { grid-template-columns: 72px 1fr; } .show .btn { grid-column: 2; justify-self: start; } .show .day b { font-size: 44px; } }
   .request { background: var(--tile); border: 1px solid var(--line); border-radius: 6px; padding: var(--s4); }
@@ -114,7 +98,6 @@
   .request label { display: grid; gap: 6px; font-size: 15px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink2); font-weight: 600; }
   .request input, .request select { font: inherit; font-size: 18px; min-height: 52px; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); width: 100%; }
   .request .full { grid-column: 1 / -1; }
-  .request p { color: var(--ink2); font-size: 19px; grid-column: 1 / -1; }
   @media (max-width: 640px) { .request form { grid-template-columns: 1fr; } .request { padding: var(--s3); } }
 </style>
 </head>
@@ -124,7 +107,8 @@
   <nav class="nav"><div class="wrap">
     <a class="word" href="#home">ABOUNA</a>
     <a class="l" href="#story">Story</a>
-    <a class="l" href="#crew">Cast and crew</a>
+    <a class="l" href="#bts">Behind the Scenes</a>
+    <a class="l" href="#accolades">Accolades</a>
     <a class="l" href="#questions">Questions</a>
     <a class="l gold" href="#screenings">Screenings</a>
   </div></nav>
@@ -132,136 +116,156 @@
   <section class="hero">
     <video autoplay muted loop playsinline><source src="../Website_Loop.m4v" type="video/mp4"></video>
     <div class="wrap">
-      <p class="label">Episode Two · This fall</p>
+      <p class="label">A Series by Andrew Ishak</p>
       <h1>ABOUNA</h1>
-      <p class="sub">A newly ordained priest, in over his head, tries to change his church.</p>
-      <div class="cta"><a class="btn" href="#screenings">See it near you</a><a class="btn ghost" href="https://www.youtube.com/watch?v=4N2Zf_vJ8cY" target="_blank" rel="noopener">Watch Episode One</a></div>
+      <p class="sub">The Story Continues</p>
+      <p class="label">This Fall</p>
+      <div class="cta"><a class="btn" href="#screenings">See Abouna</a><a class="btn ghost" href="https://www.youtube.com/watch?v=4N2Zf_vJ8cY" target="_blank" rel="noopener">Watch Now</a></div>
     </div>
   </section>
 
   <section class="doors"><div class="wrap"><div class="tiles">
-    <a class="tile" href="#screenings"><span class="label">Next screening</span><span class="big">New York, Nov 6</span><span class="line">Beacon of Faith Conference. Then the Bay Area, and churches through March.</span><span class="go">All screenings →</span></a>
-    <a class="tile" href="https://www.youtube.com/watch?v=4N2Zf_vJ8cY" target="_blank" rel="noopener"><span class="label">Start here</span><span class="big">Watch Episode One</span><span class="line">Free to stream. 55 minutes. Where Father Beemen's story begins.</span><span class="go">Watch →</span></a>
-    <a class="tile" href="#crew"><span class="label">The people</span><span class="big">Cast and crew</span><span class="line">An intergenerational cast from the Coptic churches of Northern California.</span><span class="go">Meet them →</span></a>
+    <a class="tile" href="#screenings"><span class="label">Screenings</span><span class="big">See Abouna</span><span class="line">Information about other screenings coming soon.</span><span class="go">→</span></a>
+    <a class="tile" href="https://www.youtube.com/watch?v=4N2Zf_vJ8cY" target="_blank" rel="noopener"><span class="label">Where It Began</span><span class="big">Episode One</span><span class="line">Available now to stream.</span><span class="go">Watch Now →</span></a>
+    <a class="tile" href="#crew"><span class="label">Behind the Scenes</span><span class="big">Cast and Crew</span><span class="go">→</span></a>
   </div></div></section>
 
   <section class="story" id="story"><div class="wrap">
-    <div class="head"><p class="label">The story</p><h2>Two episodes</h2></div>
+    <div class="head"><p class="label">Story</p><h2>The Story Continues</h2></div>
     <div class="two">
-      <div><h3>Episode One</h3><p>Father Beemen Kolta, called "Abouna" by his congregants, is a newly ordained Coptic Orthodox priest doing his best to serve the people of his church while feeling like he's in over his head. Through conversations with loved ones and memories of his childhood and father, he comes to recognize that the very culture he loves might be getting in the way of his congregants' spiritual growth.</p></div>
+      <div><h3>Episode One</h3><p>In Episode 1, Father Beemen Kolta (called "Abouna" by his congregants) is a newly ordained Coptic Orthodox priest doing his best to serve the people of his church while feeling like he's in over his head. Through conversations with loved ones and memories of his childhood and father, he comes to recognize that the very culture he loves might be getting in the way of his congregants' spiritual growth. By the end, he's made a decision about how to make Christ's message more accessible to everyone.</p></div>
       <div><h3>Episode Two</h3><p>Now, Father Beemen is putting that conviction into action. But when a well-intentioned attempt to modernize his church backfires, he's left scrambling, navigating a high-stakes visit from an authority figure while questioning his own ability to lead. And just when he feels most lost, it takes a good friend to show him what he couldn't see on his own.</p></div>
     </div>
   </div></section>
 
-  <section class="stills" id="stills">
-    <div class="wrap"><div class="head"><p class="label">Behind the scenes</p><h2>Making Abouna</h2></div></div>
+  <section id="bts" style="padding-bottom:80px">
+    <div class="wrap"><div class="head"><p class="label">Behind the Scenes</p><h2>Making Abouna</h2><p class="lead">A look at the people, places, and moments that brought the story to life.</p></div></div>
     <div class="strip"><img src="../bts-02.jpeg" alt=""><img src="../bts-03.jpeg" alt=""><img src="../bts-05.jpeg" alt=""><img src="../bts-06.jpeg" alt=""><img src="../bts-07.jpeg" alt=""><img src="../bts-08.jpeg" alt=""><img src="../bts-09.jpeg" alt=""><img src="../bts-10.jpeg" alt=""></div>
   </section>
 
   <section id="crew"><div class="wrap">
-    <div class="head"><p class="label">Cast and crew</p><h2>The people</h2><p class="lead">Fourteen people, four generations, all from the Coptic churches of Northern California.</p></div>
+    <div class="head"><p class="label">Behind the Scenes</p><h2>Cast and Crew</h2></div>
     <div class="two">
       <div class="rows">
-        <div class="row"><b>Andrew Ishak</b><span>Father Beemen · writer, director, editor</span></div>
+        <div class="row"><b>Andrew Ishak</b><span>Beemen · Writer · Editor · Camera</span></div>
         <div class="row"><b>Dina Hanna</b><span>Sarah</span></div>
         <div class="row"><b>Sandra Adly</b><span>Mira</span></div>
         <div class="row"><b>Sandy Elgendy</b><span>Sandy</span></div>
         <div class="row"><b>Mario Yany</b><span>Mario</span></div>
         <div class="row"><b>Samar Wahba</b><span>Tasoni</span></div>
         <div class="row"><b>Ragaa Ishak</b><span>Mona</span></div>
+        <div class="row"><b>Mary Moussa</b><span>Mary</span></div>
       </div>
       <div class="rows">
-        <div class="row"><b>Mary Moussa</b><span>Mary</span></div>
         <div class="row"><b>Emad Gad</b><span>Emad</span></div>
         <div class="row"><b>Hanni Fakhoury</b><span>Mark</span></div>
         <div class="row"><b>Andrew Moussa</b><span>Samuel</span></div>
-        <div class="row"><b>Heather Ishak</b><span>Script advisor, crew</span></div>
-        <div class="row"><b>Joe Hanna, Sandra Saad</b><span>Script advisors</span></div>
-        <div class="row"><b>Theo Ishak, Andrew Abdelmalak</b><span>Crew, camera</span></div>
+        <div class="row"><b>Heather Ishak</b><span>Crew · Script Advisor</span></div>
+        <div class="row"><b>Joe Hanna</b><span>Script Advisor</span></div>
+        <div class="row"><b>Sandra Saad</b><span>Script Advisor</span></div>
+        <div class="row"><b>Theo Ishak</b><span>Crew</span></div>
+        <div class="row"><b>Andrew Abdelmalak</b><span>Camera</span></div>
       </div>
     </div>
   </div></section>
 
   <section id="accolades"><div class="wrap">
-    <div class="head"><p class="label">Episode One</p><h2>Ten festivals, three continents</h2></div>
+    <div class="head"><p class="label">Accolades</p><h2>Episode One Festival Run</h2></div>
     <div class="two">
       <div class="rows">
-        <div class="row"><b>Beacon of Light Coptic Film Festival</b><span>Best Feature · Best Director</span></div>
-        <div class="row"><b>Mosaic International Film Festival</b><span>Best Feature</span></div>
-        <div class="row"><b>Atlanta Christian Film Festival</b><span>Best Director · Best Actress</span></div>
-        <div class="row"><b>Davis Film Festival</b><span>Third place</span></div>
-        <div class="row"><b>Great Lakes Christian Film Festival</b><span>Official selection</span></div>
+        <div class="row"><b>Beacon of Light Coptic Film Festival</b><span class="gold">Best Feature</span></div>
+        <div class="row"><b>Mosaic Film Festival 2024</b><span class="gold">Best Feature</span></div>
+        <div class="row"><b>Davis Film Festival 2023</b><span class="gold">3rd Place</span></div>
+        <div class="row"><b>Great Lakes Christian Film Festival 2024</b><span>Official Selection</span></div>
+        <div class="row"><b>Atlanta Christian Film Festival 2024</b><span>Official Selection</span></div>
       </div>
       <div class="rows">
-        <div class="row"><b>Riverside International Film Festival</b><span>Official selection</span></div>
-        <div class="row"><b>Nieves Christian Film Festival</b><span>Official selection</span></div>
-        <div class="row"><b>Faith Fest</b><span>Official selection</span></div>
-        <div class="row"><b>Perth Christian Film Festival</b><span>Official selection</span></div>
-        <div class="row"><b>World Culture Film Festival LA</b><span>Official selection</span></div>
+        <div class="row"><b>Riverside International Film Festival 2024</b><span>Official Selection</span></div>
+        <div class="row"><b>Nieves Christian Film Festival 2024</b><span>Official Selection</span></div>
+        <div class="row"><b>Faith Fest 2024</b><span>Official Selection</span></div>
+        <div class="row"><b>Perth Christian Film Festival 2024</b><span>Official Selection</span></div>
+        <div class="row"><b>World Culture Film Festival LA 2024</b><span>Official Selection</span></div>
       </div>
+    </div>
+    <h3 style="margin-top:var(--s4)">Individual Awards</h3>
+    <div class="rows">
+      <div class="row"><b>Dina Hanna</b><span class="gold">Best Actress · Atlanta Christian Film Festival</span></div>
+      <div class="row"><b>Andrew Ishak</b><span class="gold">Best Director · Atlanta Christian Film Festival</span></div>
+      <div class="row"><b>Andrew Ishak</b><span class="gold">Best Director · Beacon of Light Festival</span></div>
     </div>
   </div></section>
 
   <section id="questions"><div class="wrap">
-    <div class="head"><p class="label">Questions</p><h2>About Abouna</h2></div>
+    <div class="head"><p class="label">FAQ</p><h2>Questions About Abouna</h2></div>
     <div class="rows">
       <details open><summary>What does "Abouna" mean?</summary><p>"Abouna" is Arabic for "our father." In the Coptic Orthodox tradition, it's the title congregants use when addressing their priest.</p></details>
       <details><summary>Do I need to watch Episode One first?</summary><p>Episode Two picks up where Episode One left off. You'll get the most out of it by watching them in order, but new viewers will still be able to follow along.</p></details>
-      <details><summary>Where was Abouna filmed?</summary><p>Episode Two was filmed around the San Francisco Bay Area: Oakland, Santa Cruz, Santa Clara, San Jose, and Los Gatos.</p></details>
+      <details><summary>Where was Abouna filmed?</summary><p>Abouna Episode 2 was filmed in various locations in the San Francisco Bay Area, including Oakland, Santa Cruz, Santa Clara, San Jose, and Los Gatos.</p></details>
       <details><summary>Will there be more episodes?</summary><p>We're taking this one episode at a time, but we're hoping to make more with your continued support.</p></details>
+    </div>
+    <p class="lead" style="margin:var(--s4) 0 var(--s2)">For more about the making of Abouna, check out one of these podcasts:</p>
+    <div class="rows">
+      <a class="row" href="https://www.youtube.com/watch?v=x_k24S_6lkI" target="_blank" rel="noopener"><b>Reintroduction Podcast <span class="gold">Watch →</span></b><span>with Fr Elijah Esefanous and Mina Sawires</span></a>
+      <a class="row" href="https://www.copticdadandmom.com/podcast/64" target="_blank" rel="noopener"><b>Coptic Dad and Mom Podcast <span class="gold">Listen →</span></b><span>with Laura Michael and Madona Lawindy</span></a>
+      <a class="row" href="https://www.youtube.com/watch?v=my0SrwcTIjE" target="_blank" rel="noopener"><b>Beyond the Walls Podcast (Australia) <span class="gold">Watch →</span></b><span>with students from Saint Mark's Coptic Orthodox College, Sydney</span></a>
     </div>
   </div></section>
 
-  <section class="about"><div class="wrap">
-    <div class="head"><p class="label">From the creator</p><h2>Andrew Ishak</h2></div>
+  <section id="first-film"><div class="wrap">
+    <div class="head"><p class="label">Where It Began</p><h2>Episode One</h2><p class="lead">Watch the first chapter of the Abouna series before Episode Two arrives.</p></div>
+    <div class="two">
+      <img src="../ep1-hero.png" alt="Abouna: Episode One" style="border-radius:6px">
+      <div><h3>Abouna: Episode One</h3><p class="lead" style="margin-bottom:var(--s3)">Available now to stream.</p><a class="btn" href="https://www.youtube.com/watch?v=4N2Zf_vJ8cY" target="_blank" rel="noopener">Watch Now</a></div>
+    </div>
+  </div></section>
+
+  <section class="about" id="about"><div class="wrap">
+    <div class="head"><p class="label">About the Creator</p><h2>Andrew Ishak</h2></div>
     <div class="grid">
-      <img src="../creator-photo.png" alt="Andrew Ishak, right, with his brother and two friends.">
+      <figure style="margin:0"><img src="../creator-photo.png" alt=""><figcaption>Andrew Ishak, right, with his brother and two friends Anthony and Paul.</figcaption></figure>
       <div>
-        <p>I grew up in the Coptic churches of Northern California, a religious community defined by family bonds, spirituality, and identity. I always loved making films with my friends, including a mockumentary about an Egyptian boy band called "The Sphinxters."</p>
+        <p>A note from the creator: I grew up in the Coptic churches of Northern California, a religious community defined by family bonds, spirituality, and identity. I always loved making films with my friends, including a mockumentary about an Egyptian boy band called "The Sphinxters."</p>
         <p>I'm also obsessed with research. I earned a PhD in Organizational Communication at the University of Texas, and I currently serve as a teaching professor at Santa Clara University, where I explore and teach how cultural elements shape the way we communicate.</p>
-        <p>I'm thankful that the series has resonated globally; the first episode screened at ten festivals and numerous churches across three continents. It means a lot to me that people would spend time watching this project.</p>
-        <p><a class="btn ghost" href="../signup">Stay updated</a></p>
+        <p>Abouna is the result of blending the Coptic experience with academic research and filmmaking. As the series' creator, writer, and director, I have been really careful to ensure that this project is based on real experiences, which is why I've spent countless hours interviewing, observing and reading about the Coptic experience. At the same time, this is no one priest's experience; it's a story I'm telling that is meant to be something that resonates with those who have grown up in an ethno-religious community.</p>
+        <p>I'm thankful that the series has resonated globally; the first episode screened at ten festivals and numerous churches across three continents, taking home Best Feature at the Beacon of Light and Mosaic Film Festivals. It also earned Best Director honors in Atlanta and at the Beacon of Light Festival. It means a lot to me that people would spend time watching this project, and I appreciate you taking the time to read more about it.</p>
+        <p>The story continues this fall.</p>
+        <p><a class="btn ghost" href="../signup">Stay Updated</a></p>
       </div>
     </div>
   </div></section>
 
-  <footer><div class="wrap"><a href="https://www.instagram.com/andrewishak/" target="_blank" rel="noopener">Instagram</a><a href="https://youtube.com/@andrewishak" target="_blank" rel="noopener">YouTube</a><a href="https://www.facebook.com/andrewishak" target="_blank" rel="noopener">Facebook</a><a href="../signup">Mailing list</a><p>© 2026 Abouna. Created by Andrew Ishak.</p></div></footer>
+  <footer><div class="wrap"><a href="https://www.instagram.com/andrewishak/" target="_blank" rel="noopener">Instagram</a><a href="https://youtube.com/@andrewishak" target="_blank" rel="noopener">YouTube</a><a href="https://www.facebook.com/andrewishak" target="_blank" rel="noopener">Facebook</a><p>© 2026 Abouna. Created by Andrew Ishak. All rights reserved.</p></div></footer>
 </div>
 
 <div data-view="screenings" hidden>
   <nav class="nav"><div class="wrap">
     <a class="word" href="#home">ABOUNA</a>
-    <a class="l" href="#home">Home</a>
-    <a class="l gold" href="#request">Request a screening</a>
+    <a class="l" href="#home">Story</a>
+    <a class="l gold" href="#request">Request a Screening</a>
   </div></nav>
   <section class="shead"><div class="wrap">
-    <div class="head"><p class="label">Screenings · Next: New York, Friday, November 6</p><h2>See Abouna near you</h2><p class="lead">Every screening is Episode Two with a Q&amp;A after. Sign up so the host knows you're coming. Some are free; some are a few dollars at the door.</p></div>
+    <div class="head"><p class="label">Screenings</p><h2>See Abouna</h2><p class="lead">Information about other screenings coming soon.</p></div>
   </div></section>
   <div id="map"></div>
-  <section style="padding-top:var(--s2);border:0"><div class="wrap">
-    <div class="month">November 2026</div>
-    <div class="show"><div class="day"><b>6</b><span>Fri</span></div><div class="what"><b>New York, NY</b><span>Beacon of Faith Conference · venue to be announced · 7:00 pm · premiere, Q&amp;A with the director</span></div><a class="btn" href="../signup">Sign up</a></div>
-    <div class="show"><div class="day"><b>?</b><span>TBA</span></div><div class="what"><b>Bay Area, CA</b><span>Date and venue to be announced · church screening</span></div><a class="btn ghost" href="../signup">Tell me when</a></div>
-    <div class="month">January 2027</div>
-    <div class="show"><div class="day"><b>17</b><span>Sun</span></div><div class="what"><b>Jersey City, NJ</b><span>St. Mark Coptic Orthodox Church · parish hall · 6:30 pm · Q&amp;A · $10 at the door</span><div class="ex">Example</div></div><a class="btn" href="../signup">Sign up</a></div>
-    <div class="month">February 2027</div>
-    <div class="show"><div class="day"><b>7</b><span>Sat</span></div><div class="what"><b>Boston, MA</b><span>St. Mary Coptic Orthodox Church · 7:00 pm · Q&amp;A · free</span><div class="ex">Example</div></div><a class="btn" href="../signup">Sign up</a></div>
-    <div class="show"><div class="day"><b>21</b><span>Sat</span></div><div class="what"><b>Sedona, AZ</b><span>Sedona International Film Festival · Mary D. Fisher Theatre · tickets from the festival</span><div class="ex">Example</div></div><a class="btn ghost" href="https://sedonafilmfestival.com" target="_blank" rel="noopener">Festival site</a></div>
+  <section style="padding-top:var(--s4);border:0"><div class="wrap">
+    <div class="show"><div class="day"><b>6</b><span>Nov</span></div><div class="what"><b>New York, NY</b><span>Beacon of Faith Conference · Venue to be announced · Q&amp;A with director</span></div><a class="btn ghost" href="../signup">Stay Updated</a></div>
+    <div class="show"><div class="day"><b>?</b><span>TBA</span></div><div class="what"><b>Bay Area, CA</b><span>Date TBA · To be announced</span></div><a class="btn ghost" href="../signup">Stay Updated</a></div>
   </div></section>
   <section id="request"><div class="wrap">
-    <div class="head"><p class="label">Host one</p><h2>Bring Abouna to your church</h2><p class="lead">A screening and a Q&amp;A with the director. You need a hall with a good screen and sound, or a theater nearby. Andrew writes back within a week.</p></div>
+    <div class="head"><h2>Request a Screening</h2></div>
     <div class="request"><form onsubmit="return false">
-      <label>Church <input type="text"></label>
+      <label>Church name <input type="text"></label>
       <label>City <input type="text"></label>
-      <label>Your name <input type="text"></label>
+      <label>Contact name <input type="text"></label>
       <label>Email <input type="email"></label>
-      <label class="full">Where would you show it? <select><option>Our hall, with an established AV setup</option><option>Our hall, and we're working on AV</option><option>A theater nearby</option><option>Somewhere else</option></select></label>
-      <label>Preferred months <input type="text" placeholder="January, February"></label>
-      <label>How many people? <input type="text" placeholder="About 80"></label>
-      <label class="full"><button class="btn" type="submit" style="border:0;cursor:pointer">Request a screening</button></label>
+      <label class="full">Have you hosted a film screening before? <select><option>Yes</option><option>No</option></select></label>
+      <label class="full">Where would you show it? <select><option>Our hall, with an established AV setup</option><option>Our hall, and we're working on the AV setup</option><option>A theater nearby</option><option>Other</option></select></label>
+      <label>Preferred months <input type="text"></label>
+      <label>How large is your church? <input type="text"></label>
+      <label class="full"><button class="btn" type="submit" style="border:0;cursor:pointer">Request a Screening</button></label>
     </form></div>
   </div></section>
-  <footer><div class="wrap"><p>© 2026 Abouna. Created by Andrew Ishak.</p></div></footer>
+  <footer><div class="wrap"><p>© 2026 Abouna. Created by Andrew Ishak. All rights reserved.</p></div></footer>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -272,12 +276,8 @@
     map = L.map('map', { scrollWheelZoom: false }).setView([39.5, -98], 4);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors', maxZoom: 18 }).addTo(map);
     const gold = { radius: 10, color: '#d9c08f', fillColor: '#d9c08f', fillOpacity: 0.95, weight: 2 };
-    const dim = { radius: 8, color: '#e2d9cb', fillColor: '#e2d9cb', fillOpacity: 0.5, weight: 1 };
-    L.circleMarker([40.7549, -73.984], gold).addTo(map).bindPopup('<b>New York</b><br>Nov 6 · Beacon of Faith Conference');
-    L.circleMarker([37.3382, -121.8863], gold).addTo(map).bindPopup('<b>Bay Area</b><br>To be announced');
-    L.circleMarker([40.7178, -74.0431], dim).addTo(map).bindPopup('<b>Jersey City</b> (example)<br>Jan 17');
-    L.circleMarker([42.3601, -71.0589], dim).addTo(map).bindPopup('<b>Boston</b> (example)<br>Feb 7');
-    L.circleMarker([34.8697, -111.761], dim).addTo(map).bindPopup('<b>Sedona</b> (example)<br>Feb 21');
+    L.circleMarker([40.7549, -73.984], gold).addTo(map).bindPopup('<b>New York, NY</b><br>Beacon of Faith Conference');
+    L.circleMarker([37.3382, -121.8863], gold).addTo(map).bindPopup('<b>Bay Area, CA</b><br>To be announced');
     setTimeout(() => map.invalidateSize(), 50);
   };
 </script>

@@ -3,43 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Abouna redesign, three options</title>
+<title>ABOUNA — design</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="../favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root { --page: #fafaf9; --card: #fff; --ink: #1c1917; --ink2: #57534e; --line: #e3ded8; --accent: #0f766e; }
+  :root { --page: #1c1917; --card: #292524; --ink: #fafaf9; --ink2: #d6d3d1; --line: #44403c; }
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--page); color: var(--ink); font-family: Outfit, -apple-system, sans-serif; font-size: 17px; line-height: 1.5; font-weight: 300; padding: 24px 16px 80px; }
-  main { max-width: 640px; margin: 0 auto; }
-  h1 { font-size: 32px; font-weight: 500; letter-spacing: -0.02em; margin: 0 0 8px; line-height: 1.1; }
-  .lead { color: var(--ink2); margin: 0 0 24px; }
-  .opt { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; margin-bottom: 12px; color: inherit; text-decoration: none; }
-  .opt b { display: block; font-size: 24px; font-weight: 500; margin-bottom: 4px; }
-  .opt span { color: var(--ink2); }
-  .opt .go { display: block; color: var(--accent); font-weight: 500; margin-top: 8px; font-size: 16px; }
-  .note { font-size: 15px; color: var(--ink2); margin-top: 24px; }
-  ul { padding-left: 20px; color: var(--ink2); }
-  li { margin-bottom: 6px; }
+  body { margin: 0; background: var(--page); color: var(--ink); font-family: Outfit, -apple-system, sans-serif; font-size: 17px; line-height: 1.5; padding: 24px 16px 80px; }
+  main { max-width: 640px; margin: 0 auto; display: grid; gap: 12px; }
+  a.opt { display: block; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; color: inherit; text-decoration: none; }
+  a.opt b { display: block; font-size: 24px; font-weight: 500; }
+  a.opt span { color: var(--ink2); font-size: 15px; }
 </style>
 </head>
 <body>
 <main>
-  <h1>Three ways watchabouna.com could look</h1>
-  <p class="lead">Each one is a working page: the real video, the real stills, the real words, at phone and laptop size. Every option has a Home and a Screenings page; the bar at the top switches between them and between options. Nothing here is live on the site.</p>
-
-  <a class="opt" href="/design/a.html#home"><b>A · Cathedral</b><span>The brand you have, done right. Dark, gold, the serif, the video filling the screen. Three doors right under the hero: next screening, watch Episode One, cast and crew. Every word at least 17px.</span><span class="go">Open A →</span></a>
-  <a class="opt" href="/design/b.html#home"><b>B · Playbill</b><span>A program you could hold. Warm paper, one typeface at heavy weights, numbered links like a table of contents, the video in a letterboxed band. The screenings page reads like a season schedule.</span><span class="go">Open B →</span></a>
-  <a class="opt" href="/design/c.html#home"><b>C · Marquee</b><span>A poster you walk past. Tall condensed type, the film's green as full-width bands, the Episode Two poster in the hero beside the video, and a four-button bar that stays on screen on a phone. Screenings as ticket stubs under a full-bleed map.</span><span class="go">Open C →</span></a>
-
-  <p class="note"><a href="/design/elements.html">The elements of Cathedral, each on its own, with sizes.</a></p>
-  <p class="note">What is the same in all three: the video stays; the three easy links sit right under the hero; the screenings page is a map, then the list, then Request a screening; no text under 15px, most of it 17 to 20. Screenings marked "example" are made up to show the shape. Pick one, or name the pieces you want from each, on the tracker (question 75).</p>
-  <ul>
-    <li>Fonts: A keeps Cormorant Garamond for titles. B is Outfit only. C uses Bebas Neue for titles.</li>
-    <li>Maps use the same free tiles and library as the vacation planner.</li>
-    <li>The map pins and the list rows would come from the screenings database once built, so adding a screening in admin puts it on both.</li>
-  </ul>
+  <a class="opt" href="/design/a.html#home"><b>A · Cathedral</b><span>a.html</span></a>
+  <a class="opt" href="/design/ideas.html"><b>Cathedral · ideas</b><span>ideas.html</span></a>
+  <a class="opt" href="/design/b.html#home"><b>B · Playbill</b><span>b.html</span></a>
+  <a class="opt" href="/design/c.html#home"><b>C · Marquee</b><span>c.html</span></a>
 </main>
 </body>
 </html>

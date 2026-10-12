@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ABOUNA — ideas</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #0a0908; --tile: #15120f; --ink: #f6f1e8; --ink2: #e2d9cb; --gold: #d9c08f; --gold-ink: #0a0908; --line: rgba(217,192,143,0.28);
+    --serif: 'Cormorant Garamond', Georgia, serif; --sans: 'Outfit', -apple-system, sans-serif;
+    --s1: 8px; --s2: 16px; --s3: 24px; --s4: 40px; --s5: 96px; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 400; font-size: 19px; line-height: 1.55; }
+  img { max-width: 100%; display: block; }
+  a { color: var(--gold); }
+  p { margin: 0; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 var(--s3); }
+  .top { position: sticky; top: 0; z-index: 10; background: #1c1917; color: #f6f2ec; font-size: 13px; letter-spacing: 0.04em; padding: 10px 16px; display: flex; gap: 14px; overflow-x: auto; white-space: nowrap; }
+  .top a { color: #d6d3d1; text-decoration: none; }
+  .idea { padding: var(--s4) 0; }
+  .idea + .idea { border-top: 1px solid var(--line); }
+  .tag { display: inline-block; font-family: ui-monospace, Menlo, monospace; font-size: 13px; color: #a79c92; background: #1c1917; padding: 4px 10px; border-radius: 999px; margin-bottom: var(--s2); }
+  .part { padding: var(--s5) 0 var(--s2); }
+  .part h2 { font-family: ui-monospace, Menlo, monospace; font-size: 15px; letter-spacing: 0.2em; text-transform: uppercase; color: #a79c92; font-weight: 400; margin: 0; }
+
+  .label { font-size: 15px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+  .h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(44px, 6vw, 68px); line-height: 1; margin: 0; }
+  .lead { font-size: 21px; color: var(--ink2); max-width: 60ch; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 56px; padding: 0 28px; border-radius: 6px; background: var(--gold); color: var(--gold-ink); font-weight: 600; font-size: 17px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; }
+  .btn.ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
+
+  /* heroes */
+  .hero { position: relative; min-height: 72vh; display: grid; overflow: hidden; border-radius: 6px; }
+  .hero video, .hero img.bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.55); }
+  .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,9,8,0.05) 30%, rgba(10,9,8,0.96) 100%); }
+  .hero .in { position: relative; z-index: 1; padding: var(--s4); display: grid; gap: var(--s2); align-self: end; }
+  .hero h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(88px, 18vw, 200px); line-height: 0.9; letter-spacing: 0.06em; margin: 0; }
+  .hero .sub { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: clamp(26px, 3.4vw, 38px); line-height: 1.2; }
+  .hero.center .in { align-self: center; justify-items: center; text-align: center; }
+  .hero.center::after { background: radial-gradient(ellipse at center, rgba(10,9,8,0.3), rgba(10,9,8,0.9) 90%); }
+  .hero.center h1 { font-size: clamp(96px, 22vw, 240px); }
+  .hero.split .in { grid-template-columns: 1fr auto; align-items: end; align-self: end; }
+  .hero.split .poster { width: min(42vw, 300px); border: 1px solid var(--line); box-shadow: 0 24px 60px rgba(0,0,0,0.6); border-radius: 4px; }
+  .hero.split h1 { font-size: clamp(64px, 12vw, 140px); }
+  @media (max-width: 640px) { .hero.split .in { grid-template-columns: 1fr; } .hero.split .poster { width: 180px; } }
+  .hero.quiet::after { background: linear-gradient(180deg, rgba(10,9,8,0.1), rgba(10,9,8,0.7)); }
+  .hero.quiet .in { align-self: start; }
+  .hero.quiet h1 { font-size: clamp(56px, 9vw, 110px); letter-spacing: 0.2em; }
+  .hero.quiet .date { font-family: var(--serif); font-size: clamp(32px, 6vw, 72px); font-weight: 600; line-height: 1; align-self: end; margin-top: auto; }
+
+  /* doors */
+  .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s2); }
+  .tile { display: grid; gap: var(--s1); align-content: end; min-height: 220px; padding: var(--s3); background: var(--tile); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); text-decoration: none; }
+  .tile .big { font-family: var(--serif); font-size: 40px; font-weight: 600; line-height: 1; }
+  .tile .line { color: var(--ink2); font-size: 18px; }
+  .tile .go { color: var(--gold); font-size: 16px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; }
+  .tile.pic { background-size: cover; background-position: center; position: relative; overflow: hidden; min-height: 300px; }
+  .tile.pic::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,9,8,0.1), rgba(10,9,8,0.92)); }
+  .tile.pic > * { position: relative; }
+  @media (max-width: 760px) { .tiles { grid-template-columns: 1fr; } .tile { min-height: 0; } .tile.pic { min-height: 200px; } }
+  .bigl { display: grid; }
+  .bigl a { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: var(--s2); padding: var(--s3) 0; border-top: 1px solid var(--line); color: var(--ink); text-decoration: none; }
+  .bigl a:last-child { border-bottom: 1px solid var(--line); }
+  .bigl .big { font-family: var(--serif); font-size: clamp(40px, 7vw, 72px); font-weight: 600; line-height: 1; }
+  .bigl .arrow { color: var(--gold); font-family: var(--serif); font-size: 40px; }
+  .bigl .line { grid-column: 1 / -1; color: var(--ink2); font-size: 18px; margin-top: -8px; }
+  .wide a { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: var(--s2); padding: var(--s3); background: var(--tile); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); text-decoration: none; margin-bottom: var(--s2); }
+  .wide .big { font-family: var(--serif); font-size: 36px; font-weight: 600; line-height: 1; }
+  .wide .line { color: var(--ink2); font-size: 18px; display: block; margin-top: 4px; }
+
+  /* nav */
+  .nav { background: rgba(10,9,8,0.9); border: 1px solid var(--line); border-radius: 6px; }
+  .nav .in { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s1); min-height: 64px; padding: 0 var(--s3); }
+  .nav .word { font-family: var(--serif); font-size: 26px; font-weight: 600; letter-spacing: 0.18em; color: var(--ink); text-decoration: none; margin-right: auto; }
+  .nav a.l { color: var(--ink); text-decoration: none; font-size: 17px; font-weight: 500; padding: 10px 12px; min-height: 44px; display: inline-flex; align-items: center; }
+  .nav a.l.gold { color: var(--gold); }
+  .dock { display: grid; grid-template-columns: repeat(4, 1fr); background: rgba(10,9,8,0.95); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; max-width: 420px; }
+  .dock a { color: var(--ink); text-decoration: none; text-align: center; padding: 14px 4px; font-family: var(--serif); font-size: 20px; font-weight: 600; min-height: 64px; display: grid; align-content: center; }
+  .dock a.on { color: var(--gold); }
+  .dock a + a { border-left: 1px solid var(--line); }
+  .centernav { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--s3); padding: var(--s3) 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .centernav a { color: var(--ink); text-decoration: none; font-size: 15px; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 600; min-height: 44px; display: inline-flex; align-items: center; }
+  .centernav a.gold { color: var(--gold); }
+
+  /* story */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); }
+  .h3 { font-family: var(--serif); font-size: 34px; font-weight: 600; margin: 0 0 var(--s1); }
+  .story p { font-size: 20px; color: var(--ink2); }
+  .alt { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); align-items: center; }
+  .alt + .alt { margin-top: var(--s4); }
+  .alt img { border-radius: 6px; aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+  .alt.flip img { order: 2; }
+  .pull { font-family: var(--serif); font-size: clamp(30px, 4.2vw, 46px); font-weight: 500; font-style: italic; line-height: 1.15; border-left: 2px solid var(--gold); padding-left: var(--s3); margin: var(--s3) 0; }
+  @media (max-width: 760px) { .two, .alt { grid-template-columns: 1fr; } .alt.flip img { order: 0; } }
+
+  /* stills */
+  .strip { display: flex; gap: var(--s2); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: var(--s2); }
+  .strip img { height: 260px; width: auto; flex: none; scroll-snap-align: start; border-radius: 6px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s2); }
+  .grid3 img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; border-radius: 6px; }
+  .grid3 img:first-child { grid-column: 1 / -1; aspect-ratio: 21 / 9; }
+  @media (max-width: 640px) { .grid3 { grid-template-columns: 1fr 1fr; } .grid3 img:first-child { aspect-ratio: 16 / 9; } }
+  .one { position: relative; border-radius: 6px; overflow: hidden; }
+  .one img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+  .one .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: var(--s3); background: linear-gradient(0deg, rgba(10,9,8,0.9), transparent); }
+  .one .cap .h2 { font-size: clamp(36px, 5vw, 56px); }
+
+  /* cast */
+  .rows { border-top: 1px solid var(--line); }
+  .row { display: grid; grid-template-columns: 1fr auto; gap: var(--s2); align-items: baseline; padding: var(--s2) 0; border-bottom: 1px solid var(--line); }
+  .row b { font-size: 22px; font-weight: 500; }
+  .row span { color: var(--ink2); font-size: 18px; text-align: right; }
+  @media (max-width: 760px) { .row { grid-template-columns: 1fr; gap: 2px; } .row span { text-align: left; } }
+  .names { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--s3) var(--s4); }
+  .names b { display: block; font-family: var(--serif); font-size: 34px; font-weight: 600; line-height: 1; }
+  .names span { color: var(--ink2); font-size: 18px; }
+  .credits { font-family: var(--serif); text-align: center; display: grid; gap: var(--s1); }
+  .credits .r { font-size: 18px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); font-family: var(--sans); font-weight: 600; font-size: 15px; margin-top: var(--s2); }
+  .credits .n { font-size: 32px; font-weight: 600; line-height: 1.1; }
+
+  /* screenings */
+  .map { height: 320px; background: #141210; border: 1px solid var(--line); border-radius: 6px; display: grid; place-items: center; color: var(--ink2); font-size: 15px; letter-spacing: 0.2em; text-transform: uppercase; }
+  .show { display: grid; grid-template-columns: 88px 1fr auto; gap: var(--s2); align-items: center; padding: var(--s3) 0; border-top: 1px solid var(--line); }
+  .show:last-child { border-bottom: 1px solid var(--line); }
+  .show .day { text-align: center; line-height: 1; }
+  .show .day b { display: block; font-family: var(--serif); font-size: 52px; font-weight: 600; }
+  .show .day span { font-size: 15px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+  .show .what b { display: block; font-size: 24px; font-weight: 500; line-height: 1.2; }
+  .show .what span { display: block; color: var(--ink2); font-size: 18px; margin-top: 2px; }
+  .show .btn { min-height: 48px; padding: 0 20px; font-size: 16px; }
+  @media (max-width: 640px) { .show { grid-template-columns: 72px 1fr; } .show .btn { grid-column: 2; justify-self: start; } .show .day b { font-size: 44px; } }
+  .side { display: grid; grid-template-columns: 1.1fr 1fr; gap: var(--s4); align-items: start; }
+  .side .map { height: 100%; min-height: 360px; }
+  @media (max-width: 760px) { .side { grid-template-columns: 1fr; } .side .map { min-height: 300px; } }
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); }
+  .card { background: var(--tile); border: 1px solid var(--line); border-radius: 6px; padding: var(--s3); display: grid; gap: var(--s1); }
+  .card .date { font-family: var(--serif); font-size: 44px; font-weight: 600; line-height: 1; }
+  .card .city { font-size: 24px; font-weight: 500; }
+  .card .line { color: var(--ink2); font-size: 18px; }
+  .card .btn { justify-self: start; margin-top: var(--s1); min-height: 48px; font-size: 16px; }
+  @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
+  .poster2 { display: grid; grid-template-columns: 220px 1fr; gap: var(--s4); align-items: start; }
+  .poster2 img { border-radius: 6px; border: 1px solid var(--line); }
+  @media (max-width: 640px) { .poster2 { grid-template-columns: 1fr; } .poster2 img { width: 200px; } }
+</style>
+</head>
+<body>
+<div class="top"><a href="/design/">Options</a><a href="/design/a.html#home">A · Cathedral</a><a href="#hero">Hero</a><a href="#doors">Doors</a><a href="#nav">Nav</a><a href="#story">Story</a><a href="#stills">Stills</a><a href="#cast">Cast</a><a href="#screenings">Screenings</a></div>
+<div class="wrap">
+
+  <div class="part" id="hero"><h2>Hero</h2></div>
+  <div class="idea"><span class="tag">Hero 1</span>
+    <div class="hero"><video autoplay muted loop playsinline><source src="../Website_Loop.m4v" type="video/mp4"></video>
+      <div class="in"><p class="label">A Series by Andrew Ishak</p><h1>ABOUNA</h1><p class="sub">The Story Continues</p><p class="label">This Fall</p><p><a class="btn" href="#">See Abouna</a> <a class="btn ghost" href="#">Watch Now</a></p></div></div>
+  </div>
+  <div class="idea"><span class="tag">Hero 2</span>
+    <div class="hero center"><video autoplay muted loop playsinline><source src="../Website_Loop.m4v" type="video/mp4"></video>
+      <div class="in"><p class="sub">The Story Continues</p><h1>ABOUNA</h1><p class="label">This Fall · A Series by Andrew Ishak</p><p><a class="btn" href="#">See Abouna</a></p></div></div>
+  </div>
+  <div class="idea"><span class="tag">Hero 3</span>
+    <div class="hero split"><video autoplay muted loop playsinline><source src="../Website_Loop.m4v" type="video/mp4"></video>
+      <div class="in"><div><p class="label">This Fall</p><h1>ABOUNA</h1><p class="sub">The Story Continues</p><p><a class="btn" href="#">See Abouna</a></p></div><img class="poster" src="../ep2-poster.png" alt=""></div></div>
+  </div>
+  <div class="idea"><span class="tag">Hero 4</span>
+    <div class="hero quiet"><video autoplay muted loop playsinline><source src="../Website_Loop.m4v" type="video/mp4"></video>
+      <div class="in" style="min-height:72vh"><h1>ABOUNA</h1><p class="date">The Story Continues<br>This Fall</p></div></div>
+  </div>
+
+  <div class="part" id="doors"><h2>Doors</h2></div>
+  <div class="idea"><span class="tag">Doors 1</span>
+    <div class="tiles">
+      <a class="tile" href="#"><span class="label">Screenings</span><span class="big">See Abouna</span><span class="line">Information about other screenings coming soon.</span><span class="go">→</span></a>
+      <a class="tile" href="#"><span class="label">Where It Began</span><span class="big">Episode One</span><span class="line">Available now to stream.</span><span class="go">Watch Now →</span></a>
+      <a class="tile" href="#"><span class="label">Behind the Scenes</span><span class="big">Cast and Crew</span><span class="go">→</span></a>
+    </div>
+  </div>
+  <div class="idea"><span class="tag">Doors 2</span>
+    <div class="tiles">
+      <a class="tile pic" href="#" style="background-image:url('../bts-07.jpeg')"><span class="label">Screenings</span><span class="big">See Abouna</span><span class="go">→</span></a>
+      <a class="tile pic" href="#" style="background-image:url('../ep1-hero.png')"><span class="label">Where It Began</span><span class="big">Episode One</span><span class="go">Watch Now →</span></a>
+      <a class="tile pic" href="#" style="background-image:url('../bts-04.jpeg')"><span class="label">Behind the Scenes</span><span class="big">Cast and Crew</span><span class="go">→</span></a>
+    </div>
+  </div>
+  <div class="idea"><span class="tag">Doors 3</span>
+    <div class="bigl">
+      <a href="#"><span class="big">Screenings</span><span class="arrow">→</span><span class="line">Information about other screenings coming soon.</span></a>
+      <a href="#"><span class="big">Episode One</span><span class="arrow">→</span><span class="line">Available now to stream.</span></a>
+      <a href="#"><span class="big">Cast and Crew</span><span class="arrow">→</span></a>
+    </div>
+  </div>
+  <div class="idea"><span class="tag">Doors 4</span>
+    <div class="wide">
+      <a href="#"><span><span class="big">See Abouna</span><span class="line">Information about other screenings coming soon.</span></span><span class="btn">Screenings</span></a>
+      <a href="#"><span><span class="big">Abouna: Episode One</span><span class="line">Available now to stream.</span></span><span class="btn ghost">Watch Now</span></a>
+      <a href="#"><span><span class="big">Cast and Crew</span></span><span class="btn ghost">→</span></a>
+    </div>
+  </div>
+
+  <div class="part" id="nav"><h2>Nav</h2></div>
+  <div class="idea"><span class="tag">Nav 1</span>
+    <nav class="nav"><div class="in"><a class="word" href="#">ABOUNA</a><a class="l" href="#">Story</a><a class="l" href="#">Behind the Scenes</a><a class="l" href="#">Accolades</a><a class="l" href="#">Questions</a><a class="l gold" href="#">Screenings</a></div></nav>
+  </div>
+  <div class="idea"><span class="tag">Nav 2</span>
+    <nav class="dock"><a class="on" href="#">Story</a><a href="#">Screenings</a><a href="#">Watch</a><a href="#">Questions</a></nav>
+  </div>
+  <div class="idea"><span class="tag">Nav 3</span>
+    <nav class="centernav"><a href="#">Story</a><a class="gold" href="#">Screenings</a><a href="#">Watch</a><a href="#">Behind the Scenes</a><a href="#">Accolades</a><a href="#">Questions</a></nav>
+  </div>
+
+  <div class="part" id="story"><h2>Story</h2></div>
+  <div class="idea story"><span class="tag">Story 1</span>
+    <div class="two">
+      <div><p class="h3">Episode One</p><p>In Episode 1, Father Beemen Kolta (called "Abouna" by his congregants) is a newly ordained Coptic Orthodox priest doing his best to serve the people of his church while feeling like he's in over his head. Through conversations with loved ones and memories of his childhood and father, he comes to recognize that the very culture he loves might be getting in the way of his congregants' spiritual growth. By the end, he's made a decision about how to make Christ's message more accessible to everyone.</p></div>
+      <div><p class="h3">Episode Two</p><p>Now, Father Beemen is putting that conviction into action. But when a well-intentioned attempt to modernize his church backfires, he's left scrambling, navigating a high-stakes visit from an authority figure while questioning his own ability to lead. And just when he feels most lost, it takes a good friend to show him what he couldn't see on his own.</p></div>
+    </div>
+  </div>
+  <div class="idea story"><span class="tag">Story 2</span>
+    <div class="alt"><img src="../ep1-hero.png" alt=""><div><p class="label">Where It Began</p><p class="h3">Episode One</p><p>In Episode 1, Father Beemen Kolta (called "Abouna" by his congregants) is a newly ordained Coptic Orthodox priest doing his best to serve the people of his church while feeling like he's in over his head. Through conversations with loved ones and memories of his childhood and father, he comes to recognize that the very culture he loves might be getting in the way of his congregants' spiritual growth.</p></div></div>
+    <div class="alt flip"><img src="../bts-06.jpeg" alt=""><div><p class="label">This Fall</p><p class="h3">Episode Two</p><p>Now, Father Beemen is putting that conviction into action. But when a well-intentioned attempt to modernize his church backfires, he's left scrambling, navigating a high-stakes visit from an authority figure while questioning his own ability to lead. And just when he feels most lost, it takes a good friend to show him what he couldn't see on his own.</p></div></div>
+  </div>
+  <div class="idea story"><span class="tag">Story 3</span>
+    <p class="pull">And just when he feels most lost, it takes a good friend to show him what he couldn't see on his own.</p>
+    <div class="two">
+      <div><p class="h3">Episode One</p><p>In Episode 1, Father Beemen Kolta (called "Abouna" by his congregants) is a newly ordained Coptic Orthodox priest doing his best to serve the people of his church while feeling like he's in over his head.</p></div>
+      <div><p class="h3">Episode Two</p><p>Now, Father Beemen is putting that conviction into action. But when a well-intentioned attempt to modernize his church backfires, he's left scrambling, navigating a high-stakes visit from an authority figure while questioning his own ability to lead.</p></div>
+    </div>
+  </div>
+
+  <div class="part" id="stills"><h2>Behind the Scenes</h2></div>
+  <div class="idea"><span class="tag">Stills 1</span>
+    <div class="strip"><img src="../bts-02.jpeg" alt=""><img src="../bts-03.jpeg" alt=""><img src="../bts-05.jpeg" alt=""><img src="../bts-06.jpeg" alt=""><img src="../bts-07.jpeg" alt=""><img src="../bts-08.jpeg" alt=""></div>
+  </div>
+  <div class="idea"><span class="tag">Stills 2</span>
+    <div class="grid3"><img src="../bts-07.jpeg" alt=""><img src="../bts-02.jpeg" alt=""><img src="../bts-05.jpeg" alt=""><img src="../bts-09.jpeg" alt=""></div>
+  </div>
+  <div class="idea"><span class="tag">Stills 3</span>
+    <div class="one"><img src="../bts-06.jpeg" alt=""><div class="cap"><p class="label">Behind the Scenes</p><p class="h2">Making Abouna</p><p class="lead">A look at the people, places, and moments that brought the story to life.</p></div></div>
+  </div>
+
+  <div class="part" id="cast"><h2>Cast and Crew</h2></div>
+  <div class="idea"><span class="tag">Cast 1</span>
+    <div class="two">
+      <div class="rows"><div class="row"><b>Andrew Ishak</b><span>Beemen</span></div><div class="row"><b>Dina Hanna</b><span>Sarah</span></div><div class="row"><b>Sandra Adly</b><span>Mira</span></div><div class="row"><b>Sandy Elgendy</b><span>Sandy</span></div><div class="row"><b>Mario Yany</b><span>Mario</span></div><div class="row"><b>Samar Wahba</b><span>Tasoni</span></div></div>
+      <div class="rows"><div class="row"><b>Ragaa Ishak</b><span>Mona</span></div><div class="row"><b>Mary Moussa</b><span>Mary</span></div><div class="row"><b>Emad Gad</b><span>Emad</span></div><div class="row"><b>Hanni Fakhoury</b><span>Mark</span></div><div class="row"><b>Andrew Moussa</b><span>Samuel</span></div><div class="row"><b>Heather Ishak</b><span>Script Advisor</span></div></div>
+    </div>
+  </div>
+  <div class="idea"><span class="tag">Cast 2</span>
+    <div class="names">
+      <div><b>Andrew Ishak</b><span>Beemen</span></div><div><b>Dina Hanna</b><span>Sarah</span></div><div><b>Sandra Adly</b><span>Mira</span></div><div><b>Sandy Elgendy</b><span>Sandy</span></div><div><b>Mario Yany</b><span>Mario</span></div><div><b>Samar Wahba</b><span>Tasoni</span></div><div><b>Ragaa Ishak</b><span>Mona</span></div><div><b>Mary Moussa</b><span>Mary</span></div><div><b>Emad Gad</b><span>Emad</span></div><div><b>Hanni Fakhoury</b><span>Mark</span></div><div><b>Andrew Moussa</b><span>Samuel</span></div>
+    </div>
+  </div>
+  <div class="idea"><span class="tag">Cast 3</span>
+    <div class="credits">
+      <span class="r">Beemen</span><span class="n">Andrew Ishak</span>
+      <span class="r">Sarah</span><span class="n">Dina Hanna</span>
+      <span class="r">Mira</span><span class="n">Sandra Adly</span>
+      <span class="r">Sandy</span><span class="n">Sandy Elgendy</span>
+      <span class="r">Mario</span><span class="n">Mario Yany</span>
+      <span class="r">Tasoni</span><span class="n">Samar Wahba</span>
+      <span class="r">Script Advisor</span><span class="n">Heather Ishak · Joe Hanna · Sandra Saad</span>
+      <span class="r">Camera</span><span class="n">Andrew Abdelmalak</span>
+    </div>
+  </div>
+
+  <div class="part" id="screenings"><h2>Screenings</h2></div>
+  <div class="idea"><span class="tag">Screenings 1</span>
+    <div class="map">Map</div>
+    <div style="margin-top:var(--s3)">
+      <div class="show"><div class="day"><b>6</b><span>Nov</span></div><div class="what"><b>New York, NY</b><span>Beacon of Faith Conference · Venue to be announced · Q&amp;A with director</span></div><a class="btn ghost" href="#">Stay Updated</a></div>
+      <div class="show"><div class="day"><b>?</b><span>TBA</span></div><div class="what"><b>Bay Area, CA</b><span>Date TBA · To be announced</span></div><a class="btn ghost" href="#">Stay Updated</a></div>
+    </div>
+  </div>
+  <div class="idea"><span class="tag">Screenings 2</span>
+    <div class="side">
+      <div class="map">Map</div>
+      <div>
+        <div class="show"><div class="day"><b>6</b><span>Nov</span></div><div class="what"><b>New York, NY</b><span>Beacon of Faith Conference · Q&amp;A with director</span></div></div>
+        <div class="show"><div class="day"><b>?</b><span>TBA</span></div><div class="what"><b>Bay Area, CA</b><span>Date TBA</span></div></div>
+        <p style="margin-top:var(--s3)"><a class="btn" href="#">Request a Screening</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="idea"><span class="tag">Screenings 3</span>
+    <div class="cards">
+      <div class="card"><span class="date">November 6</span><span class="city">New York, NY</span><span class="line">Beacon of Faith Conference · Venue to be announced · Q&amp;A with director</span><a class="btn ghost" href="#">Stay Updated</a></div>
+      <div class="card"><span class="date">Date TBA</span><span class="city">Bay Area, CA</span><span class="line">To be announced</span><a class="btn ghost" href="#">Stay Updated</a></div>
+    </div>
+  </div>
+  <div class="idea"><span class="tag">Screenings 4</span>
+    <div class="poster2"><img src="../ep2-poster.png" alt=""><div>
+      <p class="label">Screenings</p><p class="h2" style="margin-bottom:var(--s3)">See Abouna</p>
+      <div class="show"><div class="day"><b>6</b><span>Nov</span></div><div class="what"><b>New York, NY</b><span>Beacon of Faith Conference · Q&amp;A with director</span></div></div>
+      <div class="show"><div class="day"><b>?</b><span>TBA</span></div><div class="what"><b>Bay Area, CA</b><span>Date TBA</span></div></div>
+      <p style="margin-top:var(--s3)"><a class="btn" href="#">Request a Screening</a> <a class="btn ghost" href="#">Stay Updated</a></p>
+    </div></div>
+  </div>
+
+  <div style="height:96px"></div>
+</div>
+</body>
+</html>
