@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Option B, Playbill | Abouna redesign</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="../favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="chrome.css">
+<style>
+  /* B. Playbill: a program you could hold. Warm paper, one face at heavy weights, numbers
+     and rules doing the work. The video sits in a letterboxed band under the masthead. */
+  :root { --paper: #f4efe6; --paper2: #ece5d8; --ink: #1c1917; --ink2: #4f4a44; --ink3: #6b655f; --green: #22402a; --green-ink: #ffffff; --gold: #765620; --line: #d9d0c1; --sans: 'Outfit', -apple-system, sans-serif; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 400; font-size: 19px; line-height: 1.5; }
+  img { max-width: 100%; display: block; }
+  a { color: var(--green); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
+  .rule { border: 0; border-top: 3px solid var(--ink); margin: 0; }
+  .label { font-size: 15px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700; color: var(--green); margin: 0 0 10px; }
+  h2 { font-weight: 800; font-size: clamp(40px, 6.5vw, 72px); line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 20px; }
+  p { margin: 0 0 1em; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 56px; padding: 0 26px; border-radius: 6px; background: var(--green); color: var(--green-ink); font-weight: 700; font-size: 18px; text-decoration: none; }
+  .btn.line { background: transparent; color: var(--ink); border: 2px solid var(--ink); }
+  section { padding: 64px 0; }
+
+  /* masthead */
+  .mast { padding: 28px 0 0; }
+  .mast .top { display: flex; justify-content: space-between; align-items: baseline; font-size: 16px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink2); }
+  .mast h1 { font-weight: 800; font-size: clamp(84px, 19vw, 220px); line-height: 0.85; letter-spacing: -0.05em; margin: 12px 0 8px; }
+  .mast .dek { font-size: clamp(22px, 3vw, 32px); font-weight: 400; line-height: 1.2; max-width: 26ch; margin: 0 0 24px; }
+  .band { position: relative; aspect-ratio: 21 / 9; overflow: hidden; background: var(--ink); }
+  .band video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .band .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 14px 20px; background: linear-gradient(0deg, rgba(0,0,0,0.75), transparent); color: #fff; font-size: 17px; font-weight: 500; }
+  @media (max-width: 640px) { .band { aspect-ratio: 4 / 3; } }
+
+  /* index: the easy links */
+  .index { padding: 0; }
+  .index a { display: grid; grid-template-columns: 64px 1fr auto; gap: 16px; align-items: center; padding: 22px 0; border-bottom: 3px solid var(--ink); color: var(--ink); text-decoration: none; }
+  .index a:first-child { border-top: 3px solid var(--ink); }
+  .index .n { font-weight: 800; font-size: 40px; letter-spacing: -0.03em; color: var(--ink3); }
+  .index .t { font-weight: 800; font-size: clamp(28px, 4.5vw, 44px); line-height: 1; letter-spacing: -0.02em; }
+  .index .s { display: block; font-weight: 400; font-size: 18px; color: var(--ink2); margin-top: 4px; letter-spacing: 0; }
+  .index .arrow { font-size: 36px; font-weight: 300; }
+  @media (max-width: 640px) { .index a { grid-template-columns: 44px 1fr auto; } .index .n { font-size: 28px; } }
+
+  /* story */
+  .story .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .story h3 { font-weight: 800; font-size: 30px; margin: 0 0 8px; letter-spacing: -0.02em; }
+  .story p { font-size: 20px; color: var(--ink2); }
+  @media (max-width: 720px) { .story .cols { grid-template-columns: 1fr; } }
+
+  /* photos as a contact sheet */
+  .sheet { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .sheet img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+  @media (max-width: 720px) { .sheet { grid-template-columns: repeat(2, 1fr); } }
+
+  /* credits as a program */
+  .credits { columns: 2; column-gap: 40px; }
+  .credit { break-inside: avoid; display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 19px; }
+  .credit span:last-child { color: var(--ink2); text-align: right; }
+  @media (max-width: 640px) { .credits { columns: 1; } }
+
+  /* accolades */
+  .awards { display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
+  .award { padding: 14px 0; border-bottom: 1px solid var(--line); display: grid; gap: 2px; }
+  .award b { font-size: 22px; font-weight: 700; }
+  .award span { color: var(--gold); font-weight: 700; font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; }
+  @media (max-width: 640px) { .awards { grid-template-columns: 1fr; } }
+
+  /* faq */
+  details { border-top: 1px solid var(--ink); }
+  details:last-of-type { border-bottom: 1px solid var(--ink); }
+  summary { cursor: pointer; list-style: none; font-weight: 700; font-size: 26px; padding: 18px 0; display: flex; justify-content: space-between; gap: 16px; letter-spacing: -0.01em; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; color: var(--green); }
+  details[open] summary::after { content: "–"; }
+  details p { color: var(--ink2); font-size: 19px; padding-bottom: 18px; max-width: 64ch; }
+
+  .about .row { display: grid; grid-template-columns: 1fr 1.5fr; gap: 36px; align-items: start; }
+  .about p { color: var(--ink2); }
+  @media (max-width: 720px) { .about .row { grid-template-columns: 1fr; } }
+
+  footer { padding: 32px 0 80px; border-top: 3px solid var(--ink); font-size: 17px; color: var(--ink2); }
+  footer a { color: var(--ink); text-decoration: none; margin-right: 18px; font-weight: 500; }
+
+  /* screenings page */
+  .shead { padding: 28px 0 20px; }
+  .shead .next { display: inline-block; background: var(--ink); color: var(--paper); font-weight: 700; font-size: 17px; padding: 8px 14px; border-radius: 6px; margin-bottom: 18px; }
+  .mapframe { border: 3px solid var(--ink); margin: 0 20px; }
+  @media (min-width: 1080px) { .mapframe { margin: 0 auto; max-width: 1000px; } }
+  #map { height: 420px; background: var(--paper2); }
+  @media (max-width: 640px) { #map { height: 320px; } }
+  .leaflet-container { font-family: var(--sans); font-size: 15px; }
+  .leaflet-control-attribution { font-size: 13px !important; }
+  .leaflet-popup-content { font-size: 16px; }
+  .program { padding-top: 32px; }
+  .month { font-weight: 800; font-size: 32px; letter-spacing: -0.02em; margin: 28px 0 0; padding-bottom: 8px; border-bottom: 3px solid var(--ink); }
+  .show { display: grid; grid-template-columns: 110px 1fr auto; gap: 16px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--line); }
+  .show .day { line-height: 1; }
+  .show .day b { display: block; font-weight: 800; font-size: 56px; letter-spacing: -0.04em; }
+  .show .day span { font-size: 15px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink3); }
+  .show .what b { display: block; font-size: 24px; font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; }
+  .show .what span { display: block; color: var(--ink2); font-size: 17px; margin-top: 2px; }
+  .show .meta { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 6px; font-size: 16px; font-weight: 500; }
+  .show .meta .price { color: var(--green); }
+  .show .btn { min-height: 48px; font-size: 17px; }
+  .show.ex .what b::after { content: " (example)"; font-weight: 400; color: var(--ink3); font-size: 16px; }
+  @media (max-width: 640px) { .show { grid-template-columns: 80px 1fr; } .show .btn { grid-column: 2; justify-self: start; } .show .day b { font-size: 44px; } }
+  .request { border: 3px solid var(--ink); padding: 28px; background: var(--paper2); }
+  .request form { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; }
+  .request label { display: grid; gap: 6px; font-size: 15px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink2); }
+  .request input, .request select { font: inherit; font-size: 18px; min-height: 52px; padding: 0 14px; border: 2px solid var(--ink); border-radius: 4px; background: #fff; color: var(--ink); width: 100%; }
+  .request .full { grid-column: 1 / -1; }
+  .request p { grid-column: 1 / -1; margin: 0; font-size: 19px; color: var(--ink2); }
+  @media (max-width: 640px) { .request form { grid-template-columns: 1fr; } .request { padding: 18px; } }
+</style>
+</head>
+<body data-option="b">
+
+<div data-view="home">
+  <header class="mast"><div class="wrap">
+    <div class="top"><span>A series by Andrew Ishak</span><span>Episode Two · Fall 2026</span></div>
+    <h1>ABOUNA</h1>
+    <p class="dek">A newly ordained Coptic priest, in over his head, tries to change his church.</p>
+  </div>
+  <div class="band"><video autoplay muted loop playsinline><source src="../Website_Loop.m4v" type="video/mp4"></video><div class="cap">Episode Two, filmed around the San Francisco Bay Area</div></div>
+  </header>
+
+  <section class="index"><div class="wrap">
+    <a href="#screenings"><span class="n">01</span><span><span class="t">Screenings</span><span class="s">New York on November 6. Then the Bay Area, and churches through March.</span></span><span class="arrow">→</span></a>
+    <a href="#"><span class="n">02</span><span><span class="t">Watch Episode One</span><span class="s">Free to stream, 55 minutes. Where the story starts.</span></span><span class="arrow">→</span></a>
+    <a href="#crew"><span class="n">03</span><span><span class="t">Cast and crew</span><span class="s">Who played whom, and who held the lights.</span></span><span class="arrow">→</span></a>
+    <a href="#story"><span class="n">04</span><span><span class="t">The story</span><span class="s">Both episodes, in two paragraphs each.</span></span><span class="arrow">→</span></a>
+    <a href="../signup"><span class="n">05</span><span><span class="t">Stay updated</span><span class="s">A few emails a year: screenings near you, and the day it streams.</span></span><span class="arrow">→</span></a>
+  </div></section>
+
+  <section class="story" id="story"><div class="wrap">
+    <p class="label">The story</p>
+    <div class="cols">
+      <div><h3>Episode One</h3><p>Father Beemen Kolta, called "Abouna" by his congregants, is a newly ordained Coptic Orthodox priest doing his best to serve the people of his church while feeling like he's in over his head. Through conversations with loved ones and memories of his childhood and father, he comes to recognize that the very culture he loves might be getting in the way of his congregants' spiritual growth.</p></div>
+      <div><h3>Episode Two</h3><p>Now, Father Beemen is putting that conviction into action. But when a well-intentioned attempt to modernize his church backfires, he's left scrambling, navigating a high-stakes visit from an authority figure while questioning his own ability to lead. And just when he feels most lost, it takes a good friend to show him what he couldn't see on his own.</p></div>
+    </div>
+  </div></section>
+
+  <section><div class="wrap">
+    <p class="label">Behind the scenes</p>
+    <h2>Making it</h2>
+    <div class="sheet"><img src="../bts-02.jpeg" alt=""><img src="../bts-03.jpeg" alt=""><img src="../bts-05.jpeg" alt=""><img src="../bts-06.jpeg" alt=""><img src="../bts-07.jpeg" alt=""><img src="../bts-08.jpeg" alt=""><img src="../bts-09.jpeg" alt=""><img src="../bts-11.jpeg" alt=""></div>
+  </div></section>
+
+  <section id="crew"><div class="wrap">
+    <p class="label">Cast and crew</p>
+    <h2>Credits</h2>
+    <div class="credits">
+      <div class="credit"><span>Father Beemen</span><span>Andrew Ishak</span></div>
+      <div class="credit"><span>Sarah</span><span>Dina Hanna</span></div>
+      <div class="credit"><span>Mira</span><span>Sandra Adly</span></div>
+      <div class="credit"><span>Sandy</span><span>Sandy Elgendy</span></div>
+      <div class="credit"><span>Mario</span><span>Mario Yany</span></div>
+      <div class="credit"><span>Tasoni</span><span>Samar Wahba</span></div>
+      <div class="credit"><span>Mona</span><span>Ragaa Ishak</span></div>
+      <div class="credit"><span>Mary</span><span>Mary Moussa</span></div>
+      <div class="credit"><span>Emad</span><span>Emad Gad</span></div>
+      <div class="credit"><span>Mark</span><span>Hanni Fakhoury</span></div>
+      <div class="credit"><span>Samuel</span><span>Andrew Moussa</span></div>
+      <div class="credit"><span>Written, directed, edited</span><span>Andrew Ishak</span></div>
+      <div class="credit"><span>Script advisors</span><span>Heather Ishak, Joe Hanna, Sandra Saad</span></div>
+      <div class="credit"><span>Camera, crew</span><span>Andrew Abdelmalak, Theo Ishak</span></div>
+    </div>
+  </div></section>
+
+  <section><div class="wrap">
+    <p class="label">Episode One</p>
+    <h2>Ten festivals</h2>
+    <div class="awards">
+      <div class="award"><span>Best Feature</span><b>Beacon of Light Coptic Film Festival</b></div>
+      <div class="award"><span>Best Feature</span><b>Mosaic Film Festival</b></div>
+      <div class="award"><span>Best Director · Best Actress</span><b>Atlanta Christian Film Festival</b></div>
+      <div class="award"><span>Third place</span><b>Davis Film Festival</b></div>
+      <div class="award"><span>Official selection</span><b>Great Lakes Christian Film Festival</b></div>
+      <div class="award"><span>Official selection</span><b>Riverside International Film Festival</b></div>
+      <div class="award"><span>Official selection</span><b>Nieves, Faith Fest, Perth, World Culture LA</b></div>
+    </div>
+  </div></section>
+
+  <section><div class="wrap">
+    <p class="label">Questions</p>
+    <h2>About Abouna</h2>
+    <details open><summary>What does "Abouna" mean?</summary><p>"Abouna" is Arabic for "our father." In the Coptic Orthodox tradition, it's the title congregants use when addressing their priest.</p></details>
+    <details><summary>Do I need to watch Episode One first?</summary><p>Episode Two picks up where Episode One left off. You'll get the most out of it by watching them in order, but new viewers will still be able to follow along.</p></details>
+    <details><summary>Where was Abouna filmed?</summary><p>Episode Two was filmed around the San Francisco Bay Area: Oakland, Santa Cruz, Santa Clara, San Jose, and Los Gatos.</p></details>
+    <details><summary>Will there be more episodes?</summary><p>We're taking this one episode at a time, but we're hoping to make more with your continued support.</p></details>
+  </div></section>
+
+  <section class="about"><div class="wrap">
+    <p class="label">From the creator</p>
+    <div class="row">
+      <img src="../creator-photo.png" alt="Andrew Ishak, right, with his brother and two friends.">
+      <div>
+        <p>I grew up in the Coptic churches of Northern California, a religious community defined by family bonds, spirituality, and identity. I always loved making films with my friends, including a mockumentary about an Egyptian boy band called "The Sphinxters."</p>
+        <p>I'm also obsessed with research. I earned a PhD in Organizational Communication at the University of Texas, and I currently serve as a teaching professor at Santa Clara University, where I explore and teach how cultural elements shape the way we communicate.</p>
+        <p><a class="btn line" href="../signup">Stay updated</a></p>
+      </div>
+    </div>
+  </div></section>
+
+  <footer><div class="wrap"><a href="#">Instagram</a><a href="#">YouTube</a><a href="#">Facebook</a><a href="../signup">Mailing list</a><p style="margin-top:14px">© 2026 Abouna. Created by Andrew Ishak.</p></div></footer>
+</div>
+
+<div data-view="screenings" hidden>
+  <header class="mast"><div class="wrap">
+    <div class="top"><a href="#home" style="color:inherit;text-decoration:none">← Abouna</a><span>Episode Two</span></div>
+    <div class="shead"><span class="next">Next: New York, Friday, November 6</span><h2 style="font-size:clamp(48px,9vw,96px)">Screenings</h2><p class="dek" style="margin-bottom:20px">Episode Two with a Q&amp;A after. Sign up so the host knows you're coming.</p></div>
+  </div></header>
+  <div class="mapframe"><div id="map"></div></div>
+  <section class="program"><div class="wrap">
+    <div class="month">November</div>
+    <div class="show"><div class="day"><b>6</b><span>Friday</span></div><div class="what"><b>New York, NY</b><span>Beacon of Faith Conference · venue to be announced · 7:00 pm</span><div class="meta"><span>Premiere</span><span>Q&amp;A</span><span class="price">With conference pass</span></div></div><a class="btn" href="#">Sign up</a></div>
+    <div class="show"><div class="day"><b>—</b><span>TBA</span></div><div class="what"><b>Bay Area, CA</b><span>Date and venue to be announced</span><div class="meta"><span>Church</span></div></div><a class="btn line" href="../signup">Tell me when</a></div>
+    <div class="month">January</div>
+    <div class="show ex"><div class="day"><b>17</b><span>Sunday</span></div><div class="what"><b>Jersey City, NJ</b><span>St. Mark Coptic Orthodox Church · parish hall · 6:30 pm</span><div class="meta"><span>Church</span><span>Q&amp;A</span><span class="price">$10 at the door</span></div></div><a class="btn" href="#">Sign up</a></div>
+    <div class="month">February</div>
+    <div class="show ex"><div class="day"><b>7</b><span>Saturday</span></div><div class="what"><b>Boston, MA</b><span>St. Mary Coptic Orthodox Church · 7:00 pm</span><div class="meta"><span>Church</span><span>Q&amp;A</span><span class="price">Free</span></div></div><a class="btn" href="#">Sign up</a></div>
+    <div class="show ex"><div class="day"><b>21</b><span>Saturday</span></div><div class="what"><b>Sedona, AZ</b><span>Sedona International Film Festival · Mary D. Fisher Theatre</span><div class="meta"><span>Festival</span><span class="price">Tickets from the festival</span></div></div><a class="btn line" href="#">Festival site</a></div>
+  </div></section>
+  <section id="request"><div class="wrap">
+    <p class="label">Host one</p>
+    <h2>Bring Abouna to your church</h2>
+    <div class="request"><form onsubmit="return false">
+      <p>A screening and a Q&amp;A with the director. You need a hall with a good screen and sound, or a theater nearby. Andrew writes back within a week.</p>
+      <label>Church <input type="text"></label>
+      <label>City <input type="text"></label>
+      <label>Your name <input type="text"></label>
+      <label>Email <input type="email"></label>
+      <label class="full">Where would you show it? <select><option>Our hall, with an established AV setup</option><option>Our hall, and we're working on AV</option><option>A theater nearby</option><option>Somewhere else</option></select></label>
+      <label>Preferred months <input type="text" placeholder="January, February"></label>
+      <label>How many people? <input type="text" placeholder="About 80"></label>
+      <label class="full"><button class="btn" type="submit" style="border:0;cursor:pointer">Request a screening</button></label>
+    </form></div>
+  </div></section>
+  <footer><div class="wrap">© 2026 Abouna. Created by Andrew Ishak.</div></footer>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  let map;
+  window.drawMap = function () {
+    if (map || !window.L) return;
+    map = L.map('map', { scrollWheelZoom: false }).setView([39.5, -98], 4);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors', maxZoom: 18 }).addTo(map);
+    const on = { radius: 11, color: '#22402a', fillColor: '#22402a', fillOpacity: 0.95, weight: 2 };
+    const ex = { radius: 9, color: '#6b655f', fillColor: '#6b655f', fillOpacity: 0.6, weight: 1 };
+    L.circleMarker([40.7549, -73.984], on).addTo(map).bindPopup('<b>New York</b><br>Nov 6 · Beacon of Faith Conference');
+    L.circleMarker([37.3382, -121.8863], on).addTo(map).bindPopup('<b>Bay Area</b><br>To be announced');
+    L.circleMarker([40.7178, -74.0431], ex).addTo(map).bindPopup('<b>Jersey City</b> (example)<br>Jan 17');
+    L.circleMarker([42.3601, -71.0589], ex).addTo(map).bindPopup('<b>Boston</b> (example)<br>Feb 7');
+    L.circleMarker([34.8697, -111.761], ex).addTo(map).bindPopup('<b>Sedona</b> (example)<br>Feb 21');
+    setTimeout(() => map.invalidateSize(), 50);
+  };
+</script>
+<script src="chrome.js"></script>
+</body>
+</html>

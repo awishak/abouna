@@ -1,0 +1,7 @@
+/* The mockup bar only. Every size here clears the 13px floor; the bar is dark on every option. */
+#mockbar { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; gap: 6px; padding: 8px 12px; background: #1c1917; color: #f6f2ec; font: 500 13px/1 Outfit, -apple-system, sans-serif; letter-spacing: 0.04em; overflow-x: auto; white-space: nowrap; }
+#mockbar a { color: #d6d3d1; text-decoration: none; padding: 10px 10px; border-radius: 999px; min-height: 36px; display: inline-flex; align-items: center; }
+#mockbar a.on { background: #f6f2ec; color: #1c1917; }
+#mockbar .mb-index { color: #a79c92; }
+#mockbar .mb-gap { flex: 1; }
+#mockbar .mb-page { border: 1px solid #57534e; }
