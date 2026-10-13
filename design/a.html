@@ -63,9 +63,14 @@
   .hero .sub { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: clamp(26px, 3.4vw, 38px); line-height: 1.2; }
   .hero .cta { display: flex; flex-wrap: wrap; gap: var(--s2); }
   .doors { border: 0; padding-top: var(--s3); }
-  .sheet { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); align-items: start; }
-  .sheet img { width: 100%; height: auto; border-radius: 6px; }
-  @media (max-width: 640px) { .sheet { grid-template-columns: 1fr; } }
+  .reel { background: #000; padding: 22px 0; position: relative; }
+  .reel::before, .reel::after { content: ""; position: absolute; left: 0; right: 0; height: 12px; background: repeating-linear-gradient(90deg, transparent 0 14px, #2a2622 14px 30px, transparent 30px 40px); }
+  .reel::before { top: 5px; }
+  .reel::after { bottom: 5px; }
+  .reel .track { display: flex; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 var(--s3); scrollbar-width: none; }
+  .reel .track::-webkit-scrollbar { display: none; }
+  .reel img { height: 300px; width: auto; flex: none; scroll-snap-align: center; }
+  @media (max-width: 760px) { .reel img { height: 210px; } }
   .story p { font-size: 20px; color: var(--ink2); }
   .alt { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); align-items: center; }
   .alt + .alt { margin-top: var(--s4); }
@@ -152,7 +157,7 @@
 
   <section id="bts">
     <div class="wrap"><div class="head"><p class="label">Behind the Scenes</p><h2>Making Abouna</h2><p class="lead">A look at the people, places, and moments that brought the story to life.</p></div></div>
-    <div class="wrap"><div class="sheet"><img src="../bts-02.jpeg" alt=""><img src="../bts-03.jpeg" alt=""><img src="../bts-05.jpeg" alt=""><img src="../bts-06.jpeg" alt=""><img src="../bts-07.jpeg" alt=""><img src="../bts-08.jpeg" alt=""><img src="../bts-09.jpeg" alt=""><img src="../bts-10.jpeg" alt=""></div></div>
+    <div class="reel"><div class="track"><img src="../bts-02.jpeg" alt=""><img src="../bts-03.jpeg" alt=""><img src="../bts-05.jpeg" alt=""><img src="../bts-06.jpeg" alt=""><img src="../bts-07.jpeg" alt=""><img src="../bts-08.jpeg" alt=""><img src="../bts-09.jpeg" alt=""><img src="../bts-10.jpeg" alt=""><img src="../bts-11.jpeg" alt=""><img src="../bts-12.jpeg" alt=""></div></div>
   </section>
 
   <section id="crew"><div class="wrap">
