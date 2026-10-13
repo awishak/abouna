@@ -33,7 +33,7 @@
   .tile .line { color: var(--ink2); font-size: 18px; }
   .tile .go { color: var(--gold); font-size: 16px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; margin-top: var(--s1); }
   .tile.pic { background-size: cover; background-position: center; position: relative; overflow: hidden; min-height: 320px; }
-  .tile.pic::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,9,8,0.1), rgba(10,9,8,0.92)); }
+  .tile.pic::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,9,8,0.25) 0%, rgba(10,9,8,0.55) 45%, rgba(10,9,8,0.95) 100%); }
   .tile.pic > * { position: relative; }
   @media (max-width: 760px) { .tiles { grid-template-columns: 1fr; } .tile { min-height: 0; } .tile.pic { min-height: 220px; } }
   .rows { border-top: 1px solid var(--line); }
@@ -139,9 +139,9 @@
   </section>
 
   <section class="doors"><div class="wrap"><div class="tiles">
-    <a class="tile pic" href="#screenings" style="background-image:url('../bts-07.jpeg')"><span class="label">Screenings</span><span class="big">See Abouna</span><span class="line">Information about other screenings coming soon.</span><span class="go">→</span></a>
-    <a class="tile pic" href="https://www.youtube.com/watch?v=4N2Zf_vJ8cY" target="_blank" rel="noopener" style="background-image:url('../ep1-hero.png')"><span class="label">Where It Began</span><span class="big">Episode One</span><span class="line">Available now to stream.</span><span class="go">Watch Now →</span></a>
-    <a class="tile pic" href="#crew" style="background-image:url('../bts-04.jpeg')"><span class="label">Behind the Scenes</span><span class="big">Cast and Crew</span><span class="go">→</span></a>
+    <a class="tile pic" href="#screenings" style="background-image:url('../bts-07.jpeg')"><span class="big">See Abouna</span><span class="line">Information about other screenings coming soon.</span><span class="go">Screenings →</span></a>
+    <a class="tile pic" href="https://www.youtube.com/watch?v=4N2Zf_vJ8cY" target="_blank" rel="noopener" style="background-image:url('../ep1-hero.png')"><span class="big">Episode One</span><span class="line">Available now to stream.</span><span class="go">Watch Now →</span></a>
+    <a class="tile pic" href="#crew" style="background-image:url('../bts-04.jpeg')"><span class="big">Cast and Crew</span><span class="line">Behind the Scenes</span><span class="go">See pictures →</span></a>
   </div></div></section>
 
   <section class="story" id="story"><div class="wrap">
