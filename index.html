@@ -19,6 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body>
 
@@ -28,7 +29,7 @@
   <a class="l" href="#bts">Behind the Scenes</a>
   <a class="l" href="#accolades">Accolades</a>
   <a class="l" href="#questions">Questions</a>
-  <a class="l gold" href="/screenings">Screenings</a>
+  <a class="l gold" href="#screenings">Screenings</a>
 </div></nav>
 
 <section class="hero">
@@ -37,15 +38,32 @@
     <div><p class="label">A Series by Andrew Ishak</p><h1>ABOUNA</h1></div>
     <div class="lower"><p class="sub">The Story Continues</p>
     <p class="label">This Fall</p>
-    <div class="cta"><a class="btn" href="/screenings">See Abouna</a><a class="btn ghost" href="https://www.youtube.com/watch?v=4N2Zf_vJ8cY" target="_blank" rel="noopener">Watch Now</a></div></div>
+    <div class="cta"><a class="btn" href="#screenings">See Abouna</a><a class="btn ghost" href="https://www.youtube.com/watch?v=4N2Zf_vJ8cY" target="_blank" rel="noopener">Watch Now</a></div></div>
   </div>
 </section>
 
 <section class="doors"><div class="wrap"><div class="tiles">
-  <a class="tile pic" href="/screenings" style="background-image:url('/bts-07.jpeg')"><span class="big">See Abouna</span><span class="line">Coming to a city near you this fall and winter.</span><span class="go">Screenings →</span></a>
+  <a class="tile pic" href="#screenings" style="background-image:url('/bts-07.jpeg')"><span class="big">See Abouna</span><span class="line">Coming to a city near you this fall and winter.</span><span class="go">Screenings →</span></a>
   <a class="tile pic" href="https://www.youtube.com/watch?v=4N2Zf_vJ8cY" target="_blank" rel="noopener" style="background-image:url('/ep1-hero.png')"><span class="big">Episode One</span><span class="line">Available now to stream.</span><span class="go">Watch Now →</span></a>
   <a class="tile pic" href="#bts" style="background-image:url('/bts-04.jpeg')"><span class="big">Cast and Crew</span><span class="line">Behind the Scenes</span><span class="go">See pictures →</span></a>
 </div></div></section>
+
+<section id="screenings"><div class="wrap"><div class="poster2"><img src="/ep2-poster.png" alt=""><div>
+  <div class="head"><p class="label">Screenings</p><h2>See Abouna</h2><p class="lead">Information about other screenings coming soon.</p></div>
+  <div class="show"><div class="day"><b>6</b><span>Nov</span></div><div class="what"><b>New York, NY</b><span>Beacon of Faith Conference · Venue to be announced · Q&amp;A with director</span></div><div class="acts"><a class="btn ghost" href="/signup?screening=New+York%2C+NY">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=New+York%2C+NY&amp;help=1">Help with this screening</a></div></div>
+  <div class="show"><div class="day"><b class="tbd">TBD</b></div><div class="what"><b>Santa Clara, CA</b></div><div class="acts"><a class="btn ghost" href="/signup?screening=Santa+Clara%2C+CA">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=Santa+Clara%2C+CA&amp;help=1">Help with this screening</a></div></div>
+  <div class="show"><div class="day"><b class="tbd">TBD</b></div><div class="what"><b>Orange County, CA</b></div><div class="acts"><a class="btn ghost" href="/signup?screening=Orange+County%2C+CA">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=Orange+County%2C+CA&amp;help=1">Help with this screening</a></div></div>
+  <div class="show"><div class="day"><b class="tbd">TBD</b></div><div class="what"><b>Austin, TX</b></div><div class="acts"><a class="btn ghost" href="/signup?screening=Austin%2C+TX">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=Austin%2C+TX&amp;help=1">Help with this screening</a></div></div>
+  <div class="show"><div class="day"><b class="tbd">TBD</b></div><div class="what"><b>Washington, DC</b></div><div class="acts"><a class="btn ghost" href="/signup?screening=Washington%2C+DC">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=Washington%2C+DC&amp;help=1">Help with this screening</a></div></div>
+  <div class="show"><div class="day"><b class="tbd">TBD</b></div><div class="what"><b>Boston, MA</b></div><div class="acts"><a class="btn ghost" href="/signup?screening=Boston%2C+MA">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=Boston%2C+MA&amp;help=1">Help with this screening</a></div></div>
+  <div class="show"><div class="day"><b class="tbd">TBD</b></div><div class="what"><b>Toronto, ON</b></div><div class="acts"><a class="btn ghost" href="/signup?screening=Toronto%2C+ON">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=Toronto%2C+ON&amp;help=1">Help with this screening</a></div></div>
+  <div class="show"><div class="day"><b class="tbd">TBD</b></div><div class="what"><b>Sacramento, CA</b></div><div class="acts"><a class="btn ghost" href="/signup?screening=Sacramento%2C+CA">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=Sacramento%2C+CA&amp;help=1">Help with this screening</a></div></div>
+  <div class="show"><div class="day"><b class="tbd">TBD</b></div><div class="what"><b>Berkeley, CA</b></div><div class="acts"><a class="btn ghost" href="/signup?screening=Berkeley%2C+CA">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=Berkeley%2C+CA&amp;help=1">Help with this screening</a></div></div>
+  <div class="show"><div class="day"><b class="tbd">TBD</b></div><div class="what"><b>Davis, CA</b></div><div class="acts"><a class="btn ghost" href="/signup?screening=Davis%2C+CA">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=Davis%2C+CA&amp;help=1">Help with this screening</a></div></div>
+  <div class="cta" style="margin-top:var(--s3)"><a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeQ2EcPrbPRz-rezuI9qXZhsGR72A5iyel6qwP5sTvjB9a6fA/viewform" target="_blank" rel="noopener">Request a Screening</a><a class="btn ghost" href="/signup">Stay Updated</a></div>
+</div></div></div>
+<div id="map"></div>
+</section>
 
 <section class="story" id="story"><div class="wrap">
   <div class="head"><p class="label">The Abouna Series</p><h2>The Story Continues</h2></div>
@@ -133,5 +151,26 @@
 
 <footer><div class="wrap"><a href="https://www.instagram.com/andrewishak/" target="_blank" rel="noopener">Instagram</a><a href="https://youtube.com/@andrewishak" target="_blank" rel="noopener">YouTube</a><a href="https://www.facebook.com/andrewishak" target="_blank" rel="noopener">Facebook</a><p>© 2026 Abouna. Created by Andrew Ishak. All rights reserved.</p></div></footer>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  if (window.L) {
+    const map = L.map('map', { scrollWheelZoom: false }).setView([39.5, -98], 4);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors', maxZoom: 18 }).addTo(map);
+    const gold = { radius: 10, color: '#d9c08f', fillColor: '#d9c08f', fillOpacity: 0.95, weight: 2 };
+    const pins = [
+      ['New York, NY', 40.7549, -73.984, 'Nov 6 · Beacon of Faith Conference'],
+      ['Santa Clara, CA', 37.3541, -121.9552, 'Date TBD'],
+      ['Orange County, CA', 33.7175, -117.8311, 'Date TBD'],
+      ['Austin, TX', 30.2672, -97.7431, 'Date TBD'],
+      ['Washington, DC', 38.9072, -77.0369, 'Date TBD'],
+      ['Boston, MA', 42.3601, -71.0589, 'Date TBD'],
+      ['Toronto, ON', 43.6532, -79.3832, 'Date TBD'],
+      ['Sacramento, CA', 38.5816, -121.4944, 'Date TBD'],
+      ['Berkeley, CA', 37.8716, -122.2727, 'Date TBD'],
+      ['Davis, CA', 38.5449, -121.7405, 'Date TBD'],
+    ];
+    for (const [city, lat, lng, line] of pins) L.circleMarker([lat, lng], gold).addTo(map).bindPopup('<b>' + city + '</b><br>' + line);
+  }
+</script>
 </body>
 </html>

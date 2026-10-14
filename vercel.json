@@ -4,13 +4,14 @@
       "source": "/design",
       "destination": "/design/",
       "permanent": false
+    },
+    {
+      "source": "/screenings",
+      "destination": "/#screenings",
+      "permanent": false
     }
   ],
   "rewrites": [
-    {
-      "source": "/screenings",
-      "destination": "/screenings.html"
-    },
     {
       "source": "/signup",
       "destination": "/signup.html"
