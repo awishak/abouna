@@ -48,7 +48,7 @@ h3 { font-family: var(--serif); font-size: 34px; font-weight: 600; margin: 0 0 v
 .hero .wrap { position: relative; z-index: 1; padding-top: var(--s4); padding-bottom: var(--s4); display: grid; gap: var(--s2); align-content: space-between; min-height: 86vh; }
 .hero .lower { display: grid; gap: var(--s2); }
 .hero h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(88px, 18vw, 200px); line-height: 0.9; letter-spacing: 0.06em; margin: 0; }
-.hero .sub { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: clamp(26px, 3.4vw, 38px); line-height: 1.2; }
+.hero .sub { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: clamp(22px, 3.4vw, 38px); line-height: 1.2; white-space: nowrap; }
 .hero .cta { display: flex; flex-wrap: wrap; gap: var(--s2); }
 .doors { border: 0; padding-top: var(--s3); }
 .reel { background: #000; padding: 22px 0; position: relative; }
