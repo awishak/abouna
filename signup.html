@@ -70,7 +70,7 @@
     const city = (q.get('screening') || '').trim().slice(0, 80);
     if (!city) return;
     const help = q.get('help') === '1';
-    document.querySelector('h1').textContent = help ? 'Help with this screening' : 'Notify me about this screening';
+    document.querySelector('h1').textContent = help ? 'Help' : 'Notify me';
     const where = document.querySelector('input[name="MMERGE6"]');
     where.value = (help ? 'Help: ' : 'Screening: ') + city;
     document.querySelector('.fine').insertAdjacentHTML('afterbegin', '<a href="/#screenings">Back to screenings</a>. ');
