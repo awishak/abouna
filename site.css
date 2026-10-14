@@ -89,10 +89,6 @@ footer p { margin-top: var(--s2); }
 .leaflet-popup-tip { background: var(--tile); }
 .leaflet-popup-content { font-size: 16px; line-height: 1.4; }
 .leaflet-control-attribution { font-size: 13px !important; }
-.shead2 { display: grid; grid-template-columns: 1fr 150px; gap: var(--s4); align-items: end; margin-bottom: var(--s3); }
-.shead2 .head { margin-bottom: 0; }
-.shead2 img { border-radius: 6px; border: 1px solid var(--line); }
-@media (max-width: 640px) { .shead2 { grid-template-columns: 1fr; } .shead2 img { width: 120px; } }
 .show { display: grid; grid-template-columns: 110px 1fr auto; gap: var(--s2); align-items: center; padding: 10px 0; border-top: 1px solid var(--line); }
 .show:last-of-type { border-bottom: 1px solid var(--line); }
 .show .day { font-family: var(--serif); font-size: 30px; font-weight: 600; color: var(--gold); line-height: 1; white-space: nowrap; }
@@ -112,3 +108,8 @@ footer p { margin-top: var(--s2); }
 .request input, .request select { font: inherit; font-size: 18px; min-height: 52px; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); width: 100%; }
 .request .full { grid-column: 1 / -1; }
 @media (max-width: 640px) { .request form { grid-template-columns: 1fr; } .request { padding: var(--s3); } }
+.kit { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--s4); }
+.kit a { display: grid; gap: var(--s1); color: var(--ink); text-decoration: none; justify-items: start; }
+.kit img { border-radius: 6px; border: 1px solid var(--line); width: 100%; max-width: 320px; }
+.kit span { font-size: 18px; color: var(--ink2); margin-top: var(--s1); }
+.kit b { color: var(--gold); font-size: 16px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; }
