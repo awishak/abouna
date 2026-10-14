@@ -17,7 +17,7 @@ h3 { font-family: var(--serif); font-size: 34px; font-weight: 600; margin: 0 0 v
 .lead { font-size: 21px; color: var(--ink2); max-width: 60ch; }
 .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s2); }
 .tile { display: grid; gap: var(--s1); align-content: end; min-height: 240px; padding: var(--s3); background: var(--tile); border: 1px solid var(--line); border-radius: 6px; color: var(--ink); text-decoration: none; }
-.tile .big { font-family: var(--serif); font-size: 40px; font-weight: 600; line-height: 1; }
+.tile .big { font-family: Georgia, 'Times New Roman', serif; font-size: 36px; font-weight: 700; line-height: 1.05; }
 .tile .line { color: var(--ink2); font-size: 18px; line-height: 1.4; min-height: calc(18px * 1.4 * 2); }
 .tile .go { color: var(--gold); font-size: 16px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; margin-top: var(--s1); }
 .tile.pic { background-size: cover; background-position: center; position: relative; overflow: hidden; min-height: 320px; }
