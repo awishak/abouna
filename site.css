@@ -43,7 +43,7 @@ h3 { font-family: var(--serif); font-size: 34px; font-weight: 600; margin: 0 0 v
 .nav a.l.gold { color: var(--gold); }
 @media (max-width: 720px) { .nav a.l { font-size: 15px; letter-spacing: 0.16em; padding: 6px 4px; min-height: 40px; } .nav .wrap { gap: 0 var(--s2); padding-top: 4px; padding-bottom: 4px; } }
 .hero { position: relative; min-height: 86vh; display: grid; align-items: stretch; overflow: hidden; padding: 0; border: 0; }
-.hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% calc(50% - 200px); filter: brightness(0.55); }
+.hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; filter: brightness(0.55); }
 .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,9,8,0.05) 30%, rgba(10,9,8,0.96) 100%); }
 .hero .wrap { position: relative; z-index: 1; padding-top: var(--s4); padding-bottom: var(--s4); display: grid; gap: var(--s2); align-content: space-between; min-height: 86vh; }
 .hero .lower { display: grid; gap: var(--s2); }
