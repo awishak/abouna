@@ -8,6 +8,10 @@
   ],
   "rewrites": [
     {
+      "source": "/screenings",
+      "destination": "/screenings.html"
+    },
+    {
       "source": "/signup",
       "destination": "/signup.html"
     },
