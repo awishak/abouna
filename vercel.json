@@ -19,6 +19,14 @@
     {
       "source": "/scholars",
       "destination": "/scholars.html"
+    },
+    {
+      "source": "/rsvp",
+      "destination": "/rsvp.html"
+    },
+    {
+      "source": "/host",
+      "destination": "/host.html"
     }
   ]
 }

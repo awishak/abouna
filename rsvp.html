@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sign up | ABOUNA</title>
+<meta name="description" content="Sign up for a screening of Abouna Episode Two.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site.css">
+<style>
+  /* One screening, one form, on the site's ground. Tokens and the .request form come from site.css. */
+  .page { max-width: 680px; margin: 0 auto; padding: var(--s4) var(--s3) var(--s5); }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(52px, 9vw, 84px); line-height: 0.95; margin: var(--s1) 0 var(--s3); }
+  .meta { display: grid; gap: 4px; margin-bottom: var(--s4); }
+  .meta .day { font-family: var(--serif); font-size: 36px; font-weight: 600; color: var(--gold); line-height: 1.05; }
+  .meta b { font-size: 24px; font-weight: 500; }
+  .meta span { color: var(--ink2); font-size: 18px; max-width: 48ch; }
+  .request .check { grid-column: 1 / -1; display: flex; gap: 12px; align-items: flex-start; text-transform: none; letter-spacing: 0; font-size: 17px; font-weight: 400; color: var(--ink); line-height: 1.4; }
+  .request .check input { width: 22px; height: 22px; min-height: 0; padding: 0; margin: 2px 0 0; accent-color: var(--gold); flex: none; }
+  .request button { grid-column: 1 / -1; border: 0; cursor: pointer; font-family: var(--sans); }
+  .request button:hover { background: #e4cf9f; }
+  .request button:disabled { opacity: 0.6; cursor: default; }
+  .request button:focus-visible, .request input:focus-visible, .request select:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .msg { grid-column: 1 / -1; min-height: 1.5em; color: var(--ink2); font-size: 17px; }
+  .msg.err { color: #f3c2ad; }
+  .done { display: none; }
+  .done h3 { margin-top: var(--s1); }
+  .done .lead { font-size: 20px; }
+  .fine { font-size: 16px; color: var(--ink2); margin-top: var(--s3); max-width: 60ch; }
+  .fine a { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap">
+  <a class="l" href="/">Abouna</a>
+  <a class="l gold" href="/#screenings">Screenings</a>
+</div></nav>
+
+<main class="page">
+  <p class="label">Screening</p>
+  <h1>Sign up</h1>
+  <div class="meta" id="meta"><span>One moment.</span></div>
+
+  <div class="request" id="box">
+    <form id="f" novalidate>
+      <label>First name<input name="first" required autocomplete="given-name" autocapitalize="words"></label>
+      <label>Last name<input name="last" autocomplete="family-name" autocapitalize="words"></label>
+      <label class="full">Email<input type="email" name="email" required autocomplete="email" inputmode="email" placeholder="you@example.com"></label>
+      <label class="full">How many are coming, including you
+        <select name="count"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select>
+      </label>
+      <label class="check"><input type="checkbox" name="list" checked> Also add me to the Abouna mailing list. A few emails a year: screenings, the next episode, the day it streams.</label>
+      <button type="submit" class="btn">Sign up</button>
+      <p class="msg" id="msg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+
+  <div class="request done" id="done" aria-live="polite">
+    <p class="label">You're on the list</p>
+    <h3 id="doneTitle"></h3>
+    <p class="lead" id="doneText"></p>
+    <p class="fine">Your name is on the door. The count helps us pick the room. <a href="/#screenings">Back to screenings</a>.</p>
+  </div>
+
+  <p class="fine" id="foot">Your name and email stay with Abouna and the host of this screening, nobody else. <a href="/#screenings">Back to screenings</a>.</p>
+</main>
+
+<footer><div class="wrap"><a href="https://www.instagram.com/andrewishak/" target="_blank" rel="noopener">Instagram</a><a href="https://youtube.com/@andrewishak" target="_blank" rel="noopener">YouTube</a><a href="https://www.facebook.com/andrewishak" target="_blank" rel="noopener">Facebook</a><p>© 2026 Abouna. Created by Andrew Ishak. All rights reserved.</p></div></footer>
+
+<script>
+  // ?s=<screening id>. The screening's details come from /api/rsvp, the
+  // sign-up goes back to it, and if the box is ticked the same details go to
+  // the Mailchimp list straight from here, the way /signup does.
+  (async function () {
+    const esc = (t) => String(t == null ? '' : t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const q = new URLSearchParams(location.search);
+    const id = (q.get('s') || '').trim();
+    const meta = document.getElementById('meta'), box = document.getElementById('box'), f = document.getElementById('f'), msg = document.getElementById('msg');
+    const done = document.getElementById('done');
+    const button = f.querySelector('button');
+
+    let s = null;
+    try {
+      const r = await fetch('/api/rsvp?s=' + encodeURIComponent(id));
+      if (r.status === 503) {
+        // Sign-ups not switched on yet on the server: fall back to Notify me for that city.
+        const city = { 'ny-2026-11-06': 'New York, NY' }[id] || '';
+        location.replace('/signup' + (city ? '?screening=' + encodeURIComponent(city) : ''));
+        return;
+      }
+      if (r.ok) s = (await r.json()).screening;
+    } catch (e) {}
+    if (!s || !s.open) {
+      meta.innerHTML = '<b>That screening is not taking sign-ups yet.</b><span>Pick one from the list, or tap Notify me on its row.</span>';
+      box.style.display = 'none';
+      return;
+    }
+    document.title = 'Sign up: ' + s.city + ' | ABOUNA';
+    meta.innerHTML = '<div class="day">' + esc(s.when) + '</div><b>' + esc(s.city) + '</b><span>' + esc(s.venue) + (s.note ? ' · ' + esc(s.note) : '') + '</span>';
+
+    f.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const d = Object.fromEntries(new FormData(f));
+      const list = f.list.checked;
+      msg.className = 'msg';
+      msg.textContent = 'Saving.';
+      button.disabled = true;
+      try {
+        const r = await fetch('/api/rsvp', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ s: id, first: d.first, last: d.last, email: d.email, count: d.count, list }) });
+        const j = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(j.error || 'Something went wrong. Try again.');
+        if (list) mailchimp(d);
+        finish(j, d);
+      } catch (err) {
+        msg.className = 'msg err';
+        msg.textContent = err.message;
+        button.disabled = false;
+      }
+    });
+
+    function finish(j, d) {
+      const n = Number(j.count) || 1;
+      document.getElementById('doneTitle').textContent = s.city + ', ' + s.when;
+      document.getElementById('doneText').textContent = (n === 1 ? 'One seat' : n + ' seats') + ' under ' + (d.first + ' ' + (d.last || '')).trim() + '. ' + s.venue + '. You will get the venue and time by email once they are set.';
+      box.style.display = 'none';
+      document.getElementById('foot').style.display = 'none';
+      done.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function mailchimp(d) {
+      const u = new URLSearchParams({ u: 'caee0847b18352e02c6931496', id: 'f3ff251967', f_id: '00ea10e9f0', EMAIL: d.email, MMERGE1: d.first || '', MMERGE2: d.last || '', MMERGE6: 'Screening: ' + s.city, c: 'abounaListDone' });
+      window.abounaListDone = function () {};
+      const sc = document.createElement('script');
+      sc.src = 'https://andrewishak.us12.list-manage.com/subscribe/post-json?' + u.toString();
+      document.body.appendChild(sc);
+    }
+  })();
+</script>
+</body>
+</html>
