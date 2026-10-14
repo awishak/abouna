@@ -123,7 +123,6 @@ footer p { margin-top: var(--s2); }
 .photos img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: center 40%; border-radius: 6px; }
 @media (max-width: 760px) { .sintro { grid-template-columns: 1fr; } }
 @media (max-width: 760px) { .montage { grid-template-columns: repeat(2, 1fr); } }
-.four { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--s1); }
+.four { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s1); }
 .four img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; transition: opacity 0.35s; }
 .four img.fade { opacity: 0; }
-@media (max-width: 760px) { .four { grid-template-columns: repeat(2, 1fr); } }
