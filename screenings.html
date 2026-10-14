@@ -30,8 +30,16 @@
 </div></nav>
 <section class="shead"><div class="wrap"><div class="poster2"><img src="/ep2-poster.png" alt=""><div>
   <div class="head"><p class="label">Screenings</p><h2>See Abouna</h2><p class="lead">Information about other screenings coming soon.</p></div>
-  <div class="show"><div class="day"><b>6</b><span>Nov</span></div><div class="what"><b>New York, NY</b><span>Beacon of Faith Conference · Venue to be announced · Q&amp;A with director</span></div><a class="btn ghost" href="/signup">Stay Updated</a></div>
-  <div class="show"><div class="day"><b>?</b><span>TBA</span></div><div class="what"><b>Bay Area, CA</b><span>Date TBA · To be announced</span></div><a class="btn ghost" href="/signup">Stay Updated</a></div>
+  <div class="show"><div class="day"><b>6</b><span>Nov</span></div><div class="what"><b>New York, NY</b><span>Beacon of Faith Conference · Venue to be announced · Q&amp;A with director</span></div><div class="acts"><a class="btn ghost" href="/signup?screening=New+York%2C+NY">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=New+York%2C+NY&amp;help=1">Help with this screening</a></div></div>
+  <div class="show"><div class="day"><b class="tbd">TBD</b></div><div class="what"><b>Santa Clara, CA</b><span>Date TBD</span></div><div class="acts"><a class="btn ghost" href="/signup?screening=Santa+Clara%2C+CA">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=Santa+Clara%2C+CA&amp;help=1">Help with this screening</a></div></div>
+  <div class="show"><div class="day"><b class="tbd">TBD</b></div><div class="what"><b>Orange County, CA</b><span>Date TBD</span></div><div class="acts"><a class="btn ghost" href="/signup?screening=Orange+County%2C+CA">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=Orange+County%2C+CA&amp;help=1">Help with this screening</a></div></div>
+  <div class="show"><div class="day"><b class="tbd">TBD</b></div><div class="what"><b>Austin, TX</b><span>Date TBD</span></div><div class="acts"><a class="btn ghost" href="/signup?screening=Austin%2C+TX">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=Austin%2C+TX&amp;help=1">Help with this screening</a></div></div>
+  <div class="show"><div class="day"><b class="tbd">TBD</b></div><div class="what"><b>Washington, DC</b><span>Date TBD</span></div><div class="acts"><a class="btn ghost" href="/signup?screening=Washington%2C+DC">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=Washington%2C+DC&amp;help=1">Help with this screening</a></div></div>
+  <div class="show"><div class="day"><b class="tbd">TBD</b></div><div class="what"><b>Boston, MA</b><span>Date TBD</span></div><div class="acts"><a class="btn ghost" href="/signup?screening=Boston%2C+MA">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=Boston%2C+MA&amp;help=1">Help with this screening</a></div></div>
+  <div class="show"><div class="day"><b class="tbd">TBD</b></div><div class="what"><b>Toronto, ON</b><span>Date TBD</span></div><div class="acts"><a class="btn ghost" href="/signup?screening=Toronto%2C+ON">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=Toronto%2C+ON&amp;help=1">Help with this screening</a></div></div>
+  <div class="show"><div class="day"><b class="tbd">TBD</b></div><div class="what"><b>Sacramento, CA</b><span>Date TBD</span></div><div class="acts"><a class="btn ghost" href="/signup?screening=Sacramento%2C+CA">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=Sacramento%2C+CA&amp;help=1">Help with this screening</a></div></div>
+  <div class="show"><div class="day"><b class="tbd">TBD</b></div><div class="what"><b>Berkeley, CA</b><span>Date TBD</span></div><div class="acts"><a class="btn ghost" href="/signup?screening=Berkeley%2C+CA">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=Berkeley%2C+CA&amp;help=1">Help with this screening</a></div></div>
+  <div class="show"><div class="day"><b class="tbd">TBD</b></div><div class="what"><b>Davis, CA</b><span>Date TBD</span></div><div class="acts"><a class="btn ghost" href="/signup?screening=Davis%2C+CA">Notify me about this screening</a><a class="btn ghost" href="/signup?screening=Davis%2C+CA&amp;help=1">Help with this screening</a></div></div>
   <p style="margin-top:var(--s4)"><a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeQ2EcPrbPRz-rezuI9qXZhsGR72A5iyel6qwP5sTvjB9a6fA/viewform" target="_blank" rel="noopener">Request a Screening</a></p>
 </div></div></div></section>
 <div id="map"></div>
@@ -49,8 +57,19 @@ function drawMap() {
   map = L.map('map', { scrollWheelZoom: false }).setView([39.5, -98], 4);
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap contributors', maxZoom: 18 }).addTo(map);
   const gold = { radius: 10, color: '#d9c08f', fillColor: '#d9c08f', fillOpacity: 0.95, weight: 2 };
-  L.circleMarker([40.7549, -73.984], gold).addTo(map).bindPopup('<b>New York, NY</b><br>Beacon of Faith Conference');
-  L.circleMarker([37.3382, -121.8863], gold).addTo(map).bindPopup('<b>Bay Area, CA</b><br>To be announced');
+  const pins = [
+    ['New York, NY', 40.7549, -73.984, 'Nov 6 · Beacon of Faith Conference'],
+    ['Santa Clara, CA', 37.3541, -121.9552, 'Date TBD'],
+    ['Orange County, CA', 33.7175, -117.8311, 'Date TBD'],
+    ['Austin, TX', 30.2672, -97.7431, 'Date TBD'],
+    ['Washington, DC', 38.9072, -77.0369, 'Date TBD'],
+    ['Boston, MA', 42.3601, -71.0589, 'Date TBD'],
+    ['Toronto, ON', 43.6532, -79.3832, 'Date TBD'],
+    ['Sacramento, CA', 38.5816, -121.4944, 'Date TBD'],
+    ['Berkeley, CA', 37.8716, -122.2727, 'Date TBD'],
+    ['Davis, CA', 38.5449, -121.7405, 'Date TBD'],
+  ];
+  for (const [city, lat, lng, line] of pins) L.circleMarker([lat, lng], gold).addTo(map).bindPopup('<b>' + city + '</b><br>' + line);
   setTimeout(() => map.invalidateSize(), 50);
 }
 drawMap();

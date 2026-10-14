@@ -96,8 +96,10 @@ footer p { margin-top: var(--s2); }
 .show .day span { font-size: 15px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
 .show .what b { display: block; font-size: 24px; font-weight: 500; line-height: 1.2; }
 .show .what span { display: block; color: var(--ink2); font-size: 18px; margin-top: 2px; }
-.show .btn { min-height: 48px; padding: 0 20px; font-size: 16px; }
-@media (max-width: 640px) { .show { grid-template-columns: 72px 1fr; } .show .btn { grid-column: 2; justify-self: start; } .show .day b { font-size: 44px; } }
+.show .day b.tbd { font-size: 22px; letter-spacing: 0.1em; padding: 12px 0; }
+.show .acts { display: grid; gap: var(--s1); }
+.show .btn { min-height: 48px; padding: 0 20px; font-size: 15px; white-space: nowrap; }
+@media (max-width: 640px) { .show { grid-template-columns: 72px 1fr; } .show .acts { grid-column: 2; justify-self: start; } .show .btn { white-space: normal; text-align: center; padding: 10px 16px; } .show .day b { font-size: 44px; } }
 .poster2 { display: grid; grid-template-columns: 240px 1fr; gap: var(--s4); align-items: start; }
 .poster2 img { border-radius: 6px; border: 1px solid var(--line); }
 @media (max-width: 640px) { .poster2 { grid-template-columns: 1fr; } .poster2 img { width: 200px; } }

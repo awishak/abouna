@@ -61,5 +61,20 @@
   </form>
   <p class="fine">Mailchimp keeps the list. Every email has an unsubscribe link. <a href="/">Back to the film</a>.</p>
 </main>
+<script>
+  // From a screening row: ?screening=City&help=1. The heading becomes the
+  // button that was pressed, and the city lands in "Where you are" so the
+  // Mailchimp audience shows who asked about which screening and who offered help.
+  (function () {
+    const q = new URLSearchParams(location.search);
+    const city = (q.get('screening') || '').trim().slice(0, 80);
+    if (!city) return;
+    const help = q.get('help') === '1';
+    document.querySelector('h1').textContent = help ? 'Help with this screening' : 'Notify me about this screening';
+    const where = document.querySelector('input[name="MMERGE6"]');
+    where.value = (help ? 'Help: ' : 'Screening: ') + city;
+    document.querySelector('.fine').insertAdjacentHTML('afterbegin', '<a href="/screenings">Back to screenings</a>. ');
+  })();
+</script>
 </body>
 </html>
