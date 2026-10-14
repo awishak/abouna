@@ -113,3 +113,7 @@ footer p { margin-top: var(--s2); }
 .kit img { border-radius: 6px; border: 1px solid var(--line); width: 100%; max-width: 320px; }
 .kit span { font-size: 18px; color: var(--ink2); margin-top: var(--s1); }
 .kit b { color: var(--gold); font-size: 16px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; }
+.photos { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s2); margin-bottom: var(--s4); }
+.photos img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: center 30%; border-radius: 6px; }
+@media (max-width: 640px) { .photos { grid-template-columns: 1fr 1fr; } .photos img:first-child { grid-column: 1 / -1; } }
+.tile.pic { border: 0; }
