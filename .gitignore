@@ -4,3 +4,4 @@ notes/
 .env
 .env.*
 mockups/
+Screenshot *.png
