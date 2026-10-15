@@ -9,6 +9,11 @@
       "source": "/screenings",
       "destination": "/#screenings",
       "permanent": false
+    },
+    {
+      "source": "/slate",
+      "destination": "https://drewi.sh/slate",
+      "permanent": false
     }
   ],
   "rewrites": [
