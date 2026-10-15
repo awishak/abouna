@@ -53,7 +53,7 @@
     <p class="lead">Each screening of Abouna will be followed by a Q&amp;A with the director, unless otherwise noted. Members of all faiths and those outside of a faith community are very welcome. Information about other screenings coming soon.</p>
     <div class="photos"><img src="/screening-01.jpg" alt=""><img src="/screening-02.jpg" alt=""></div>
   </div>
-  <div class="show"><div class="day">Nov 6</div><div class="what"><b>New York, NY</b><span>Beacon of Faith Conference · Venue to be announced · Q&amp;A with director</span></div><div class="acts"><a class="btn ghost" href="/signup?screening=New+York%2C+NY">Notify me</a><a class="btn ghost" href="/signup?screening=New+York%2C+NY&amp;help=1">Help</a><a class="btn ghost" href="/poster-new-york.jpg" download="Abouna Episode Two - New York, November 6.jpg">Poster</a></div></div>
+  <div class="show"><div class="day">Nov 6</div><div class="what"><b>New York, NY</b><span>Beacon of Faith Conference · Venue to be announced · Q&amp;A with director</span></div><div class="acts"><a class="btn ghost" href="/signup?screening=New+York%2C+NY">Notify me</a><a class="btn ghost" href="/signup?screening=New+York%2C+NY&amp;help=1">Help</a><a class="btn ghost" href="/poster-new-york.jpg" download="Abouna Episode Two - New York, November 6.jpg" data-poster="/poster-new-york-web.jpg" data-name="New York, November 6">Poster</a></div></div>
   <div class="show"><div class="day">TBD</div><div class="what"><b>Santa Clara, CA</b></div><div class="acts"><a class="btn ghost" href="/signup?screening=Santa+Clara%2C+CA">Notify me</a><a class="btn ghost" href="/signup?screening=Santa+Clara%2C+CA&amp;help=1">Help</a></div></div>
   <div class="show"><div class="day">TBD</div><div class="what"><b>Washington, DC</b></div><div class="acts"><a class="btn ghost" href="/signup?screening=Washington%2C+DC">Notify me</a><a class="btn ghost" href="/signup?screening=Washington%2C+DC&amp;help=1">Help</a></div></div>
   <div class="show"><div class="day">TBD</div><div class="what"><b>Boston, MA</b></div><div class="acts"><a class="btn ghost" href="/signup?screening=Boston%2C+MA">Notify me</a><a class="btn ghost" href="/signup?screening=Boston%2C+MA&amp;help=1">Help</a></div></div>
@@ -157,12 +157,31 @@
 <section id="press"><div class="wrap">
   <div class="head"><p class="label">Press Kit</p><h2>Posters</h2></div>
   <div class="kit">
-    <a href="/poster-episode-two.jpg" download="Abouna Episode Two poster.jpg"><img src="/poster-episode-two-web.jpg" alt="Abouna Episode Two poster"><span>Episode Two poster</span><b>Download</b></a>
-    <a href="/poster-new-york.jpg" download="Abouna Episode Two - New York, November 6.jpg"><img src="/poster-new-york-web.jpg" alt="Abouna Episode Two, New York, November 6, 2026 poster"><span>New York, November 6</span><b>Download</b></a>
+    <a href="/poster-episode-two.jpg" download="Abouna Episode Two poster.jpg" data-poster="/poster-episode-two-web.jpg" data-name="Episode Two poster"><img src="/poster-episode-two-web.jpg" alt="Abouna Episode Two poster"><span>Episode Two poster</span><b>Download</b></a>
+    <a href="/poster-new-york.jpg" download="Abouna Episode Two - New York, November 6.jpg" data-poster="/poster-new-york-web.jpg" data-name="New York, November 6"><img src="/poster-new-york-web.jpg" alt="Abouna Episode Two, New York, November 6, 2026 poster"><span>New York, November 6</span><b>Download</b></a>
   </div>
 </div></section>
 
 <footer><div class="wrap"><a href="https://www.instagram.com/andrewishak/" target="_blank" rel="noopener">Instagram</a><a href="https://youtube.com/@andrewishak" target="_blank" rel="noopener">YouTube</a><a href="https://www.facebook.com/andrewishak" target="_blank" rel="noopener">Facebook</a><a href="#press">Press Kit</a><p>© 2026 Abouna. Created by Andrew Ishak. All rights reserved.</p></div></footer>
+
+<dialog id="poster" aria-labelledby="posterName">
+  <div class="pwrap">
+    <img id="posterImg" src="" alt="">
+    <div class="pside">
+      <p class="label">Poster</p>
+      <h3 id="posterName"></h3>
+      <div class="pacts">
+        <a class="btn" id="posterDl" href="" download="">Download</a>
+        <button type="button" class="btn ghost" id="posterSend">Send to someone</button>
+        <div class="palt" id="posterAlt" hidden>
+          <a class="btn ghost" id="posterMail" href="">Email</a>
+          <button type="button" class="btn ghost" id="posterCopy">Copy link</button>
+        </div>
+      </div>
+    </div>
+    <button type="button" class="x" id="posterClose" aria-label="Close">&times;</button>
+  </div>
+</dialog>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
@@ -219,6 +238,71 @@
           swap(Math.floor(Math.random() * slots.length), name);
         }, 4000);
       });
+    });
+  })();
+</script>
+<script>
+  // Poster: a click opens a popup with the picture, Download, and Send to
+  // someone. Send uses the phone's share sheet with the file itself when the
+  // browser allows it, the link when it does not, and shows Email and Copy link
+  // where there is no share sheet at all. The link downloads as before if the
+  // popup cannot open.
+  (function () {
+    const dlg = document.getElementById('poster');
+    if (!dlg || typeof dlg.showModal !== 'function') return;
+    const img = document.getElementById('posterImg');
+    const name = document.getElementById('posterName');
+    const dl = document.getElementById('posterDl');
+    const send = document.getElementById('posterSend');
+    const alt = document.getElementById('posterAlt');
+    const mail = document.getElementById('posterMail');
+    const copy = document.getElementById('posterCopy');
+    let cur = null;
+    document.querySelectorAll('a[data-poster]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        cur = { href: a.getAttribute('href'), file: a.getAttribute('download'), web: a.dataset.poster, name: a.dataset.name };
+        cur.url = location.origin + cur.href;
+        img.src = cur.web;
+        img.alt = cur.file.replace(/\.jpg$/, '');
+        name.textContent = cur.name;
+        dl.href = cur.href;
+        dl.download = cur.file;
+        mail.href = 'mailto:?subject=' + encodeURIComponent(cur.file.replace(/\.jpg$/, '')) + '&body=' + encodeURIComponent(cur.url);
+        copy.textContent = 'Copy link';
+        alt.hidden = true;
+        send.hidden = !navigator.share;
+        if (!navigator.share) alt.hidden = false;
+        dlg.showModal();
+      });
+    });
+    document.getElementById('posterClose').addEventListener('click', function () { dlg.close(); });
+    dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+    send.addEventListener('click', async function () {
+      if (!cur) return;
+      const title = cur.file.replace(/\.jpg$/, '');
+      try {
+        let data = { title: title, url: cur.url };
+        try {
+          const blob = await (await fetch(cur.href)).blob();
+          const file = new File([blob], cur.file, { type: 'image/jpeg' });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) data = { title: title, files: [file] };
+        } catch (err) {}
+        await navigator.share(data);
+      } catch (err) {
+        if (err && err.name === 'AbortError') return;
+        alt.hidden = false;
+      }
+    });
+    copy.addEventListener('click', async function () {
+      if (!cur) return;
+      try {
+        await navigator.clipboard.writeText(cur.url);
+        copy.textContent = 'Copied';
+      } catch (err) {
+        alt.hidden = false;
+        copy.textContent = cur.url;
+      }
     });
   })();
 </script>

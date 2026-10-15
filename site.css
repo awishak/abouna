@@ -126,3 +126,16 @@ footer p { margin-top: var(--s2); }
 .four { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s1); }
 .four img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; transition: opacity 0.35s; }
 .four img.fade { opacity: 0; }
+#poster { background: var(--tile); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 0; width: min(92vw, 720px); max-height: 92vh; overflow: auto; }
+#poster::backdrop { background: rgba(10,9,8,0.82); }
+.pwrap { position: relative; display: grid; grid-template-columns: 240px 1fr; gap: var(--s3); padding: var(--s3); }
+.pwrap img { width: 100%; display: block; border-radius: 6px; border: 1px solid var(--line); }
+.pside { display: grid; gap: var(--s2); align-content: start; padding-right: 44px; }
+.pside h3 { margin: 0; }
+.pacts, .palt { display: grid; gap: var(--s1); justify-items: start; }
+.pacts .btn { min-height: 48px; padding: 0 20px; font-size: 15px; letter-spacing: 0.08em; cursor: pointer; font-family: inherit; }
+.x { position: absolute; top: 8px; right: 8px; width: 44px; height: 44px; border: 0; border-radius: 6px; background: none; color: var(--ink2); font-size: 30px; line-height: 1; cursor: pointer; }
+.x:hover { color: var(--ink); }
+@media (max-width: 640px) { .pwrap { grid-template-columns: 1fr; } .pwrap img { max-width: 200px; margin: 0 auto; } .pside { padding-right: 0; } .pacts, .palt { justify-items: stretch; } .pacts .btn { width: 100%; box-sizing: border-box; } }
+#poster [hidden] { display: none !important; }
+@media (max-width: 640px) { .pside h3 { font-size: 28px; } }
