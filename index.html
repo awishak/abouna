@@ -345,8 +345,7 @@
     const esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
     function fallback() {
       const posters = Array.from(document.querySelectorAll('.kit a[data-poster]')).map(function (a) { return { w: a.dataset.poster, f: a.getAttribute('href'), cap: a.dataset.name }; });
-      const syn = document.querySelector('.alt.flip p');
-      return { title: 'Abouna Episode Two', synopsis: syn ? syn.textContent : '', posters: posters, stills: [], bts: [], screenings: [], cast: [], shows: [], links: {}, contact: {} };
+      return { title: 'Abouna Episode Two', synopsis: "Father Beemen Kolta (called \"Abouna\" by his congregants) is a newly ordained Coptic Orthodox priest doing his best to serve the people of his church while feeling like he's in over his head. Through conversations with loved ones and memories of his childhood and father, he comes to recognize that the very culture he loves might be getting in the way of his congregants' spiritual growth. By the end, he's made a decision about how to make Christ's message more accessible to everyone. Now, Father Beemen is putting that conviction into action. But when a well-intentioned attempt to modernize his church backfires, he's left scrambling, navigating a high-stakes visit from an authority figure while questioning his own ability to lead. And just when he feels most lost, it takes a good friend to show him what he couldn't see on his own.", posters: posters, stills: [], bts: [], screenings: [], cast: [], shows: [], links: {}, contact: {} };
     }
     async function load() {
       if (kit) return kit;
