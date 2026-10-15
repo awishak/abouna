@@ -11,12 +11,15 @@ for (const line of readFileSync('/Users/ishak/Projects/encore/.env', 'utf8').spl
 }
 process.env.ABOUNA_ADMIN_CODE = 'tiki-test';
 const { default: rsvp } = await import(ROOT + '/api/rsvp.js');
+const { default: press } = await import(ROOT + '/api/press.js');
+const API = { '/api/rsvp': rsvp, '/api/press': press };
 
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.jpg': 'image/jpeg', '.png': 'image/png', '.ico': 'image/x-icon' };
 
 createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x');
-  if (url.pathname === '/api/rsvp') {
+  if (API[url.pathname]) {
+    const fn = API[url.pathname];
     let raw = '';
     for await (const c of req) raw += c;
     const r = { method: req.method, query: Object.fromEntries(url.searchParams), body: raw, headers: req.headers };
@@ -24,14 +27,16 @@ createServer(async (req, res) => {
       status(c) { res.statusCode = c; return shim; },
       setHeader(k, v) { res.setHeader(k, v); return shim; },
       end(b) { res.end(b); return shim; },
-      send(b) { res.end(b); return shim; }
+      send(b) { res.end(b); return shim; },
+      json(o) { res.setHeader('content-type', 'application/json'); res.end(JSON.stringify(o)); return shim; }
     };
-    try { await rsvp(r, shim); } catch (e) { res.statusCode = 500; res.end(String(e)); }
+    try { await fn(r, shim); } catch (e) { res.statusCode = 500; res.end(String(e)); }
     return;
   }
   let p = url.pathname;
   if (p === '/rsvp') p = '/rsvp.html';
   if (p === '/host') p = '/host.html';
+  if (p === '/press') p = '/index.html';
   if (p === '/') p = '/index.html';
   const f = join(ROOT, p);
   if (!existsSync(f)) { res.statusCode = 404; return res.end('no'); }

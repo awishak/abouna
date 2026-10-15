@@ -32,6 +32,10 @@
     {
       "source": "/host",
       "destination": "/host.html"
+    },
+    {
+      "source": "/press",
+      "destination": "/index.html"
     }
   ]
 }
