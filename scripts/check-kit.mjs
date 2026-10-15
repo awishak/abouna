@@ -31,7 +31,7 @@ const SAMPLE = {
   stills: [{ w: '/ep2-still.jpg', f: '/ep2-still.jpg', cap: 'Episode Two' }, { w: '/ep1-still.jpg', f: '/ep1-still.jpg', cap: '' }],
   bts: [{ w: '/bts-03.jpeg', f: '/bts-03.jpeg', cap: 'The crew on the Santa Cruz pier at sunset' }, { w: '/reel-01.jpg', f: '/reel-01.jpg', cap: '' }, { w: '/reel-02.jpg', f: '/reel-02.jpg', cap: '' }],
   screenings: [],
-  cast: [{ name: 'Andrew Ishak', plays: 'Beemen', pic: '/creator-photo.png' }, { name: 'Dina Hanna', plays: 'Sarah', pic: '' }],
+  cast: [{ name: 'Andrew Ishak', role: 'Cast and crew', pic: '/creator-photo.png' }, { name: 'Dina Hanna', role: 'Cast', pic: '' }],
   creator: { name: 'Andrew Ishak', line: 'Creator, writer, director, editor. Plays Beemen.', pic: '/creator-photo.png' },
   shows: [{ date: '2026-11-06', t: 'New York premiere, Beacon of Faith Conference', where: 'New York' }],
   contact: { name: 'Andrew Ishak', email: '' }
@@ -93,7 +93,7 @@ for (const [w, h, t] of [[390, 844, 'phone'], [1280, 900, 'laptop']]) {
   const dlg2 = page.locator('#kit');
   if (!(await dlg2.evaluate((d) => d.open))) fail(t, '/press did not open the kit');
   const heads = await page.locator('#kit .ksec h4').allTextContents();
-  const want = ['Posters', 'Cast', 'Stills', 'Behind the scenes', 'Screenings', 'The creator', 'Links', 'Contact'];
+  const want = ['Posters', 'Cast and crew', 'Stills', 'Behind the scenes', 'Screenings', 'The creator', 'Links', 'Contact'];
   if (heads.join('|') !== want.join('|')) fail(t, 'sections:', JSON.stringify(heads));
   const tiles = await page.locator('#kit .ktile').count();
   if (tiles !== 7) fail(t, 'published kit has', tiles, 'tiles, want 7');
