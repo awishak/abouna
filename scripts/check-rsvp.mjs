@@ -44,6 +44,7 @@ const SMALL = `Array.from(document.querySelectorAll('body *')).filter((el) => Ar
 
 const admin = await (await fetch(base + '/api/rsvp?all=1&k=tiki-test')).json();
 const hostKey = new URL(admin.screenings[0].host).searchParams.get('k');
+const OPEN = admin.screenings[0].open;
 
 const browser = await chromium.launch({ channel: 'chrome' });
 let bad = 0;
@@ -62,10 +63,20 @@ for (const [w, h, t] of [[390, 844, 'phone'], [1280, 900, 'laptop']]) {
   await page.waitForTimeout(800);
   await page.locator('#screenings .show').first().scrollIntoViewIfNeeded();
   await page.screenshot({ path: join(outdir, 'home-' + t + '.png') });
-  const signup = await page.locator('#screenings a.btn', { hasText: 'Sign up' }).first().getAttribute('href');
-  if (signup !== '/rsvp?s=' + ID) { bad++; console.log(t, 'home Sign up link is', signup); }
+  const signups = await page.locator('#screenings a.btn', { hasText: 'Sign up' }).count();
+  if (OPEN && signups !== 1) { bad++; console.log(t, 'home has', signups, 'Sign up buttons, want 1'); }
+  if (!OPEN && signups !== 0) { bad++; console.log(t, 'home has a Sign up button while sign-ups are closed'); }
 
   await page.goto(base + '/rsvp?s=' + ID);
+  if (!OPEN) {
+    await page.waitForTimeout(500);
+    const closed = await page.locator('#meta').textContent();
+    if (!/not taking sign-ups/.test(closed)) { bad++; console.log(t, 'closed screening text:', closed); }
+    await page.screenshot({ path: join(outdir, 'rsvp-closed-' + t + '.png'), fullPage: true });
+    await design(page, 'rsvp closed ' + t);
+    await ctx.close();
+    continue;
+  }
   await page.waitForSelector('.meta .day');
   await page.screenshot({ path: join(outdir, 'rsvp-' + t + '.png'), fullPage: true });
   await design(page, 'rsvp ' + t);

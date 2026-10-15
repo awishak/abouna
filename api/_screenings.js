@@ -3,6 +3,8 @@
 // saved row, so it never changes once a row exists. Rows on the home page with
 // no date yet stay on Notify me and are not listed here. To open sign-ups for a
 // new screening: add it here, then swap that row's Notify me for a Sign up link.
+// Andrew, 2026-10-14: not ready for sign-ups, Notify me only. `open: false` keeps
+// /rsvp closed until he says go; flip it and swap the button on the row.
 export const SCREENINGS = [
   {
     id: 'ny-2026-11-06',
@@ -11,7 +13,7 @@ export const SCREENINGS = [
     when: 'Friday, November 6',
     venue: 'Beacon of Faith Conference',
     note: 'Venue and time to be announced. Q&A with the director after the film.',
-    open: true
+    open: false
   }
 ];
 
