@@ -53,7 +53,7 @@
     <p class="lead">Each screening of Abouna will be followed by a Q&amp;A with the director, unless otherwise noted. Members of all faiths and those outside of a faith community are very welcome. Information about other screenings coming soon.</p>
     <div class="photos"><img src="/screening-01.jpg" alt=""><img src="/screening-02.jpg" alt=""></div>
   </div>
-  <div class="show"><div class="day">Nov 6</div><div class="what"><b>New York, NY</b><span>Beacon of Faith Conference · Venue to be announced · Q&amp;A with director</span></div><div class="acts"><a class="btn ghost" href="/signup?screening=New+York%2C+NY">Notify me</a><a class="btn ghost" href="/signup?screening=New+York%2C+NY&amp;help=1">Help</a><a class="btn ghost" href="/poster-new-york.jpg" download="Abouna Episode Two - New York, November 6.jpg" data-poster="/poster-new-york-web.jpg" data-name="New York, November 6">Poster</a></div></div>
+  <div class="show"><div class="day">Nov 6</div><div class="what"><b>New York, NY</b><span>Beacon of Faith Conference · Venue to be announced · Q&amp;A with director</span></div><div class="acts"><a class="btn" href="https://www.zeffy.com/en-US/ticketing/bof--2026" target="_blank" rel="noopener" data-tickets>Tickets</a><a class="btn ghost" href="/signup?screening=New+York%2C+NY">Notify me</a><a class="btn ghost" href="/signup?screening=New+York%2C+NY&amp;help=1">Help</a><a class="btn ghost" href="/poster-new-york.jpg" download="Abouna Episode Two - New York, November 6.jpg" data-poster="/poster-new-york-web.jpg" data-name="New York, November 6">Poster</a></div></div>
   <div class="show"><div class="day">TBD</div><div class="what"><b>Santa Clara, CA</b></div><div class="acts"><a class="btn ghost" href="/signup?screening=Santa+Clara%2C+CA">Notify me</a><a class="btn ghost" href="/signup?screening=Santa+Clara%2C+CA&amp;help=1">Help</a></div></div>
   <div class="show"><div class="day">TBD</div><div class="what"><b>Washington, DC</b></div><div class="acts"><a class="btn ghost" href="/signup?screening=Washington%2C+DC">Notify me</a><a class="btn ghost" href="/signup?screening=Washington%2C+DC&amp;help=1">Help</a></div></div>
   <div class="show"><div class="day">TBD</div><div class="what"><b>Boston, MA</b></div><div class="acts"><a class="btn ghost" href="/signup?screening=Boston%2C+MA">Notify me</a><a class="btn ghost" href="/signup?screening=Boston%2C+MA&amp;help=1">Help</a></div></div>
@@ -175,6 +175,16 @@
   </div>
 </dialog>
 
+<dialog id="tickets" aria-labelledby="ticketsTitle">
+  <div class="twrap">
+    <button type="button" class="x" id="ticketsClose" aria-label="Close">&times;</button>
+    <p class="label">New York, November 6</p>
+    <h3 id="ticketsTitle" tabindex="-1" autofocus>Tickets</h3>
+    <p class="tnote">This will take you to a Zeffy page to buy tickets. You can either register for the conference at the top, or scroll down to Film Premiere to buy tickets for the film on Friday night only.</p>
+    <div class="tacts"><a class="btn" href="https://www.zeffy.com/en-US/ticketing/bof--2026" target="_blank" rel="noopener">Go to Zeffy</a><button type="button" class="btn ghost" id="ticketsBack">Not now</button></div>
+  </div>
+</dialog>
+
 <dialog id="poster" aria-labelledby="posterName">
   <div class="pwrap">
     <img id="posterImg" src="" alt="">
@@ -253,6 +263,25 @@
   })();
 </script>
 <script>
+  // Tickets: the button on the Nov 6 row opens a popup that says where the
+  // link goes (Zeffy, the conference registration on top, the Film Premiere
+  // further down) with the link as a button. Where the popup cannot open the
+  // button is a plain link to Zeffy.
+  (function () {
+    const dlg = document.getElementById('tickets');
+    if (!dlg || typeof dlg.showModal !== 'function') return;
+    document.querySelectorAll('a[data-tickets]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        e.preventDefault();
+        if (!dlg.open) dlg.showModal();
+      });
+    });
+    document.getElementById('ticketsClose').addEventListener('click', function () { dlg.close(); });
+    document.getElementById('ticketsBack').addEventListener('click', function () { dlg.close(); });
+    dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+    dlg.querySelector('.tacts a').addEventListener('click', function () { dlg.close(); });
+  })();
+
   // Poster: a click opens a popup with the picture, Download, and Send to
   // someone. Send uses the phone's share sheet with the file itself when the
   // browser allows it, the link when it does not, and shows Email and Copy link

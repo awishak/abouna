@@ -173,3 +173,12 @@ footer p { margin-top: var(--s2); }
 .kcast > div { align-content: start; }
 @media (max-width: 640px) { .kwrap h3 { font-size: 30px; } }
 @media (max-width: 359px) { .hero .sub { white-space: normal; } }
+#tickets { background: var(--tile); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 0; width: min(92vw, 560px); }
+#tickets::backdrop { background: rgba(10,9,8,0.82); }
+.twrap { position: relative; padding: var(--s3); display: grid; gap: var(--s2); }
+.twrap h3 { margin: 0; padding-right: 48px; }
+.twrap h3:focus { outline: none; }
+.tnote { color: var(--ink2); font-size: 19px; max-width: 48ch; }
+.tacts { display: flex; flex-wrap: wrap; gap: var(--s1); }
+.tacts .btn { min-height: 48px; padding: 0 20px; font-size: 15px; letter-spacing: 0.08em; cursor: pointer; font-family: inherit; }
+@media (max-width: 640px) { .twrap { padding: var(--s2); } .twrap h3 { font-size: 30px; } .tacts .btn { flex: 1 1 auto; } }
