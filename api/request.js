@@ -90,5 +90,33 @@ async function post(req, res) {
   });
   const back = r.ok ? await r.json().catch(() => []) : [];
   if (!back[0] || !back[0].data) throw new Error('db write ' + r.status + ' ' + (r.ok ? 'no row back' : (await r.text()).slice(0, 200)));
-  return send(res, 200, { ok: true, id, contact: CONTACT });
+  const mailed = await notify(back[0].data, id);
+  return send(res, 200, { ok: true, id, contact: CONTACT, mailed });
+}
+
+// One plain email to Andrew per request, through Resend (the account fieldtime
+// already uses). RESEND_API_KEY, RESEND_FROM (an address at a domain verified
+// there) and ABOUNA_NOTIFY (where it goes) live in Vercel; with any of them
+// missing the request is still saved and nothing is sent. Reply-to is the
+// person who asked, so replying in Mail answers them.
+async function notify(d, id) {
+  const key = process.env.RESEND_API_KEY, from = process.env.RESEND_FROM, to = process.env.ABOUNA_NOTIFY;
+  if (!key || !from || !to) return false;
+  const line = (label, v) => (v ? label + ': ' + v + '\n' : '');
+  const text = d.church + ', ' + d.city + '\n' + d.name + ' <' + d.email + '>\n\n'
+    + line('Hosted before', d.hosted) + line('Where', d.where) + line('When', d.when) + line('Church size', d.size) + line('Expected', d.expect)
+    + (d.note ? '\n' + d.note + '\n' : '')
+    + '\nAll requests: https://watchabouna.com/host and drewi.sh/slate, Screenings.\n';
+  try {
+    const r = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { authorization: 'Bearer ' + key, 'content-type': 'application/json' },
+      body: JSON.stringify({ from, to: [to], reply_to: d.email, subject: 'Screening request: ' + d.church + ', ' + d.city, text })
+    });
+    if (!r.ok) console.error('resend ' + r.status + ' ' + (await r.text()).slice(0, 200));
+    return r.ok;
+  } catch (e) {
+    console.error(e);
+    return false;
+  }
 }
