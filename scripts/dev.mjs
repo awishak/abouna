@@ -12,7 +12,8 @@ for (const line of readFileSync('/Users/ishak/Projects/encore/.env', 'utf8').spl
 process.env.ABOUNA_ADMIN_CODE = 'tiki-test';
 const { default: rsvp } = await import(ROOT + '/api/rsvp.js');
 const { default: press } = await import(ROOT + '/api/press.js');
-const API = { '/api/rsvp': rsvp, '/api/press': press };
+const { default: request } = await import(ROOT + '/api/request.js');
+const API = { '/api/rsvp': rsvp, '/api/press': press, '/api/request': request };
 
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.jpg': 'image/jpeg', '.png': 'image/png', '.ico': 'image/x-icon' };
 
@@ -36,6 +37,7 @@ createServer(async (req, res) => {
   let p = url.pathname;
   if (p === '/rsvp') p = '/rsvp.html';
   if (p === '/host') p = '/host.html';
+  if (p === '/request') p = '/request.html';
   if (p === '/press') p = '/index.html';
   if (p === '/') p = '/index.html';
   const f = join(ROOT, p);

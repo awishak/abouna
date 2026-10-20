@@ -37,6 +37,13 @@
   .empty { color: var(--ink2); font-size: 19px; }
   .fine { font-size: 16px; color: var(--ink2); margin-top: var(--s4); }
   .fine a { color: var(--gold); }
+  .req { padding: var(--s2) 0; border-top: 1px solid var(--line); font-size: 17px; display: grid; gap: 4px; }
+  .req b { font-size: 22px; font-weight: 500; }
+  .req .city { color: var(--ink2); font-size: 18px; margin-left: 8px; }
+  .req .who { color: var(--ink2); }
+  .req .who a { color: var(--gold); }
+  .req div span { color: var(--ink2); }
+  .req .note { white-space: pre-wrap; margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -57,6 +64,7 @@
     </form>
   </div>
 
+  <div id="reqs"></div>
   <div id="out"></div>
   <p class="msg" id="msg" role="status" aria-live="polite"></p>
 </main>
@@ -99,6 +107,7 @@
       try { sessionStorage.setItem('abouna-host', k); } catch (e) {}
       gate.hidden = true;
       document.getElementById('h1').textContent = 'All sign-ups';
+      requests(k);
       out.innerHTML = j.screenings.map((s) => {
         let h = '<div class="screening">' + metaBlock(s) + seatsBlock(s.seats, s.people.length);
         h += '<label class="hostlink">Host link, for the priest or the organizer. Shows names and the count, no emails.<input readonly value="' + esc(s.host) + '" onfocus="this.select()"></label>';
@@ -108,6 +117,19 @@
       }).join('');
     }
 
+    // Screening requests from watchabouna.com/request, newest first, above the sign-ups.
+    async function requests(k) {
+      const el = document.getElementById('reqs');
+      const r = await fetch('/api/request?k=' + encodeURIComponent(k));
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) return;
+      const list = j.requests || [];
+      const line = (label, v) => v ? '<div><span>' + label + '</span> ' + esc(v) + '</div>' : '';
+      el.innerHTML = '<div class="screening"><div class="meta"><div class="day">Screening requests</div><span>' + (list.length ? list.length + (list.length === 1 ? ' request' : ' requests') + ' from watchabouna.com/request' : 'None yet. The address to send people is watchabouna.com/request.') + '</span></div>'
+        + list.map((q) => '<div class="req"><b>' + esc(q.church) + '</b> <span class="city">' + esc(q.city) + '</span><div class="who">' + esc(q.name) + ' · <a href="mailto:' + esc(q.email) + '">' + esc(q.email) + '</a> · ' + esc(when(q.at)) + '</div>'
+          + line('Hosted before:', q.hosted) + line('Where:', q.where) + line('When:', q.when) + line('Church size:', q.size) + line('Expected:', q.expect) + (q.note ? '<div class="note">' + esc(q.note) + '</div>' : '') + '</div>').join('')
+        + '</div>';
+    }
     async function run() {
       msg.className = 'msg';
       msg.textContent = '';
