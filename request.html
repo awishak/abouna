@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Request a screening | ABOUNA</title>
-<meta name="description" content="Bring Abouna Episode Two to your church or group, with a Q&A after the film.">
+<meta name="description" content="Would you like the second episode of Abouna screened for your church or organization? Screenings are followed by a Q&A with the creator of Abouna, Andrew Ishak.">
 <meta property="og:title" content="Request a screening of Abouna">
-<meta property="og:description" content="Bring Abouna Episode Two to your church or group, with a Q&A after the film.">
+<meta property="og:description" content="Would you like the second episode of Abouna screened for your church or organization? Screenings are followed by a Q&A with the creator of Abouna, Andrew Ishak.">
 <meta property="og:image" content="https://www.watchabouna.com/og-image.png">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -19,7 +19,9 @@
      A/V, anything else. Posts to /api/request; nothing leaves the site. */
   .page { max-width: 720px; margin: 0 auto; padding: var(--s4) var(--s3) var(--s5); }
   h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(52px, 9vw, 84px); line-height: 0.95; margin: var(--s1) 0 var(--s2); }
-  .lead { margin-bottom: var(--s4); }
+  .lead { margin-bottom: var(--s3); }
+  .pics { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); margin-bottom: var(--s4); }
+  .pics img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 6px; border: 1px solid var(--line); display: block; }
   .request textarea { font: inherit; font-size: 18px; min-height: 120px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); width: 100%; resize: vertical; }
   .request label.q { text-transform: none; letter-spacing: 0; font-size: 18px; font-weight: 400; color: var(--ink); line-height: 1.4; }
   .request button { grid-column: 1 / -1; border: 0; cursor: pointer; font-family: var(--sans); }
@@ -44,7 +46,8 @@
 <main class="page">
   <p class="label">Church screening tour</p>
   <h1>Request a screening</h1>
-  <p class="lead">Abouna comes to your church or group: the film, then a Q&amp;A with the director. Tell us where and when, and Andrew will write back.</p>
+  <p class="lead">Would you like the second episode of Abouna to be screened for your church or organization? Fill out the form below. Screenings will be followed by a Q&amp;A with the creator of Abouna, Andrew Ishak.</p>
+  <div class="pics"><img src="/screening-01.jpg" alt="The room at an Abouna screening" loading="lazy"><img src="/screening-03.jpg" alt="The crowd after an Abouna screening" loading="lazy"></div>
   <div class="request" id="box">
     <form id="f" novalidate>
       <label>First name<input name="first" required autocomplete="given-name" autocapitalize="words"></label>
@@ -53,9 +56,9 @@
       <label>Email<input type="email" name="email" required autocomplete="email" inputmode="email" placeholder="you@example.com"></label>
       <label class="full">Church or group<input name="church" required autocomplete="organization" autocapitalize="words"></label>
       <label class="full">City and state<input name="city" required autocomplete="address-level2" placeholder="Boston, MA"></label>
-      <label class="full q">Please tell me about some preferred dates. You can also provide days of the week that work best.<textarea name="dates" rows="2"></textarea></label>
+      <label class="full q">Please tell me about some preferred dates. You can also provide days of the week that work best. It's often helpful to think about days of the week when you already have an established meeting time.<textarea name="dates" rows="2"></textarea></label>
       <label class="full q">Can you describe the size of your church, and/or what you predict for attendance?<textarea name="size" rows="2"></textarea></label>
-      <label class="full q">Is there an A/V setup that would work?<textarea name="av" rows="2"></textarea></label>
+      <label class="full q">Can you tell me what you know about your A/V setup, or how you would like to show the film?<textarea name="av" rows="2"></textarea></label>
       <label class="full q">Anything else?<textarea name="note" rows="4"></textarea></label>
       <div class="trap" aria-hidden="true"><input type="text" name="web" tabindex="-1" value="" autocomplete="off"></div>
       <button type="submit" class="btn">Send the request</button>
