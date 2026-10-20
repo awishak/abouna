@@ -11,6 +11,11 @@
       "permanent": false
     },
     {
+      "source": "/request",
+      "destination": "https://docs.google.com/forms/d/e/1FAIpQLSeQ2EcPrbPRz-rezuI9qXZhsGR72A5iyel6qwP5sTvjB9a6fA/viewform",
+      "permanent": false
+    },
+    {
       "source": "/slate",
       "destination": "https://drewi.sh/slate",
       "permanent": false
