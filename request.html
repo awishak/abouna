@@ -14,14 +14,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/site.css">
 <style>
-  /* One form on the site's ground, the same .request box as /rsvp. The questions are Andrew's list from Oct 16:
-     church name, city, contact name, email, hosted a screening before, where, preferred months or days or dates,
-     church size and expected attendance. Posts to /api/request; nothing leaves the site. */
+  /* One form on the site's ground, the same .request box as /rsvp. The questions are Andrew's, in his words, from Oct 19:
+     first name, last name, role, email, church or group, city and state, preferred dates, size or attendance,
+     A/V, anything else. Posts to /api/request; nothing leaves the site. */
   .page { max-width: 720px; margin: 0 auto; padding: var(--s4) var(--s3) var(--s5); }
   h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(52px, 9vw, 84px); line-height: 0.95; margin: var(--s1) 0 var(--s2); }
   .lead { margin-bottom: var(--s4); }
   .request textarea { font: inherit; font-size: 18px; min-height: 120px; padding: 12px 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); width: 100%; resize: vertical; }
-  .request .hint { text-transform: none; letter-spacing: 0; font-size: 16px; font-weight: 400; color: var(--ink2); }
+  .request label.q { text-transform: none; letter-spacing: 0; font-size: 18px; font-weight: 400; color: var(--ink); line-height: 1.4; }
   .request button { grid-column: 1 / -1; border: 0; cursor: pointer; font-family: var(--sans); }
   .request button:hover { background: #e4cf9f; }
   .request button:disabled { opacity: 0.6; cursor: default; }
@@ -47,18 +47,16 @@
   <p class="lead">Abouna comes to your church or group: the film, then a Q&amp;A with the director. Tell us where and when, and Andrew will write back.</p>
   <div class="request" id="box">
     <form id="f" novalidate>
+      <label>First name<input name="first" required autocomplete="given-name" autocapitalize="words"></label>
+      <label>Last name<input name="last" autocomplete="family-name" autocapitalize="words"></label>
+      <label>Role<input name="role" autocomplete="organization-title" placeholder="Priest, youth leader, servant"></label>
+      <label>Email<input type="email" name="email" required autocomplete="email" inputmode="email" placeholder="you@example.com"></label>
       <label class="full">Church or group<input name="church" required autocomplete="organization" autocapitalize="words"></label>
       <label class="full">City and state<input name="city" required autocomplete="address-level2" placeholder="Boston, MA"></label>
-      <label>Your name<input name="name" required autocomplete="name" autocapitalize="words"></label>
-      <label>Email<input type="email" name="email" required autocomplete="email" inputmode="email" placeholder="you@example.com"></label>
-      <label class="full">Have you hosted a screening before?
-        <select name="hosted"><option value="">Pick one</option><option>No, this would be the first</option><option>Yes, once or twice</option><option>Yes, we do this often</option></select>
-      </label>
-      <label class="full">Where would it be?<span class="hint">The hall, the sanctuary, a theater, a classroom. Whatever you have.</span><input name="where" placeholder="The church hall, seats about 120"></label>
-      <label class="full">When works?<span class="hint">Months, days of the week, or dates.</span><input name="when" placeholder="A Saturday evening in January or February"></label>
-      <label>How big is the church?<input name="size" inputmode="numeric" placeholder="About 300 families"></label>
-      <label>How many would come?<input name="expect" inputmode="numeric" placeholder="80 to 100"></label>
-      <label class="full">Anything else<textarea name="note" rows="4" placeholder="Who you are, why Abouna, what the room is like."></textarea></label>
+      <label class="full q">Please tell me about some preferred dates. You can also provide days of the week that work best.<textarea name="dates" rows="2"></textarea></label>
+      <label class="full q">Can you describe the size of your church, and/or what you predict for attendance?<textarea name="size" rows="2"></textarea></label>
+      <label class="full q">Is there an A/V setup that would work?<textarea name="av" rows="2"></textarea></label>
+      <label class="full q">Anything else?<textarea name="note" rows="4"></textarea></label>
       <div class="trap" aria-hidden="true"><input type="text" name="web" tabindex="-1" value="" autocomplete="off"></div>
       <button type="submit" class="btn">Send the request</button>
       <p class="msg" id="msg" role="status" aria-live="polite"></p>

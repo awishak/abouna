@@ -3,7 +3,7 @@
 // functions use on the same Supabase project, under 'abouna-request:<time>-<id>'.
 // Nothing is emailed; Andrew reads them on /host with his password, newest first.
 //
-// POST { church, city, name, email, hosted, where, when, size, expect, note }   saves one; { ok, id, contact } back
+// POST { first, last, role, email, church, city, dates, size, av, note }   saves one; { ok, id, contact, mailed } back
 // GET  ?k=<admin code>                                                            every request, newest first
 //
 // ABOUNA_ADMIN_CODE, SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are the values
@@ -13,7 +13,7 @@ import { randomBytes, timingSafeEqual } from 'node:crypto';
 const PREFIX = 'abouna-request:';
 const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,120}\.[^\s@]{2,24}$/;
 const CONTACT = 'aishak@scu.edu';
-const FIELDS = [['church', 120], ['city', 80], ['name', 80], ['email', 160], ['hosted', 40], ['where', 200], ['when', 200], ['size', 60], ['expect', 60], ['note', 1500]];
+const FIELDS = [['first', 60], ['last', 60], ['role', 80], ['email', 160], ['church', 120], ['city', 80], ['dates', 600], ['size', 600], ['av', 600], ['note', 1500]];
 
 function db(path, init = {}) {
   return fetch(process.env.SUPABASE_URL + '/rest/v1/' + path, {
@@ -74,10 +74,11 @@ async function post(req, res) {
   const data = {};
   for (const [k, max] of FIELDS) data[k] = str(b[k], max);
   data.email = data.email.toLowerCase();
+  if (!data.first) return send(res, 400, { error: 'What is your first name?' });
+  if (!EMAIL.test(data.email)) return send(res, 400, { error: 'That email does not look right.' });
   if (!data.church) return send(res, 400, { error: 'Which church or group is it?' });
   if (!data.city) return send(res, 400, { error: 'Which city?' });
-  if (!data.name) return send(res, 400, { error: 'What is your name?' });
-  if (!EMAIL.test(data.email)) return send(res, 400, { error: 'That email does not look right.' });
+  data.name = (data.first + ' ' + data.last).trim();
   const at = new Date().toISOString();
   data.at = at;
   // The key sorts by time, so newest first is a key order; the random tail keeps two in the same second apart.
@@ -103,8 +104,8 @@ async function notify(d, id) {
   const key = process.env.RESEND_API_KEY, from = process.env.RESEND_FROM, to = process.env.ABOUNA_NOTIFY;
   if (!key || !from || !to) return false;
   const line = (label, v) => (v ? label + ': ' + v + '\n' : '');
-  const text = d.church + ', ' + d.city + '\n' + d.name + ' <' + d.email + '>\n\n'
-    + line('Hosted before', d.hosted) + line('Where', d.where) + line('When', d.when) + line('Church size', d.size) + line('Expected', d.expect)
+  const text = d.church + ', ' + d.city + '\n' + d.name + (d.role ? ', ' + d.role : '') + ' <' + d.email + '>\n\n'
+    + line('Dates', d.dates) + line('Size or attendance', d.size) + line('A/V', d.av)
     + (d.note ? '\n' + d.note + '\n' : '')
     + '\nAll requests: https://watchabouna.com/host and drewi.sh/slate, Screenings.\n';
   try {

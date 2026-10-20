@@ -126,8 +126,8 @@
       const list = j.requests || [];
       const line = (label, v) => v ? '<div><span>' + label + '</span> ' + esc(v) + '</div>' : '';
       el.innerHTML = '<div class="screening"><div class="meta"><div class="day">Screening requests</div><span>' + (list.length ? list.length + (list.length === 1 ? ' request' : ' requests') + ' from watchabouna.com/request' : 'None yet. The address to send people is watchabouna.com/request.') + '</span></div>'
-        + list.map((q) => '<div class="req"><b>' + esc(q.church) + '</b> <span class="city">' + esc(q.city) + '</span><div class="who">' + esc(q.name) + ' · <a href="mailto:' + esc(q.email) + '">' + esc(q.email) + '</a> · ' + esc(when(q.at)) + '</div>'
-          + line('Hosted before:', q.hosted) + line('Where:', q.where) + line('When:', q.when) + line('Church size:', q.size) + line('Expected:', q.expect) + (q.note ? '<div class="note">' + esc(q.note) + '</div>' : '') + '</div>').join('')
+        + list.map((q) => '<div class="req"><b>' + esc(q.church) + '</b> <span class="city">' + esc(q.city) + '</span><div class="who">' + esc(q.name) + (q.role ? ', ' + esc(q.role) : '') + ' · <a href="mailto:' + esc(q.email) + '">' + esc(q.email) + '</a> · ' + esc(when(q.at)) + '</div>'
+          + line('Dates:', q.dates) + line('Size or attendance:', q.size) + line('A/V:', q.av) + (q.note ? '<div class="note">' + esc(q.note) + '</div>' : '') + '</div>').join('')
         + '</div>';
     }
     async function run() {

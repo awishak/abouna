@@ -65,18 +65,18 @@ for (const [w, h, t] of [[390, 844, 'phone'], [1280, 900, 'laptop']]) {
   await page.waitForTimeout(600);
   const refused = await page.locator('#msg').textContent();
   console.log(t, 'empty send:', refused);
-  if (!/church or group/i.test(refused)) { bad++; console.log(t, 'FAIL: empty send was not refused the right way'); }
+  if (!/first name/i.test(refused)) { bad++; console.log(t, 'FAIL: empty send was not refused the right way'); }
 
   /* the full request */
+  await page.fill('input[name=first]', 'Claude');
+  await page.fill('input[name=last]', 'Check');
+  await page.fill('input[name=role]', 'Youth leader');
+  await page.fill('input[name=email]', 'claude-test@example.com');
   await page.fill('input[name=church]', 'St. Test Coptic Orthodox Church');
   await page.fill('input[name=city]', 'Testville, CA');
-  await page.fill('input[name=name]', 'Claude Check');
-  await page.fill('input[name=email]', 'claude-test@example.com');
-  await page.selectOption('select[name=hosted]', { index: 1 });
-  await page.fill('input[name=where]', 'The hall, about 120 seats');
-  await page.fill('input[name=when]', 'A Saturday in February');
-  await page.fill('input[name=size]', '300 families');
-  await page.fill('input[name=expect]', '80');
+  await page.fill('textarea[name=dates]', 'A Saturday in February');
+  await page.fill('textarea[name=size]', '300 families, maybe 80 would come');
+  await page.fill('textarea[name=av]', 'Projector and speakers in the hall');
   await page.fill('textarea[name=note]', 'A test row from check-request.mjs.');
   await page.click('#f button');
   await page.waitForSelector('#done', { state: 'visible' });
