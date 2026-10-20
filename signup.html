@@ -9,21 +9,21 @@
 <link rel="icon" href="favicon.ico">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   /* The site's tokens, from index.html. One form, on the dark ground, posted straight to Mailchimp. */
   :root { --bg: #0a0908; --bg-warm: #131110; --text: #e8e2d8; --text-muted: #b3a99c; --accent: #c4a97d; --line: rgba(196,169,125,0.25); --serif: 'Cormorant Garamond', Georgia, serif; --sans: 'Outfit', sans-serif; }
   * { box-sizing: border-box; }
   html, body { margin: 0; }
-  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-weight: 300; font-size: 17px; line-height: 1.5; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px 16px calc(24px + env(safe-area-inset-bottom, 0px)); }
+  body { background: var(--bg); color: var(--text); font-family: var(--sans); font-weight: 400; font-size: 17px; line-height: 1.5; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px 16px calc(24px + env(safe-area-inset-bottom, 0px)); }
   main { width: 100%; max-width: 440px; }
   .brand { font-family: var(--sans); font-size: 13px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
   .brand a { color: inherit; text-decoration: none; }
-  h1 { font-family: var(--serif); font-weight: 400; font-size: 44px; line-height: 1.05; margin: 0 0 12px; letter-spacing: -0.01em; }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: 44px; line-height: 1.05; margin: 0 0 12px; letter-spacing: -0.01em; }
   .lead { margin: 0 0 28px; color: var(--text-muted); }
   form { display: grid; gap: 16px; }
-  label { display: grid; gap: 6px; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
-  input { font: inherit; font-size: 17px; font-weight: 300; color: var(--text); background: var(--bg-warm); border: 1px solid var(--line); border-radius: 4px; min-height: 48px; padding: 0 14px; width: 100%; }
+  label { display: grid; gap: 6px; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+  input { font: inherit; font-size: 17px; font-weight: 400; color: var(--text); background: var(--bg-warm); border: 1px solid var(--line); border-radius: 4px; min-height: 48px; padding: 0 14px; width: 100%; }
   input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
   input::placeholder { color: var(--text-muted); opacity: 0.7; }
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -40,7 +40,7 @@
 <main>
   <p class="brand"><a href="/">Abouna</a></p>
   <h1>Stay updated</h1>
-  <p class="lead">Screenings near you, the next episode, and the day it streams. Andrew promises to only send stuff when it's important.</p>
+  <p class="lead">Andrew will email you when there's a screening near you, when the next episode is coming, and when Abouna streams. He promises to only send stuff when it's important.</p>
   <form action="https://andrewishak.us12.list-manage.com/subscribe/post?u=caee0847b18352e02c6931496&id=f3ff251967&f_id=00ea10e9f0" method="post" novalidate="">
     <label>Email
       <input type="email" name="EMAIL" required autocomplete="email" inputmode="email" placeholder="you@example.com">
@@ -62,17 +62,21 @@
   <p class="fine">Mailchimp keeps the list. Every email has an unsubscribe link. <a href="/">Back to the film</a>.</p>
 </main>
 <script>
-  // From a screening row: ?screening=City&help=1. The heading becomes the
-  // button that was pressed, and the city lands in "Where you are" so the
-  // Mailchimp audience shows who asked about which screening and who offered help.
+  // From a screening row: ?screening=City, and &set=1 when the date is set and
+  // the venue is what is still to come. The heading becomes the city, the lead
+  // says what Andrew will write about, and the city lands in "Where you are"
+  // so the Mailchimp audience shows who asked about which screening.
   (function () {
     const q = new URLSearchParams(location.search);
     const city = (q.get('screening') || '').trim().slice(0, 80);
     if (!city) return;
-    const help = q.get('help') === '1';
-    document.querySelector('h1').textContent = help ? 'Help' : 'Notify me';
+    const set = q.get('set') === '1';
+    document.querySelector('h1').textContent = city;
+    document.querySelector('.lead').textContent = (set
+      ? 'The date is set and the venue is coming. Leave your email and Andrew will tell you when it is.'
+      : 'No date yet. Leave your email and Andrew will tell you when there is one.') + ' He promises to only send stuff when it\'s important.';
     const where = document.querySelector('input[name="MMERGE6"]');
-    where.value = (help ? 'Help: ' : 'Screening: ') + city;
+    where.value = 'Screening: ' + city;
     document.querySelector('.fine').insertAdjacentHTML('afterbegin', '<a href="/#screenings">Back to screenings</a>. ');
   })();
 </script>

@@ -93,7 +93,7 @@
       const j = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(j.error || 'That link is not right.');
       let h = metaBlock(j.screening) + seatsBlock(j.seats, j.people.length);
-      if (!j.people.length) h += '<p class="empty">No sign-ups yet. Share the Sign up button on watchabouna.com.</p>';
+      if (!j.people.length) h += '<p class="empty">No sign-ups yet. Share the Register button on watchabouna.com.</p>';
       else h += '<div class="tw"><table><thead><tr><th>Name</th><th>Coming</th></tr></thead><tbody>' + j.people.map((p) => '<tr><td>' + esc(p.name) + '</td><td class="n">' + esc(p.count) + '</td></tr>').join('') + '</tbody></table></div>';
       h += '<p class="fine">This page is for the host of this screening. It updates every time someone signs up.</p>';
       out.innerHTML = h;

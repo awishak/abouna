@@ -1,5 +1,5 @@
-// Drives the sign-up pages in the installed Google Chrome: /rsvp for the New
-// York screening at phone and laptop widths, a sign-up through the form (the
+// Drives the register pages in the installed Google Chrome: /rsvp for the open
+// screening at phone and laptop widths, and the closed text for a closed one, a sign-up through the form (the
 // mailing-list box unticked so Mailchimp is not touched), the host view with
 // its key, and the admin view with the password; then the two design rules on
 // every screen, nothing under 13px and every text colour at 4.5:1 or better
@@ -22,7 +22,6 @@ await mkdir(outdir, { recursive: true });
 const require = createRequire(join(root, '..', 'fieldtime', 'package.json'));
 const { chromium } = require('playwright');
 const base = process.env.BASE || 'http://127.0.0.1:8771';
-const ID = 'ny-2026-11-06';
 
 const CONTRAST = `(() => {
   const lum = (r, g, b) => { const f = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b); };
@@ -43,8 +42,12 @@ const CONTRAST = `(() => {
 const SMALL = `Array.from(document.querySelectorAll('body *')).filter((el) => Array.from(el.childNodes).some((n) => n.nodeType === 3 && n.textContent.trim()) && getComputedStyle(el).display !== 'none' && parseFloat(getComputedStyle(el).fontSize) < 13).map((el) => el.tagName + '.' + el.className + ' ' + getComputedStyle(el).fontSize)`;
 
 const admin = await (await fetch(base + '/api/rsvp?all=1&k=tiki-test')).json();
-const hostKey = new URL(admin.screenings[0].host).searchParams.get('k');
-const OPEN = admin.screenings[0].open;
+const OPEN_S = admin.screenings.find((s) => s.open) || null;
+const CLOSED_S = admin.screenings.find((s) => !s.open) || null;
+const OPEN = !!OPEN_S;
+const ID = OPEN_S && OPEN_S.id;
+const hostKey = OPEN_S && new URL(OPEN_S.host).searchParams.get('k');
+const WANT = admin.screenings.filter((s) => s.open).length;
 
 const browser = await chromium.launch({ channel: 'chrome' });
 let bad = 0;
@@ -63,20 +66,20 @@ for (const [w, h, t] of [[390, 844, 'phone'], [1280, 900, 'laptop']]) {
   await page.waitForTimeout(800);
   await page.locator('#screenings .show').first().scrollIntoViewIfNeeded();
   await page.screenshot({ path: join(outdir, 'home-' + t + '.png') });
-  const signups = await page.locator('#screenings a.btn', { hasText: 'Sign up' }).count();
-  if (OPEN && signups !== 1) { bad++; console.log(t, 'home has', signups, 'Sign up buttons, want 1'); }
-  if (!OPEN && signups !== 0) { bad++; console.log(t, 'home has a Sign up button while sign-ups are closed'); }
+  const signups = await page.locator('#screenings a.btn', { hasText: 'Register' }).count();
+  if (signups !== WANT) { bad++; console.log(t, 'home has', signups, 'Register buttons, want', WANT); }
 
-  await page.goto(base + '/rsvp?s=' + ID);
-  if (!OPEN) {
+  if (CLOSED_S) {
+    await page.goto(base + '/rsvp?s=' + CLOSED_S.id);
     await page.waitForTimeout(500);
     const closed = await page.locator('#meta').textContent();
-    if (!/not taking sign-ups/.test(closed)) { bad++; console.log(t, 'closed screening text:', closed); }
+    if (!/not open for registration/.test(closed)) { bad++; console.log(t, 'closed screening text:', closed); }
     await page.screenshot({ path: join(outdir, 'rsvp-closed-' + t + '.png'), fullPage: true });
     await design(page, 'rsvp closed ' + t);
-    await ctx.close();
-    continue;
   }
+  if (!OPEN) { await ctx.close(); continue; }
+
+  await page.goto(base + '/rsvp?s=' + ID);
   await page.waitForSelector('.meta .day');
   await page.screenshot({ path: join(outdir, 'rsvp-' + t + '.png'), fullPage: true });
   await design(page, 'rsvp ' + t);
@@ -96,7 +99,7 @@ for (const [w, h, t] of [[390, 844, 'phone'], [1280, 900, 'laptop']]) {
   await page.goto(base + '/rsvp?s=nope');
   await page.waitForTimeout(500);
   const nope = await page.locator('#meta').textContent();
-  if (!/not taking sign-ups/.test(nope)) { bad++; console.log(t, 'unknown screening text:', nope); }
+  if (!/not open for registration/.test(nope)) { bad++; console.log(t, 'unknown screening text:', nope); }
 
   await page.goto(base + '/host?s=' + ID + '&k=' + hostKey);
   await page.waitForSelector('table');
@@ -116,13 +119,13 @@ for (const [w, h, t] of [[390, 844, 'phone'], [1280, 900, 'laptop']]) {
   await page.fill('#gf input', 'tiki-test');
   await page.click('#gf button');
   await page.waitForSelector('.hostlink input');
-  const link = await page.locator('.hostlink input').inputValue();
-  if (!link.includes('k=' + hostKey)) { bad++; console.log(t, 'admin host link', link); }
+  const links = await page.locator('.hostlink input').evaluateAll((els) => els.map((e) => e.value));
+  if (!links.some((l) => l.includes('s=' + ID + '&k=' + hostKey))) { bad++; console.log(t, 'admin host links', links); }
   await page.screenshot({ path: join(outdir, 'admin-' + t + '.png'), fullPage: true });
   await design(page, 'admin ' + t);
 
   await ctx.close();
 }
 await browser.close();
-console.log(bad ? bad + ' checks FAILED' : 'Sign-up, host, admin, type floor and contrast pass.');
+console.log(bad ? bad + ' checks FAILED' : 'Register, host, admin, type floor and contrast pass.');
 process.exit(bad ? 1 : 0);

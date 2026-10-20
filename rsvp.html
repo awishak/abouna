@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Sign up | ABOUNA</title>
-<meta name="description" content="Sign up for a screening of Abouna Episode Two.">
+<title>Register | ABOUNA</title>
+<meta name="description" content="Register for a screening of Abouna Episode Two.">
 <meta name="robots" content="noindex">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -43,7 +43,7 @@
 
 <main class="page">
   <p class="label">Screening</p>
-  <h1>Sign up</h1>
+  <h1>Register</h1>
   <div class="meta" id="meta"><span>One moment.</span></div>
 
   <div class="request" id="box">
@@ -55,7 +55,7 @@
         <select name="count"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select>
       </label>
       <label class="check"><input type="checkbox" name="list" checked> Also add me to Andrew's mailing list. He promises to only send stuff when it's important.</label>
-      <button type="submit" class="btn">Sign up</button>
+      <button type="submit" class="btn">Register</button>
       <p class="msg" id="msg" role="status" aria-live="polite"></p>
     </form>
   </div>
@@ -89,18 +89,18 @@
       const r = await fetch('/api/rsvp?s=' + encodeURIComponent(id));
       if (r.status === 503) {
         // Sign-ups not switched on yet on the server: fall back to Notify me for that city.
-        const city = { 'ny-2026-11-06': 'New York, NY' }[id] || '';
+        const city = { 'ny-2026-11-06': 'New York, NY', 'dc-2026-12-10': 'Fairfax, VA (DC)' }[id] || '';
         location.replace('/signup' + (city ? '?screening=' + encodeURIComponent(city) : ''));
         return;
       }
       if (r.ok) s = (await r.json()).screening;
     } catch (e) {}
     if (!s || !s.open) {
-      meta.innerHTML = '<b>That screening is not taking sign-ups yet.</b><span>Pick one from the list, or tap Notify me on its row.</span>';
+      meta.innerHTML = '<b>That screening is not open for registration yet.</b><span>Pick one from the list, or tap Keep me posted on its row.</span>';
       box.style.display = 'none';
       return;
     }
-    document.title = 'Sign up: ' + s.city + ' | ABOUNA';
+    document.title = 'Register: ' + s.city + ' | ABOUNA';
     meta.innerHTML = '<div class="day">' + esc(s.when) + '</div><b>' + esc(s.city) + '</b><span>' + esc(s.venue) + (s.note ? ' · ' + esc(s.note) : '') + '</span>';
 
     f.addEventListener('submit', async (e) => {
@@ -126,7 +126,7 @@
     function finish(j, d) {
       const n = Number(j.count) || 1;
       document.getElementById('doneTitle').textContent = s.city + ', ' + s.when;
-      document.getElementById('doneText').textContent = (n === 1 ? 'One seat' : n + ' seats') + ' under ' + (d.first + ' ' + (d.last || '')).trim() + '. ' + s.venue + '. You will get the venue and time by email once they are set.';
+      document.getElementById('doneText').textContent = (n === 1 ? 'One seat' : n + ' seats') + ' under ' + (d.first + ' ' + (d.last || '')).trim() + '. ' + s.venue + '.' + (s.tba ? ' You will get the venue and time by email once they are set.' : '');
       box.style.display = 'none';
       document.getElementById('foot').style.display = 'none';
       done.style.display = 'block';
