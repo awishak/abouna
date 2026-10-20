@@ -66,7 +66,7 @@ for (const [w, h, t] of [[390, 844, 'phone'], [1280, 900, 'laptop']]) {
   await page.waitForTimeout(800);
   await page.locator('#screenings .show').first().scrollIntoViewIfNeeded();
   await page.screenshot({ path: join(outdir, 'home-' + t + '.png') });
-  const signups = await page.locator('#screenings a.btn', { hasText: 'Register' }).count();
+  const signups = await page.locator('#screenings a.btn[href^="/rsvp"]').count();
   if (signups !== WANT) { bad++; console.log(t, 'home has', signups, 'Register buttons, want', WANT); }
 
   if (CLOSED_S) {
