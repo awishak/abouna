@@ -97,9 +97,10 @@ footer p { margin-top: var(--s2); }
 .show { display: grid; grid-template-columns: 110px 1fr auto; gap: var(--s2); align-items: center; padding: 10px 0; border-top: 1px solid var(--line); }
 .show:last-of-type { border-bottom: 1px solid var(--line); }
 .show .day { font-family: var(--serif); font-size: 30px; font-weight: 600; color: var(--gold); line-height: 1; white-space: nowrap; }
+.show .day small { display: block; font-family: var(--sans); font-size: 14px; font-weight: 600; letter-spacing: 0.06em; margin-top: 6px; }
 .show .what { display: flex; flex-wrap: wrap; gap: 2px 12px; align-items: baseline; }
 .show .what b { font-size: 22px; font-weight: 500; line-height: 1.2; }
-.show .what span { color: var(--ink2); font-size: 16px; }
+.show .what span { color: var(--ink2); font-size: 16px; flex-basis: 100%; }
 .show .acts { display: flex; gap: var(--s1); }
 .show .btn { min-height: 36px; padding: 0 12px; font-size: 14px; letter-spacing: 0.06em; white-space: nowrap; }
 #screenings #map { margin-top: var(--s4); height: 360px; }
