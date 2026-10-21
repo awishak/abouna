@@ -40,7 +40,7 @@
 <main>
   <p class="brand"><a href="/">Abouna</a></p>
   <h1>Stay updated</h1>
-  <p class="lead">Andrew will email you when there's a screening near you, when the next episode is coming, and when Abouna streams. He promises to only send stuff when it's important.</p>
+  <p class="lead">Andrew promises to only send stuff when it's important.</p>
   <form action="https://andrewishak.us12.list-manage.com/subscribe/post?u=caee0847b18352e02c6931496&id=f3ff251967&f_id=00ea10e9f0" method="post" novalidate="">
     <label>Email
       <input type="email" name="EMAIL" required autocomplete="email" inputmode="email" placeholder="you@example.com">
@@ -59,22 +59,18 @@
     <div class="trap" aria-hidden="true"><input type="text" name="b_caee0847b18352e02c6931496_f3ff251967" tabindex="-1" value="" autocomplete="off"></div>
     <button type="submit" name="subscribe">Sign up</button>
   </form>
-  <p class="fine">Mailchimp keeps the list. Every email has an unsubscribe link. <a href="/">Back to the film</a>.</p>
+  <p class="fine"><a href="/">Back to the film</a>.</p>
 </main>
 <script>
   // From a screening row: ?screening=City, and &set=1 when the date is set and
-  // the venue is what is still to come. The heading becomes the city, the lead
-  // says what Andrew will write about, and the city lands in "Where you are"
-  // so the Mailchimp audience shows who asked about which screening.
+  // the venue is what is still to come. The heading becomes the city, and the
+  // city lands in "Where you are" so the Mailchimp audience shows who asked
+  // about which screening.
   (function () {
     const q = new URLSearchParams(location.search);
     const city = (q.get('screening') || '').trim().slice(0, 80);
     if (!city) return;
-    const set = q.get('set') === '1';
     document.querySelector('h1').textContent = city;
-    document.querySelector('.lead').textContent = (set
-      ? 'The date is set and the venue is coming. Leave your email and Andrew will tell you when it is.'
-      : 'No date yet. Leave your email and Andrew will tell you when there is one.') + ' He promises to only send stuff when it\'s important.';
     const where = document.querySelector('input[name="MMERGE6"]');
     where.value = 'Screening: ' + city;
     document.querySelector('.fine').insertAdjacentHTML('afterbegin', '<a href="/#screenings">Back to screenings</a>. ');
