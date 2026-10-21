@@ -96,7 +96,7 @@ footer p { margin-top: var(--s2); }
 .leaflet-control-attribution { font-size: 13px !important; }
 .show { display: grid; grid-template-columns: 110px 1fr auto; gap: var(--s2); align-items: center; padding: 14px 0; border-top: 1px solid var(--line); }
 .show:last-of-type { border-bottom: 1px solid var(--line); }
-.show .day { font-family: var(--sans); font-size: 20px; font-weight: 600; letter-spacing: 0.12em; color: var(--gold); line-height: 1; white-space: nowrap; text-transform: uppercase; }
+.show .day { font-family: var(--serif); font-size: 30px; font-weight: 600; color: var(--gold); line-height: 1; white-space: nowrap; text-transform: uppercase; }
 .show .what { display: flex; flex-wrap: wrap; gap: 2px 12px; align-items: baseline; }
 .show .what b { font-family: var(--serif); font-size: clamp(32px, 8.5vw, 42px); font-weight: 600; line-height: 1; }
 .show .what span { color: var(--ink2); font-size: 17px; flex-basis: 100%; }
