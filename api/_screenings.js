@@ -14,7 +14,7 @@ export const SCREENINGS = [
     date: '2026-11-06',
     when: 'Friday, November 6',
     venue: 'Beacon of Faith Conference',
-    note: 'Venue and time to be announced. Q&A with the director after the film.',
+    note: 'Venue to be announced. 7 PM. Q&A with the director after the film.',
     tba: true,
     open: false
   },
