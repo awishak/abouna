@@ -89,7 +89,7 @@
       const r = await fetch('/api/rsvp?s=' + encodeURIComponent(id));
       if (r.status === 503) {
         // Sign-ups not switched on yet on the server: fall back to Notify me for that city.
-        const city = { 'ny-2026-11-06': 'New York, NY', 'dc-2026-12-10': 'Fairfax, VA (DC)' }[id] || '';
+        const city = { 'ny-2026-11-06': 'New York, NY', 'dc-2026-12-10': 'Fairfax, VA (DC)', 'boston-2026-12-08': 'Natick, MA (Boston)' }[id] || '';
         location.replace('/signup' + (city ? '?screening=' + encodeURIComponent(city) : ''));
         return;
       }
