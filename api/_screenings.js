@@ -6,7 +6,7 @@
 // Andrew, 2026-10-14: New York is not ready for sign-ups, Keep me posted only.
 // `open: false` keeps /rsvp closed until he says go; flip it and swap the button
 // on the row. `tba: true` means the venue and time are still to come, and the
-// register page says so after a sign-up. Fairfax opened 2026-10-20. Natick added 2026-10-22 from Andrew: Tuesday Dec 8, 7:30 PM.
+// register page says so after a sign-up. Fairfax opened 2026-10-20. Natick added 2026-10-22 from Andrew: Tuesday Dec 8, 7:30 PM. Davis the same day: Thursday Feb 4, 7:30 PM, UC Davis, room to come.
 export const SCREENINGS = [
   {
     id: 'ny-2026-11-06',
@@ -34,6 +34,15 @@ export const SCREENINGS = [
     when: 'Tuesday, December 8',
     venue: 'St. Mark Coptic Orthodox Church',
     note: '7:30 PM. Q&A with the director after the film.',
+    open: true
+  },
+  {
+    id: 'davis-2027-02-04',
+    city: 'Davis, CA',
+    date: '2027-02-04',
+    when: 'Thursday, February 4',
+    venue: 'UC Davis',
+    note: 'Room to be announced. 7:30 PM. Q&A with the director after the film.',
     open: true
   }
 ];
