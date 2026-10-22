@@ -1,7 +1,7 @@
 // watchabouna.com/request: a church or group asking for a screening. Each
 // request is one row in andrewishak_data, the key-value table the drewi.sh
 // functions use on the same Supabase project, under 'abouna-request:<time>-<id>'.
-// Nothing is emailed; Andrew reads them on /host with his password, newest first.
+// Nothing is emailed; Andrew reads them on /signups with his password, newest first.
 //
 // POST { first, last, role, email, church, city, dates, size, av, note }   saves one; { ok, id, contact, mailed } back
 // GET  ?k=<admin code>                                                            every request, newest first
@@ -107,7 +107,7 @@ async function notify(d, id) {
   const text = d.church + ', ' + d.city + '\n' + d.name + (d.role ? ', ' + d.role : '') + ' <' + d.email + '>\n\n'
     + line('Dates', d.dates) + line('Size or attendance', d.size) + line('A/V', d.av)
     + (d.note ? '\n' + d.note + '\n' : '')
-    + '\nAll requests: https://watchabouna.com/host and drewi.sh/slate, Screenings.\n';
+    + '\nAll requests: https://watchabouna.com/signups and drewi.sh/slate, Screenings.\n';
   try {
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',

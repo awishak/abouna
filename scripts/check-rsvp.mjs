@@ -101,17 +101,17 @@ for (const [w, h, t] of [[390, 844, 'phone'], [1280, 900, 'laptop']]) {
   const nope = await page.locator('#meta').textContent();
   if (!/not open for registration/.test(nope)) { bad++; console.log(t, 'unknown screening text:', nope); }
 
-  await page.goto(base + '/host?s=' + ID + '&k=' + hostKey);
+  await page.goto(base + '/signups?s=' + ID + '&k=' + hostKey);
   await page.waitForSelector('table');
   const seats = await page.locator('.num b').textContent();
   if (seats !== '4') { bad++; console.log(t, 'host seats', seats); }
   await page.screenshot({ path: join(outdir, 'host-' + t + '.png'), fullPage: true });
   await design(page, 'host ' + t);
 
-  await page.goto(base + '/host?s=' + ID + '&k=wrong');
+  await page.goto(base + '/signups?s=' + ID + '&k=wrong');
   await page.waitForSelector('.msg.err');
 
-  await page.goto(base + '/host');
+  await page.goto(base + '/signups');
   await page.waitForSelector('#gate:not([hidden])');
   await page.fill('#gf input', 'nope');
   await page.click('#gf button');

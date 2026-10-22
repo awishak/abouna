@@ -36,6 +36,7 @@ createServer(async (req, res) => {
   }
   let p = url.pathname;
   if (p === '/rsvp') p = '/rsvp.html';
+  if (p === '/signups') p = '/signups.html';
   if (p === '/host') p = '/host.html';
   if (p === '/request') p = '/request.html';
   if (p === '/press') p = '/index.html';

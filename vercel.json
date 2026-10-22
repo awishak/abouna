@@ -30,8 +30,8 @@
       "destination": "/rsvp.html"
     },
     {
-      "source": "/host",
-      "destination": "/host.html"
+      "source": "/signups",
+      "destination": "/signups.html"
     },
     {
       "source": "/request",
@@ -40,6 +40,10 @@
     {
       "source": "/press",
       "destination": "/index.html"
+    },
+    {
+      "source": "/host",
+      "destination": "/host.html"
     }
   ]
 }

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sign-ups | ABOUNA</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site.css">
+<style>
+  /* watchabouna.com/signups, moved from /host on 2026-10-22 so /host could be the page for churches. Two views on one page. A host link (?s=<id>&k=<key>) shows one screening: seats and names.
+     Andrew's password shows every screening with emails and the host link to hand out. */
+  .page { max-width: 900px; margin: 0 auto; padding: var(--s4) var(--s3) var(--s5); }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(52px, 9vw, 84px); line-height: 0.95; margin: var(--s1) 0 var(--s3); }
+  .meta { display: grid; gap: 4px; margin-bottom: var(--s3); }
+  .meta .day { font-family: var(--serif); font-size: 36px; font-weight: 600; color: var(--gold); line-height: 1.05; }
+  .meta b { font-size: 24px; font-weight: 500; }
+  .meta span { color: var(--ink2); font-size: 18px; }
+  .num { display: flex; align-items: baseline; gap: var(--s2); margin: var(--s3) 0 var(--s3); }
+  .num b { font-family: var(--serif); font-size: 88px; font-weight: 600; color: var(--gold); line-height: 1; }
+  .num span { font-size: 20px; color: var(--ink2); }
+  .tw { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 17px; }
+  th { text-align: left; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink2); font-weight: 600; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  td { padding: 12px 14px 12px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  td.n { font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--gold); line-height: 1; white-space: nowrap; }
+  .screening { padding: var(--s4) 0; border-top: 1px solid var(--line); }
+  .screening:first-child { border-top: 0; padding-top: 0; }
+  .hostlink { display: grid; gap: 6px; margin: var(--s2) 0 var(--s3); font-size: 16px; color: var(--ink2); }
+  .hostlink input { font: inherit; font-size: 16px; min-height: 48px; padding: 0 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--tile); color: var(--ink); width: 100%; }
+  .request button { grid-column: 1 / -1; border: 0; cursor: pointer; font-family: var(--sans); }
+  .msg { color: var(--ink2); font-size: 17px; min-height: 1.5em; margin-top: var(--s2); }
+  .msg.err { color: #f3c2ad; }
+  .empty { color: var(--ink2); font-size: 19px; }
+  .fine { font-size: 16px; color: var(--ink2); margin-top: var(--s4); }
+  .fine a { color: var(--gold); }
+  .req { padding: var(--s2) 0; border-top: 1px solid var(--line); font-size: 17px; display: grid; gap: 4px; }
+  .req b { font-size: 22px; font-weight: 500; }
+  .req .city { color: var(--ink2); font-size: 18px; margin-left: 8px; }
+  .req .who { color: var(--ink2); }
+  .req .who a { color: var(--gold); }
+  .req div span { color: var(--ink2); }
+  .req .note { white-space: pre-wrap; margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<nav class="nav"><div class="wrap">
+  <a class="l" href="/">Abouna</a>
+  <a class="l gold" href="/#screenings">Screenings</a>
+</div></nav>
+
+<main class="page">
+  <p class="label">Screening</p>
+  <h1 id="h1">Sign-ups</h1>
+
+  <div class="request" id="gate" hidden>
+    <form id="gf">
+      <label class="full">Password<input type="password" name="k" autocomplete="current-password" autofocus required></label>
+      <button type="submit" class="btn">Open</button>
+    </form>
+  </div>
+
+  <div id="reqs"></div>
+  <div id="out"></div>
+  <p class="msg" id="msg" role="status" aria-live="polite"></p>
+</main>
+
+<script>
+  (function () {
+    const esc = (t) => String(t == null ? '' : t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const q = new URLSearchParams(location.search);
+    const out = document.getElementById('out'), msg = document.getElementById('msg'), gate = document.getElementById('gate');
+    const plural = (n, one, many) => n === 1 ? one : many;
+
+    function metaBlock(s) {
+      return '<div class="meta"><div class="day">' + esc(s.when) + '</div><b>' + esc(s.city) + '</b><span>' + esc(s.venue) + (s.note ? ' · ' + esc(s.note) : '') + '</span></div>';
+    }
+    function seatsBlock(seats, parties) {
+      return '<div class="num"><b>' + seats + '</b><span>' + plural(seats, 'seat', 'seats') + ' across ' + parties + ' ' + plural(parties, 'sign-up', 'sign-ups') + '</span></div>';
+    }
+    function when(iso) {
+      const d = new Date(iso);
+      return isNaN(d) ? '' : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
+
+    // A host: one screening, names and party sizes, nothing else.
+    async function host(id, k) {
+      const r = await fetch('/api/rsvp?s=' + encodeURIComponent(id) + '&k=' + encodeURIComponent(k));
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(j.error || 'That link is not right.');
+      let h = metaBlock(j.screening) + seatsBlock(j.seats, j.people.length);
+      if (!j.people.length) h += '<p class="empty">No sign-ups yet. Share the Register button on watchabouna.com.</p>';
+      else h += '<div class="tw"><table><thead><tr><th>Name</th><th>Coming</th></tr></thead><tbody>' + j.people.map((p) => '<tr><td>' + esc(p.name) + '</td><td class="n">' + esc(p.count) + '</td></tr>').join('') + '</tbody></table></div>';
+      h += '<p class="fine">This page is for the host of this screening. It updates every time someone signs up.</p>';
+      out.innerHTML = h;
+    }
+
+    // Andrew: everything, plus the link to hand each host.
+    async function admin(k) {
+      const r = await fetch('/api/rsvp?all=1&k=' + encodeURIComponent(k));
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(j.error || 'Not it.');
+      try { sessionStorage.setItem('abouna-host', k); } catch (e) {}
+      gate.hidden = true;
+      document.getElementById('h1').textContent = 'All sign-ups';
+      requests(k);
+      out.innerHTML = j.screenings.map((s) => {
+        let h = '<div class="screening">' + metaBlock(s) + seatsBlock(s.seats, s.people.length);
+        h += '<label class="hostlink">Host link, for the priest or the organizer. Shows names and the count, no emails.<input readonly value="' + esc(s.host) + '" onfocus="this.select()"></label>';
+        if (!s.people.length) h += '<p class="empty">No sign-ups yet.</p>';
+        else h += '<div class="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Coming</th><th>List</th><th>When</th></tr></thead><tbody>' + s.people.map((p) => '<tr><td>' + esc((p.first + ' ' + (p.last || '')).trim()) + '</td><td>' + esc(p.email) + '</td><td class="n">' + esc(p.count) + '</td><td>' + (p.list ? 'Yes' : '–') + '</td><td>' + esc(when(p.at)) + '</td></tr>').join('') + '</tbody></table></div>';
+        return h + '</div>';
+      }).join('');
+    }
+
+    // Screening requests from watchabouna.com/request, newest first, above the sign-ups.
+    async function requests(k) {
+      const el = document.getElementById('reqs');
+      const r = await fetch('/api/request?k=' + encodeURIComponent(k));
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) return;
+      const list = j.requests || [];
+      const line = (label, v) => v ? '<div><span>' + label + '</span> ' + esc(v) + '</div>' : '';
+      el.innerHTML = '<div class="screening"><div class="meta"><div class="day">Screening requests</div><span>' + (list.length ? list.length + (list.length === 1 ? ' request' : ' requests') + ' from watchabouna.com/request' : 'None yet. The address to send people is watchabouna.com/request.') + '</span></div>'
+        + list.map((q) => '<div class="req"><b>' + esc(q.church) + '</b> <span class="city">' + esc(q.city) + '</span><div class="who">' + esc(q.name) + (q.role ? ', ' + esc(q.role) : '') + ' · <a href="mailto:' + esc(q.email) + '">' + esc(q.email) + '</a> · ' + esc(when(q.at)) + '</div>'
+          + line('Dates:', q.dates) + line('Size or attendance:', q.size) + line('A/V:', q.av) + (q.note ? '<div class="note">' + esc(q.note) + '</div>' : '') + '</div>').join('')
+        + '</div>';
+    }
+    async function run() {
+      msg.className = 'msg';
+      msg.textContent = '';
+      const s = (q.get('s') || '').trim(), k = (q.get('k') || '').trim();
+      try {
+        if (s && k) return await host(s, k);
+        let code = k;
+        try { code = code || sessionStorage.getItem('abouna-host') || ''; } catch (e) {}
+        if (code) return await admin(code);
+        gate.hidden = false;
+      } catch (err) {
+        msg.className = 'msg err';
+        msg.textContent = err.message;
+        if (!(s && k)) { gate.hidden = false; try { sessionStorage.removeItem('abouna-host'); } catch (e) {} }
+      }
+    }
+
+    document.getElementById('gf').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const code = e.target.k.value.trim();
+      if (!code) return;
+      msg.className = 'msg';
+      msg.textContent = 'Opening.';
+      try { await admin(code); msg.textContent = ''; } catch (err) { msg.className = 'msg err'; msg.textContent = err.message; }
+    });
+
+    run();
+  })();
+</script>
+</body>
+</html>

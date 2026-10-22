@@ -1,4 +1,4 @@
-// watchabouna.com/rsvp and /host: sign-ups for a dated screening, with a head
+// watchabouna.com/rsvp and /signups: sign-ups for a dated screening, with a head
 // count. Each sign-up is one row in andrewishak_data, the key-value table the
 // drewi.sh functions use on the same Supabase project. The key is
 // 'abouna-rsvp:<screening>:<hash of the email>', so signing up twice updates
@@ -10,7 +10,7 @@
 // GET  ?all=1&k=<admin code>    Andrew's view: every screening, every sign-up, each host link
 // POST { s, first, last, email, count, list }   saves one sign-up; { ok, count } back
 //
-// ABOUNA_ADMIN_CODE is the password for /host. A screening's host key is
+// ABOUNA_ADMIN_CODE is the password for /signups. A screening's host key is
 // derived from it, so handing a priest a link needs no table: copy it off the
 // admin view. SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are the same values
 // the andrewishak project holds.
@@ -83,7 +83,7 @@ async function get(req, res) {
     const out = [];
     for (const s of SCREENINGS) {
       const people = await rows(s.id);
-      out.push({ ...pub(s), seats: seats(people), host: 'https://watchabouna.com/host?s=' + s.id + '&k=' + hostKey(s.id), people });
+      out.push({ ...pub(s), seats: seats(people), host: 'https://watchabouna.com/signups?s=' + s.id + '&k=' + hostKey(s.id), people });
     }
     return send(res, 200, { screenings: out });
   }

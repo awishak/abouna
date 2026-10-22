@@ -3,160 +3,124 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Sign-ups | ABOUNA</title>
-<meta name="robots" content="noindex, nofollow">
+<title>Host a screening | ABOUNA</title>
+<meta name="description" content="Everything a church needs to know to host a screening of Abouna Episode Two: the evening, the Q&A with a priest from the host church, what the church provides, and how people sign up.">
+<meta property="og:title" content="Host a screening of Abouna">
+<meta property="og:description" content="Everything a church needs to know to host a screening of Abouna Episode Two, followed by a Q&A with the creator and a priest from the host church.">
+<meta property="og:image" content="https://www.watchabouna.com/og-image.png">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/site.css">
 <style>
-  /* Two views on one page. A host link (?s=<id>&k=<key>) shows one screening: seats and names.
-     Andrew's password shows every screening with emails and the host link to hand out. */
+  /* watchabouna.com/host: the one page Andrew sends a church instead of saying it all again. The host packet from
+     the tracker, as a page. His answers from round 10 on 2026-10-22: the address, the pictures with the man in the
+     black hat, the why drafted from the site and his Bishop Kyrillos note for him to correct live, the host church
+     supplies its priest, H.G. Bishop David attended a screening in Staten Island, the money in one paragraph. */
   .page { max-width: 900px; margin: 0 auto; padding: var(--s4) var(--s3) var(--s5); }
-  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(52px, 9vw, 84px); line-height: 0.95; margin: var(--s1) 0 var(--s3); }
-  .meta { display: grid; gap: 4px; margin-bottom: var(--s3); }
-  .meta .day { font-family: var(--serif); font-size: 36px; font-weight: 600; color: var(--gold); line-height: 1.05; }
-  .meta b { font-size: 24px; font-weight: 500; }
-  .meta span { color: var(--ink2); font-size: 18px; }
-  .num { display: flex; align-items: baseline; gap: var(--s2); margin: var(--s3) 0 var(--s3); }
-  .num b { font-family: var(--serif); font-size: 88px; font-weight: 600; color: var(--gold); line-height: 1; }
-  .num span { font-size: 20px; color: var(--ink2); }
-  .tw { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 17px; }
-  th { text-align: left; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink2); font-weight: 600; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
-  td { padding: 12px 14px 12px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
-  td.n { font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--gold); line-height: 1; white-space: nowrap; }
-  .screening { padding: var(--s4) 0; border-top: 1px solid var(--line); }
-  .screening:first-child { border-top: 0; padding-top: 0; }
-  .hostlink { display: grid; gap: 6px; margin: var(--s2) 0 var(--s3); font-size: 16px; color: var(--ink2); }
-  .hostlink input { font: inherit; font-size: 16px; min-height: 48px; padding: 0 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--tile); color: var(--ink); width: 100%; }
-  .request button { grid-column: 1 / -1; border: 0; cursor: pointer; font-family: var(--sans); }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(52px, 9vw, 84px); line-height: 0.95; margin: var(--s1) 0 var(--s2); }
+  .lead { margin-bottom: var(--s3); }
+  .cta { display: flex; flex-wrap: wrap; gap: var(--s2); margin-bottom: var(--s4); }
+  [hidden] { display: none !important; }
+  .cta button { border: 0; cursor: pointer; font-family: var(--sans); }
+  .cta button:focus-visible, .cta a:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .part { padding: var(--s4) 0; border-top: 1px solid var(--line); }
+  .part h3 { margin-bottom: var(--s2); }
+  .part p { color: var(--ink2); margin-bottom: var(--s2); max-width: 64ch; }
+  .part p:last-child { margin-bottom: 0; }
+  .why { display: grid; grid-template-columns: 1fr 1.3fr; gap: var(--s4); align-items: start; }
+  .why figure { margin: 0; display: grid; gap: var(--s2); }
+  .why img { width: 100%; border-radius: 6px; border: 1px solid var(--line); display: block; }
+  .why .bishop { aspect-ratio: 3 / 4; object-fit: cover; object-position: center 20%; }
+  .why .room { aspect-ratio: 4 / 3; object-fit: cover; }
+  .why figcaption { color: var(--ink2); font-size: 16px; line-height: 1.4; }
+  blockquote { margin: var(--s3) 0; padding-left: var(--s3); border-left: 2px solid var(--gold); font-family: var(--serif); font-size: 26px; line-height: 1.3; font-weight: 500; color: var(--ink); max-width: 30ch; }
+  blockquote p { color: var(--ink); max-width: none; }
+  .list { display: grid; gap: var(--s2); margin: 0; padding: 0; list-style: none; max-width: 64ch; }
+  .list li { display: grid; grid-template-columns: auto 1fr; gap: var(--s2); align-items: baseline; color: var(--ink2); }
+  .list li b { font-family: var(--serif); font-size: 28px; font-weight: 600; color: var(--gold); line-height: 1; }
+  .big { font-family: var(--serif); font-size: 44px; font-weight: 600; color: var(--gold); line-height: 1; margin-bottom: var(--s2); }
   .msg { color: var(--ink2); font-size: 17px; min-height: 1.5em; margin-top: var(--s2); }
-  .msg.err { color: #f3c2ad; }
-  .empty { color: var(--ink2); font-size: 19px; }
-  .fine { font-size: 16px; color: var(--ink2); margin-top: var(--s4); }
-  .fine a { color: var(--gold); }
-  .req { padding: var(--s2) 0; border-top: 1px solid var(--line); font-size: 17px; display: grid; gap: 4px; }
-  .req b { font-size: 22px; font-weight: 500; }
-  .req .city { color: var(--ink2); font-size: 18px; margin-left: 8px; }
-  .req .who { color: var(--ink2); }
-  .req .who a { color: var(--gold); }
-  .req div span { color: var(--ink2); }
-  .req .note { white-space: pre-wrap; margin-top: 4px; }
+  @media (max-width: 760px) { .why { grid-template-columns: 1fr; } .why figure { order: 2; } blockquote { font-size: 22px; } }
 </style>
 </head>
 <body>
-
 <nav class="nav"><div class="wrap">
   <a class="l" href="/">Abouna</a>
   <a class="l gold" href="/#screenings">Screenings</a>
 </div></nav>
-
 <main class="page">
-  <p class="label">Screening</p>
-  <h1 id="h1">Sign-ups</h1>
-
-  <div class="request" id="gate" hidden>
-    <form id="gf">
-      <label class="full">Password<input type="password" name="k" autocomplete="current-password" autofocus required></label>
-      <button type="submit" class="btn">Open</button>
-    </form>
-  </div>
-
-  <div id="reqs"></div>
-  <div id="out"></div>
+  <h1>Host a screening</h1>
+  <p class="lead">Would you like the second episode of Abouna screened for your church or organization? This page has everything a host needs to know. Screenings are followed by a Q&amp;A with the creator of Abouna, Andrew Ishak, and a priest from the host church.</p>
+  <div class="cta"><a class="btn" href="/request">Request a screening</a><button type="button" class="btn ghost" id="send">Send this page</button><button type="button" class="btn ghost" id="copy" hidden>Copy link</button></div>
   <p class="msg" id="msg" role="status" aria-live="polite"></p>
-</main>
 
+  <section class="part">
+    <h3>Why this for a Coptic church</h3>
+    <div class="why">
+      <figure>
+        <img class="bishop" src="/screening-02.jpg" alt="H.G. Bishop David standing between Andrew Ishak and a friend after a screening">
+        <figcaption>H.G. Bishop David, who attended a screening of Abouna in Staten Island, with Andrew Ishak.</figcaption>
+        <img class="room" src="/screening-01.jpg" alt="Andrew Ishak in front of a full church hall at a screening of Abouna">
+        <img class="room" src="/screening-03.jpg" alt="Andrew Ishak greeting people after a screening of Abouna">
+      </figure>
+      <div>
+        <p>Abouna is made from inside the church. Andrew Ishak grew up in the Coptic churches of Northern California, and the series comes from countless hours interviewing, observing and reading about the Coptic experience. It is no one priest's story. It is a story meant to resonate with anyone who has grown up in an ethno-religious community.</p>
+        <blockquote><p>I'm not writing this from outside of the church. I am somebody who loves the church. I've been a part of church my whole life. I brought my wife to the church. I'm bringing my kids to church.</p></blockquote>
+        <p>Father Beemen Kolta is a newly ordained priest doing his best to serve his people while feeling like he is in over his head. The series shows the priests as God-fearing and imperfect, and because of that they can relate to the people. Just as God took human form, the priest also is human.</p>
+        <blockquote><p>Something that is not disrespectful at church, that is fun for people, that helps them connect with the church long-term. You build a strong church by building a strong community.</p></blockquote>
+        <p>The first episode screened at ten festivals and numerous churches across three continents, and took home Best Feature at the Beacon of Light and Mosaic Film Festivals. Members of all faiths and those outside of a faith community are very welcome.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="part">
+    <h3>The evening</h3>
+    <p>Episode Two runs about 65 minutes. After the film, a Q&amp;A with Andrew Ishak and a priest from your church, who gives the church's perspective on what the film shows.</p>
+  </section>
+
+  <section class="part">
+    <h3>What the church provides</h3>
+    <ul class="list">
+      <li><b>1</b><span>A hall or theater with a projector and sound. Tell us what you know about your A/V setup, or how you would like to show the film.</span></li>
+      <li><b>2</b><span>A date. Days of the week when you already have an established meeting time work best.</span></li>
+      <li><b>3</b><span>A priest for the Q&amp;A.</span></li>
+      <li><b>4</b><span>Andrew's travel for your stop. On a run of two or three churches, each covers its share, not a full flight.</span></li>
+    </ul>
+  </section>
+
+  <section class="part">
+    <h3>Who it is for</h3>
+    <p class="big">13 and up</p>
+    <p>Members of all faiths and those outside of a faith community are very welcome.</p>
+  </section>
+
+  <section class="part">
+    <h3>The money</h3>
+    <p>The screening is free or a suggested donation at the door, your choice, and the church keeps all of it. The church covers Andrew's travel for its stop. The evening closes with a 60-second ask: a QR code to a support page for Episode 3.</p>
+  </section>
+
+  <section class="part">
+    <h3>Sign-ups</h3>
+    <p>Everyone signs up in advance through a link on watchabouna.com, even when the screening is free. Andrew hosts the sign-ups and shares a link with you that shows the names and the count, nothing else, so you know a week out how many are coming.</p>
+  </section>
+
+  <div class="cta" style="margin-top:var(--s4);margin-bottom:0"><a class="btn" href="/request">Request a screening</a><a class="btn ghost" href="/#screenings">See the schedule</a></div>
+</main>
+<footer><div class="wrap"><a href="https://www.instagram.com/andrewishak/" target="_blank" rel="noopener">Instagram</a><a href="https://youtube.com/@andrewishak" target="_blank" rel="noopener">YouTube</a><a href="https://www.facebook.com/andrewishak" target="_blank" rel="noopener">Facebook</a><p>© 2026 Andrew Ishak</p></div></footer>
 <script>
   (function () {
-    const esc = (t) => String(t == null ? '' : t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-    const q = new URLSearchParams(location.search);
-    const out = document.getElementById('out'), msg = document.getElementById('msg'), gate = document.getElementById('gate');
-    const plural = (n, one, many) => n === 1 ? one : many;
-
-    function metaBlock(s) {
-      return '<div class="meta"><div class="day">' + esc(s.when) + '</div><b>' + esc(s.city) + '</b><span>' + esc(s.venue) + (s.note ? ' · ' + esc(s.note) : '') + '</span></div>';
-    }
-    function seatsBlock(seats, parties) {
-      return '<div class="num"><b>' + seats + '</b><span>' + plural(seats, 'seat', 'seats') + ' across ' + parties + ' ' + plural(parties, 'sign-up', 'sign-ups') + '</span></div>';
-    }
-    function when(iso) {
-      const d = new Date(iso);
-      return isNaN(d) ? '' : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    }
-
-    // A host: one screening, names and party sizes, nothing else.
-    async function host(id, k) {
-      const r = await fetch('/api/rsvp?s=' + encodeURIComponent(id) + '&k=' + encodeURIComponent(k));
-      const j = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(j.error || 'That link is not right.');
-      let h = metaBlock(j.screening) + seatsBlock(j.seats, j.people.length);
-      if (!j.people.length) h += '<p class="empty">No sign-ups yet. Share the Register button on watchabouna.com.</p>';
-      else h += '<div class="tw"><table><thead><tr><th>Name</th><th>Coming</th></tr></thead><tbody>' + j.people.map((p) => '<tr><td>' + esc(p.name) + '</td><td class="n">' + esc(p.count) + '</td></tr>').join('') + '</tbody></table></div>';
-      h += '<p class="fine">This page is for the host of this screening. It updates every time someone signs up.</p>';
-      out.innerHTML = h;
-    }
-
-    // Andrew: everything, plus the link to hand each host.
-    async function admin(k) {
-      const r = await fetch('/api/rsvp?all=1&k=' + encodeURIComponent(k));
-      const j = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(j.error || 'Not it.');
-      try { sessionStorage.setItem('abouna-host', k); } catch (e) {}
-      gate.hidden = true;
-      document.getElementById('h1').textContent = 'All sign-ups';
-      requests(k);
-      out.innerHTML = j.screenings.map((s) => {
-        let h = '<div class="screening">' + metaBlock(s) + seatsBlock(s.seats, s.people.length);
-        h += '<label class="hostlink">Host link, for the priest or the organizer. Shows names and the count, no emails.<input readonly value="' + esc(s.host) + '" onfocus="this.select()"></label>';
-        if (!s.people.length) h += '<p class="empty">No sign-ups yet.</p>';
-        else h += '<div class="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Coming</th><th>List</th><th>When</th></tr></thead><tbody>' + s.people.map((p) => '<tr><td>' + esc((p.first + ' ' + (p.last || '')).trim()) + '</td><td>' + esc(p.email) + '</td><td class="n">' + esc(p.count) + '</td><td>' + (p.list ? 'Yes' : '–') + '</td><td>' + esc(when(p.at)) + '</td></tr>').join('') + '</tbody></table></div>';
-        return h + '</div>';
-      }).join('');
-    }
-
-    // Screening requests from watchabouna.com/request, newest first, above the sign-ups.
-    async function requests(k) {
-      const el = document.getElementById('reqs');
-      const r = await fetch('/api/request?k=' + encodeURIComponent(k));
-      const j = await r.json().catch(() => ({}));
-      if (!r.ok) return;
-      const list = j.requests || [];
-      const line = (label, v) => v ? '<div><span>' + label + '</span> ' + esc(v) + '</div>' : '';
-      el.innerHTML = '<div class="screening"><div class="meta"><div class="day">Screening requests</div><span>' + (list.length ? list.length + (list.length === 1 ? ' request' : ' requests') + ' from watchabouna.com/request' : 'None yet. The address to send people is watchabouna.com/request.') + '</span></div>'
-        + list.map((q) => '<div class="req"><b>' + esc(q.church) + '</b> <span class="city">' + esc(q.city) + '</span><div class="who">' + esc(q.name) + (q.role ? ', ' + esc(q.role) : '') + ' · <a href="mailto:' + esc(q.email) + '">' + esc(q.email) + '</a> · ' + esc(when(q.at)) + '</div>'
-          + line('Dates:', q.dates) + line('Size or attendance:', q.size) + line('A/V:', q.av) + (q.note ? '<div class="note">' + esc(q.note) + '</div>' : '') + '</div>').join('')
-        + '</div>';
-    }
-    async function run() {
-      msg.className = 'msg';
-      msg.textContent = '';
-      const s = (q.get('s') || '').trim(), k = (q.get('k') || '').trim();
-      try {
-        if (s && k) return await host(s, k);
-        let code = k;
-        try { code = code || sessionStorage.getItem('abouna-host') || ''; } catch (e) {}
-        if (code) return await admin(code);
-        gate.hidden = false;
-      } catch (err) {
-        msg.className = 'msg err';
-        msg.textContent = err.message;
-        if (!(s && k)) { gate.hidden = false; try { sessionStorage.removeItem('abouna-host'); } catch (e) {} }
-      }
-    }
-
-    document.getElementById('gf').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const code = e.target.k.value.trim();
-      if (!code) return;
-      msg.className = 'msg';
-      msg.textContent = 'Opening.';
-      try { await admin(code); msg.textContent = ''; } catch (err) { msg.className = 'msg err'; msg.textContent = err.message; }
+    const LINK = 'https://watchabouna.com/host';
+    const send = document.getElementById('send'), copy = document.getElementById('copy'), msg = document.getElementById('msg');
+    if (!navigator.share) { send.hidden = true; copy.hidden = false; }
+    send.addEventListener('click', async function () {
+      try { await navigator.share({ title: 'Host a screening of Abouna', url: LINK }); } catch (e) {}
     });
-
-    run();
+    copy.addEventListener('click', async function () {
+      try { await navigator.clipboard.writeText(LINK); msg.textContent = 'Copied: ' + LINK; }
+      catch (e) { msg.textContent = LINK; }
+    });
   })();
 </script>
 </body>

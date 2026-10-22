@@ -1,6 +1,6 @@
 // Drives watchabouna.com/request in the installed Google Chrome at phone and
 // laptop widths: an empty send is refused, a full request goes through, the
-// admin view on /host lists it, then the two design rules on every screen
+// admin view on /signups lists it, then the two design rules on every screen
 // (nothing under 13px, every text colour at 4.5:1 or better). The test row it
 // writes is removed at the end with the service key. Screenshots land in
 // mockups/request/.
@@ -87,11 +87,11 @@ for (const [w, h, t] of [[390, 844, 'phone'], [1280, 900, 'laptop']]) {
   await design(page, 'request done ' + t);
 
   /* the admin view lists it, newest first */
-  await page.goto(base + '/host?k=tiki-test');
+  await page.goto(base + '/signups?k=tiki-test');
   await page.waitForSelector('#reqs .req');
   const first = await page.locator('#reqs .req b').first().textContent();
-  console.log(t, 'first request on /host:', first);
-  if (first !== 'St. Test Coptic Orthodox Church') { bad++; console.log(t, 'FAIL: the request is not first on /host'); }
+  console.log(t, 'first request on /signups:', first);
+  if (first !== 'St. Test Coptic Orthodox Church') { bad++; console.log(t, 'FAIL: the request is not first on /signups'); }
   await page.screenshot({ path: join(outdir, 'host-requests-' + t + '.png'), fullPage: true });
   await design(page, 'host ' + t);
   await ctx.close();
