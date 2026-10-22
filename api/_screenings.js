@@ -6,7 +6,7 @@
 // Andrew, 2026-10-14: New York is not ready for sign-ups, Keep me posted only.
 // `open: false` keeps /rsvp closed until he says go; flip it and swap the button
 // on the row. `tba: true` means the venue and time are still to come, and the
-// register page says so after a sign-up. Fairfax opened 2026-10-20. Natick added 2026-10-22 from Andrew: Dec 8, time to come.
+// register page says so after a sign-up. Fairfax opened 2026-10-20. Natick added 2026-10-22 from Andrew: Tuesday Dec 8, 7:30 PM.
 export const SCREENINGS = [
   {
     id: 'ny-2026-11-06',
@@ -33,7 +33,7 @@ export const SCREENINGS = [
     date: '2026-12-08',
     when: 'Tuesday, December 8',
     venue: 'St. Mark Coptic Orthodox Church',
-    note: 'Time to be announced. Q&A with the director after the film.',
+    note: '7:30 PM. Q&A with the director after the film.',
     open: true
   }
 ];
