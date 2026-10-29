@@ -6,16 +6,15 @@
 // Andrew, 2026-10-14: New York is not ready for sign-ups, Keep me posted only.
 // `open: false` keeps /rsvp closed until he says go; flip it and swap the button
 // on the row. `tba: true` means the venue and time are still to come, and the
-// register page says so after a sign-up. Fairfax opened 2026-10-20. Natick added 2026-10-22 from Andrew: Tuesday Dec 8, 7:30 PM. Davis the same day: Thursday Feb 4, 7:30 PM, UC Davis, room to come.
+// register page says so after a sign-up. Fairfax opened 2026-10-20. Natick added 2026-10-22 from Andrew: Tuesday Dec 8, 7:30 PM. Davis the same day: Thursday Feb 4, 7:30 PM, UC Davis, room to come. New York venue added 2026-10-28: NYU C95 Lecture Hall, 238 Thompson St, 7 PM. Cleveland, OH added as TBD the same day.
 export const SCREENINGS = [
   {
     id: 'ny-2026-11-06',
     city: 'New York, NY',
     date: '2026-11-06',
     when: 'Friday, November 6',
-    venue: 'Beacon of Faith Conference',
-    note: 'Venue to be announced. 7 PM. Q&A with the director after the film.',
-    tba: true,
+    venue: 'Beacon of Faith Conference, NYU C95 Lecture Hall, 238 Thompson St',
+    note: '7 PM. Q&A with the director after the film.',
     open: false
   },
   {
