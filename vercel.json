@@ -18,6 +18,10 @@
   ],
   "rewrites": [
     {
+      "source": "/vid/:t",
+      "destination": "/api/vid?t=:t"
+    },
+    {
       "source": "/signup",
       "destination": "/signup.html"
     },
