@@ -41,7 +41,8 @@
   .pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); }
   @media (max-width: 480px) { .pair { grid-template-columns: 1fr; } }
   .field { display: grid; gap: 8px; align-content: start; }
-  .field[hidden] { display: none; }
+  .adult { display: grid; gap: var(--s2); }
+  .adult[hidden] { display: none; }
   .hint { color: var(--ink2); font-size: 17px; line-height: 1.4; }
   .ferr { color: #f3c2ad; font-size: 16px; line-height: 1.3; }
   .ferr:empty { display: none; }
@@ -85,8 +86,7 @@
     <form id="f" class="solo" novalidate>
       <div id="people"></div>
       <button type="button" class="add" id="add">Add another person</button>
-      <p class="hint">Ages 10 and up. Anyone 16 or older needs their own email.</p>
-      <label class="check"><input type="checkbox" name="list" checked> Also add me to Andrew's mailing list. He promises to only send stuff when it's important.</label>
+      <p class="hint">Ages 10 and up.</p>
       <div class="trap" aria-hidden="true"><input type="text" name="web" tabindex="-1" value="" autocomplete="off"></div>
       <button type="submit" class="btn" id="go">Register</button>
       <p class="msg" id="msg" role="status" aria-live="polite"></p>
@@ -107,8 +107,8 @@
 <script>
   // ?s=<screening id>. The screening's details come from /api/rsvp and the
   // sign-up goes back to it: one name and one email per person, the person
-  // filling in the form first. If the box is ticked, that first person alone
-  // goes to the Mailchimp list straight from here, the way /signup does.
+  // filling in the form first. Each person has a mailing-list box; the ones
+  // ticked go to the Mailchimp list straight from here, the way /signup does.
   (async function () {
     const MAX = 6; // people on one form, the same number api/rsvp.js allows
     const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,120}\.[^\s@]{2,24}$/;
@@ -158,7 +158,9 @@
       el.innerHTML = '<div class="who"><b></b>' + (first ? '' : '<button type="button" class="rm">Remove</button>') + '</div>'
         + '<div class="pair">' + field(n, 'first', 'First name', first ? 'given-name' : 'off') + field(n, 'last', 'Last name', first ? 'family-name' : 'off') + '</div>'
         + (first ? '' : '<label class="check"><input type="checkbox" name="kid"> Under 16</label>')
-        + field(n, 'email', 'Email', first ? 'email' : 'off');
+        + '<div class="adult">' + field(n, 'email', 'Email', first ? 'email' : 'off')
+        // Each person has a mailing-list box of their own. Yours starts ticked; a person you add starts unticked.
+        + '<label class="check"><input type="checkbox" name="list"' + (first ? ' checked' : '') + '> ' + (first ? 'Also add me' : 'Also add this person') + ' to Andrew\'s mailing list. He promises to only send stuff when it\'s important.</label></div>';
       list.appendChild(el);
       count();
       return el;
@@ -229,7 +231,7 @@
     list.addEventListener('change', (e) => {
       if (e.target.name !== 'kid') return;
       const email = e.target.closest('.person').querySelector('[name=email]');
-      email.closest('.field').hidden = e.target.checked;
+      email.closest('.adult').hidden = e.target.checked;
       mark(email, '');
       if (!list.querySelector('[aria-invalid]')) msg.textContent = '';
     });
@@ -249,20 +251,19 @@
       }
       const people = Array.from(list.children).map((el) => under16(el)
         ? { first: el.querySelector('[name=first]').value.trim(), last: el.querySelector('[name=last]').value.trim(), kid: true }
-        : { first: el.querySelector('[name=first]').value.trim(), last: el.querySelector('[name=last]').value.trim(), email: el.querySelector('[name=email]').value.trim() });
-      const onList = f.list.checked;
+        : { first: el.querySelector('[name=first]').value.trim(), last: el.querySelector('[name=last]').value.trim(), email: el.querySelector('[name=email]').value.trim(), list: el.querySelector('[name=list]').checked });
       msg.className = 'msg';
       msg.textContent = 'Saving.';
       go.disabled = true;
       try {
-        const r = await fetch('/api/rsvp', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ s: id, people, list: onList, web: f.web.value }) });
+        const r = await fetch('/api/rsvp', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ s: id, people, web: f.web.value }) });
         const j = await r.json().catch(() => ({}));
         if (!r.ok) {
           const el = list.children[j.at], input = el && el.querySelector('[name="' + j.field + '"]');
           if (input) { mark(input, j.error); input.focus(); }
           throw new Error(j.error || 'Something went wrong. Try again.');
         }
-        if (onList) mailchimp(people[0]);
+        people.filter((p) => p.list).forEach(mailchimp);
         finish(people);
       } catch (err) {
         msg.className = 'msg err';

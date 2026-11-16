@@ -8,7 +8,7 @@
 // GET  ?s=<id>                  what the sign-up page shows: city, date, venue
 // GET  ?s=<id>&k=<host key>     the host's view: seats and names, no emails
 // GET  ?all=1&k=<admin code>    Andrew's view: every screening, every sign-up, each host link
-// POST { s, people: [{ first, last, email } or { first, last, kid: true }], list }   saves a row per person; { ok, count, people } back
+// POST { s, people: [{ first, last, email, list } or { first, last, kid: true }] }   saves a row per person; { ok, count, people } back
 //
 // ABOUNA_ADMIN_CODE is the password for /signups. A screening's host key is
 // derived from it, so handing a priest a link needs no table: copy it off the
@@ -117,13 +117,13 @@ async function post(req, res) {
   // The page before 2026-11-16 sent one person at the top level; a copy of that page still open in a tab keeps working.
   const given = Array.isArray(b.people) ? b.people : [{ first: b.first, last: b.last, email: b.email }];
   if (given.length < 1 || given.length > MAX) return send(res, 400, { error: 'One form takes up to ' + MAX + ' people.' });
-  const list = b.list === true || b.list === 'true' || b.list === '1' || b.list === 'on';
+  const yes = (x) => x === true || x === 'true' || x === '1' || x === 'on';
 
   const people = [];
   for (let i = 0; i < given.length; i++) {
     const g = given[i] && typeof given[i] === 'object' ? given[i] : {};
     const kid = i > 0 && (g.kid === true || g.kid === 'true');
-    const p = { first: str(g.first, 60), last: str(g.last, 60), email: kid ? '' : str(g.email, 160).toLowerCase(), kid };
+    const p = { first: str(g.first, 60), last: str(g.last, 60), email: kid ? '' : str(g.email, 160).toLowerCase(), kid, list: !kid && (yes(g.list) || (i === 0 && yes(b.list))) };
     if (!p.first) return send(res, 400, { error: 'First name is missing.', at: i, field: 'first' });
     if (!p.last && Array.isArray(b.people)) return send(res, 400, { error: 'Last name is missing.', at: i, field: 'last' });
     if (!kid && !EMAIL.test(p.email)) return send(res, 400, { error: 'That email does not look right.', at: i, field: 'email' });
@@ -144,7 +144,7 @@ async function post(req, res) {
   people.forEach((p, i) => {
     const o = old.get(p.key);
     if (o && i > 0) return; // somebody added a person who is already registered: that person's row stays as they left it
-    const data = { s: s.id, first: p.first, last: p.last, email: p.email, count: Math.max(1, Number(o && o.count) || 1), list: i === 0 ? list || !!(o && o.list) : false, at: (o && o.at) || at };
+    const data = { s: s.id, first: p.first, last: p.last, email: p.email, count: Math.max(1, Number(o && o.count) || 1), list: p.list || !!(o && o.list), at: (o && o.at) || at };
     if (p.kid) data.kid = true;
     if (i > 0) data.by = people[0].email;
     else if (o && o.by) data.by = o.by;

@@ -102,7 +102,8 @@ for (const [w, h, t] of [[390, 844, 'phone'], [1280, 900, 'laptop']]) {
   await two.locator('input[name=first]').fill('Guest');
   await two.locator('input[name=last]').fill('Row');
   await two.locator('input[name=email]').fill('claude-test@example.com');
-  await page.uncheck('input[name=list]');
+  await one.locator('input[name=list]').uncheck();
+  if (await two.locator('input[name=list]').isChecked()) { bad++; console.log(t, 'an added person starts on the mailing list'); }
   await page.click('#go');
   const twice = await two.locator('.ferr:not(:empty)').allTextContents();
   if (twice.join() !== 'Each person needs their own email.') { bad++; console.log(t, 'repeated email:', twice); }
