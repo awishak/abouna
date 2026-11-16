@@ -44,6 +44,7 @@
   .adult { display: grid; gap: var(--s2); }
   .adult[hidden] { display: none; }
   .hint { color: var(--ink2); font-size: 17px; line-height: 1.4; }
+  .hint[hidden] { display: none; }
   .ferr { color: #f3c2ad; font-size: 16px; line-height: 1.3; }
   .ferr:empty { display: none; }
   .request input[aria-invalid="true"] { border-color: #f3c2ad; }
@@ -113,6 +114,7 @@
     <h2>Parking and walking</h2>
     <img id="wayMap" alt="" width="867" height="641">
     <ol id="waySteps"></ol>
+    <p class="hint" id="wayNote" hidden></p>
     <a id="wayPark" target="_blank" rel="noopener" hidden>Driving directions to the parking</a>
     <p class="credit">Map data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors</p>
   </section>
@@ -167,6 +169,7 @@
       document.getElementById('wayMap').src = s.map;
       document.getElementById('wayMap').alt = 'Map. ' + (s.steps || []).join(' ');
       document.getElementById('waySteps').innerHTML = (s.steps || []).map((t) => '<li>' + esc(t) + '</li>').join('');
+      if (s.parkNote) { const note = document.getElementById('wayNote'); note.textContent = s.parkNote; note.hidden = false; }
       if (s.park) { park.href = 'https://www.google.com/maps/dir/?api=1&destination=' + encodeURIComponent(s.park); park.hidden = false; }
       way.hidden = false;
     }
