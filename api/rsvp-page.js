@@ -8,7 +8,7 @@
 import { ID, find } from './_screenings.js';
 
 const esc = (t) => String(t == null ? '' : t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const IMAGE = 'https://www.watchabouna.com/og-image.png';
+const SITE = 'https://www.watchabouna.com';
 
 export default async function handler(req, res) {
   const id = String((req.query && req.query.s) || '').trim().slice(0, 40);
@@ -28,6 +28,8 @@ export default async function handler(req, res) {
   // Andrew, 2026-11-16: the title starts "Register for", and the line under the title leaves out "Free".
   const title = s && s.open ? 'Register for the Abouna Episode Two screening in ' + s.city : 'Register for an Abouna Episode Two screening';
   const line = s && s.open ? s.when + (s.time ? ', ' + s.time : '') + '. ' + s.venue + '.' : 'Register for a screening of Abouna Episode Two.';
+  const poster = s && s.open && s.poster ? s.poster : '';
+  const IMAGE = SITE + (poster || '/og-image.png');
   const tags = '<meta property="og:title" content="' + esc(title) + '">\n'
     + '<meta property="og:description" content="' + esc(line) + '">\n'
     + '<meta property="og:image" content="' + IMAGE + '">\n'
@@ -41,6 +43,8 @@ export default async function handler(req, res) {
     .replace(/<title>[^<]*<\/title>/, '<title>' + esc(title) + '</title>')
     .replace(/<meta name="description" content="[^"]*">/, '<meta name="description" content="' + esc(line) + '">')
     .replace('</head>', tags + '</head>');
+  // The screening's own poster goes into the page here, so the picture is right before the script runs.
+  if (poster) html = html.replace('src="/poster-episode-two-web.jpg"', 'src="' + poster + '"').replace('alt="Abouna Episode Two poster"', 'alt="Abouna Episode Two poster, ' + esc(s.city) + '"');
   res.statusCode = 200;
   res.setHeader('content-type', 'text/html; charset=utf-8');
   res.setHeader('cache-control', 'public, max-age=0, s-maxage=60');
