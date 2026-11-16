@@ -7,6 +7,8 @@
 // `open: false` keeps /rsvp closed until he says go; flip it and swap the button
 // on the row. `tba: true` means the venue and time are still to come, and the
 // register page says so after a sign-up. Fairfax opened 2026-10-20. Natick added 2026-10-22 from Andrew: Tuesday Dec 8, 7:30 PM. Davis the same day: Thursday Feb 4, 7:30 PM, UC Davis, room to come. New York venue added 2026-10-28: NYU C95 Lecture Hall, 238 Thompson St, 7 PM. Cleveland, OH added as TBD the same day.
+// `address` shows on the register page under the venue, linked to a map. Fairfax and Natick added 2026-11-16, looked up from church listings; Andrew said yes to both the same day.
+// `time` is its own field since 2026-11-16 so the register page can show When and Where as separate facts; `note` is whatever else there is to say.
 export const SCREENINGS = [
   {
     id: 'ny-2026-11-06',
@@ -14,7 +16,8 @@ export const SCREENINGS = [
     date: '2026-11-06',
     when: 'Friday, November 6',
     venue: 'Beacon of Faith Conference, NYU C95 Lecture Hall, 238 Thompson St',
-    note: '7 PM. Q&A with the director after the film.',
+    time: '7 PM',
+    note: 'Q&A with the director after the film.',
     open: false
   },
   {
@@ -23,7 +26,9 @@ export const SCREENINGS = [
     date: '2026-12-10',
     when: 'Thursday, December 10',
     venue: 'St. Mark Coptic Orthodox Church',
-    note: '7:30 PM. Q&A with the director after the film.',
+    address: '11911 Braddock Road, Fairfax, VA 22030',
+    time: '7:30 PM',
+    note: 'Q&A with the director after the film.',
     open: true
   },
   {
@@ -32,7 +37,9 @@ export const SCREENINGS = [
     date: '2026-12-08',
     when: 'Tuesday, December 8',
     venue: 'St. Mark Coptic Orthodox Church',
-    note: '7:30 PM. Q&A with the director after the film.',
+    address: '145 Oak Street, Natick, MA 01760',
+    time: '7:30 PM',
+    note: 'Q&A with the director after the film.',
     open: true
   },
   {
@@ -41,7 +48,8 @@ export const SCREENINGS = [
     date: '2027-02-04',
     when: 'Thursday, February 4',
     venue: 'UC Davis',
-    note: 'Room to be announced. 7:30 PM. Q&A with the director after the film.',
+    time: '7:30 PM',
+    note: 'Room to be announced. Q&A with the director after the film.',
     open: true
   }
 ];

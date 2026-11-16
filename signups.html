@@ -78,7 +78,7 @@
     const plural = (n, one, many) => n === 1 ? one : many;
 
     function metaBlock(s) {
-      return '<div class="meta"><div class="day">' + esc(s.when) + '</div><b>' + esc(s.city) + '</b><span>' + esc(s.venue) + (s.note ? ' · ' + esc(s.note) : '') + '</span></div>';
+      return '<div class="meta"><div class="day">' + esc(s.when) + '</div><b>' + esc(s.city) + '</b><span>' + esc(s.venue) + (s.time ? ' · ' + esc(s.time) : '') + (s.note ? ' · ' + esc(s.note) : '') + '</span></div>';
     }
     function seatsBlock(seats, parties) {
       return '<div class="num"><b>' + seats + '</b><span>' + plural(seats, 'seat', 'seats') + ' across ' + parties + ' ' + plural(parties, 'sign-up', 'sign-ups') + '</span></div>';
