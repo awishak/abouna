@@ -16,7 +16,7 @@ const { default: request } = await import(ROOT + '/api/request.js');
 const { default: rsvpPage } = await import(ROOT + '/api/rsvp-page.js');
 const API = { '/api/rsvp': rsvp, '/api/press': press, '/api/request': request, '/rsvp': rsvpPage };
 
-const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.jpg': 'image/jpeg', '.png': 'image/png', '.ico': 'image/x-icon' };
+const types = { '.html': 'text/html; charset=utf-8', '.svg': 'image/svg+xml', '.css': 'text/css', '.js': 'text/javascript', '.jpg': 'image/jpeg', '.png': 'image/png', '.ico': 'image/x-icon' };
 
 createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x');

@@ -10,6 +10,8 @@
 // `address` shows on the register page under the venue, linked to a map. Fairfax and Natick added 2026-11-16, looked up from church listings; Andrew said yes to both the same day.
 // `time` is its own field since 2026-11-16 so the register page can show When and Where as separate facts; `note` is whatever else there is to say.
 // `poster` is the screening's own poster, shown on its register page and in the preview when the link is sent. Without one, the Episode Two poster is used. Fairfax and Natick posters from Andrew, 2026-11-16.
+// Santa Clara added 2026-11-16 from Andrew: Friday Dec 4, 7:30 PM, Vari Communication Studio, sign-ups open. The map is map-santa-clara.svg, drawn from the screenshot he sent: park in the Main Parking Structure, walk to Vari Hall.
+// `place` is a line under the venue with no map link (Google has Vari Hall labelled as another building). `map` is a picture for the register page, `steps` the numbered lines under it, `park` what the driving-directions link searches for.
 export const SCREENINGS = [
   {
     id: 'ny-2026-11-06',
@@ -20,6 +22,21 @@ export const SCREENINGS = [
     time: '7 PM',
     note: 'Q&A with the director after the film.',
     open: false
+  },
+  {
+    id: 'santa-clara-2026-12-04',
+    city: 'Santa Clara, CA',
+    date: '2026-12-04',
+    when: 'Friday, December 4',
+    venue: 'Vari Communication Studio',
+    place: 'Vari Hall, Santa Clara University',
+    map: '/map-santa-clara.svg',
+    steps: ['Park in the Main Parking Structure.', 'Walk to Vari Hall.'],
+    park: 'Main Parking Structure SCU, Santa Clara, CA',
+    poster: '/poster-santa-clara-web.jpg',
+    time: '7:30 PM',
+    note: 'Q&A with the director after the film.',
+    open: true
   },
   {
     id: 'dc-2026-12-10',

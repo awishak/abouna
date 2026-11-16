@@ -48,7 +48,7 @@ function body(req) {
 }
 
 const hostKey = (id) => createHmac('sha256', String(process.env.ABOUNA_ADMIN_CODE || '')).update('host:' + id).digest('hex').slice(0, 20);
-const pub = (s) => ({ id: s.id, city: s.city, date: s.date, when: s.when, venue: s.venue, address: s.address || '', poster: s.poster || '', time: s.time || '', note: s.note, tba: !!s.tba, open: s.open });
+const pub = (s) => ({ id: s.id, city: s.city, date: s.date, when: s.when, venue: s.venue, address: s.address || '', poster: s.poster || '', place: s.place || '', map: s.map || '', steps: s.steps || [], park: s.park || '', time: s.time || '', note: s.note, tba: !!s.tba, open: s.open });
 const str = (x, max) => String(x == null ? '' : x).trim().slice(0, max);
 const seats = (people) => people.reduce((n, p) => n + (Number(p.count) || 0), 0);
 const byTime = (a, b) => String(a.at || '').localeCompare(String(b.at || ''));

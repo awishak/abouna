@@ -78,7 +78,7 @@ for (const [w, h, t] of [[390, 844, 'phone'], [1280, 900, 'laptop']]) {
   const dlg = page.locator('#kit');
   if (!(await dlg.evaluate((d) => d.open))) fail(t, 'the footer link did not open the kit');
   const fbTiles = await page.locator('#kit .ktile').count();
-  if (fbTiles !== 2) fail(t, 'fallback kit has', fbTiles, 'tiles, want the 2 posters');
+  if (fbTiles !== 5) fail(t, 'fallback kit has', fbTiles, 'tiles, want the 5 posters');
   if (!(await page.locator('#kit .ksyn').count())) fail(t, 'fallback kit has no synopsis');
   await page.screenshot({ path: join(outdir, 'kit-fallback-' + t + '.png') });
   await design(page, 'fallback ' + t);
