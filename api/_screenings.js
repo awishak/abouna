@@ -10,7 +10,7 @@
 // `address` shows on the register page under the venue, linked to a map. Fairfax and Natick added 2026-11-16, looked up from church listings; Andrew said yes to both the same day.
 // `time` is its own field since 2026-11-16 so the register page can show When and Where as separate facts; `note` is whatever else there is to say.
 // `poster` is the screening's own poster, shown on its register page and in the preview when the link is sent. Without one, the Episode Two poster is used. Fairfax and Natick posters from Andrew, 2026-11-16.
-// Santa Clara added 2026-11-16 from Andrew: Friday Dec 4, 7:30 PM, Vari Communication Studio, sign-ups open. The map is map-santa-clara.svg, drawn from the screenshot he sent: park in the Main Parking Structure, walk to Vari Hall.
+// Santa Clara added 2026-11-16 from Andrew: Friday Dec 4, 7:30 PM, sign-ups open. He gave the venue as Vari Communication Studio, then as Vari Hall Film Studio, which is the name to use. The map is map-santa-clara.svg, drawn from the screenshot he sent: park in or around the North Parking Garage, walk to Vari Hall (his second map; the first had the Main Parking Structure).
 // `place` is a line under the venue with no map link (Google has Vari Hall labelled as another building). `map` is a picture for the register page, `steps` the numbered lines under it, `park` what the driving-directions link searches for.
 export const SCREENINGS = [
   {
@@ -28,11 +28,11 @@ export const SCREENINGS = [
     city: 'Santa Clara, CA',
     date: '2026-12-04',
     when: 'Friday, December 4',
-    venue: 'Vari Communication Studio',
-    place: 'Vari Hall, Santa Clara University',
+    venue: 'Vari Hall Film Studio',
+    place: 'Santa Clara University',
     map: '/map-santa-clara.svg',
-    steps: ['Park in the Main Parking Structure.', 'Walk to Vari Hall.'],
-    park: 'Main Parking Structure SCU, Santa Clara, CA',
+    steps: ['Park in or around the North Parking Garage.', 'Walk to Vari Hall.'],
+    park: 'North Garage, 1063 Alviso St, Santa Clara, CA',
     poster: '/poster-santa-clara-web.jpg',
     time: '7:30 PM',
     note: 'Q&A with the director after the film.',
