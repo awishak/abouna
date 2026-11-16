@@ -44,6 +44,7 @@
   .req .who a { color: var(--gold); }
   .req div span { color: var(--ink2); }
   .req .note { white-space: pre-wrap; margin-top: 4px; }
+  .by { display: block; color: var(--ink2); font-size: 15px; }
 </style>
 </head>
 <body>
@@ -112,7 +113,7 @@
         let h = '<div class="screening">' + metaBlock(s) + seatsBlock(s.seats, s.people.length);
         h += '<label class="hostlink">Host link, for the priest or the organizer. Shows names and the count, no emails.<input readonly value="' + esc(s.host) + '" onfocus="this.select()"></label>';
         if (!s.people.length) h += '<p class="empty">No sign-ups yet.</p>';
-        else h += '<div class="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Coming</th><th>List</th><th>When</th></tr></thead><tbody>' + s.people.map((p) => '<tr><td>' + esc((p.first + ' ' + (p.last || '')).trim()) + '</td><td>' + esc(p.email) + '</td><td class="n">' + esc(p.count) + '</td><td>' + (p.list ? 'Yes' : '–') + '</td><td>' + esc(when(p.at)) + '</td></tr>').join('') + '</tbody></table></div>';
+        else h += '<div class="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Coming</th><th>List</th><th>When</th></tr></thead><tbody>' + s.people.map((p) => '<tr><td>' + esc((p.first + ' ' + (p.last || '')).trim()) + (p.by ? '<span class="by">added by ' + esc(p.by) + '</span>' : '') + '</td><td>' + (p.kid ? 'under 16' : esc(p.email)) + '</td><td class="n">' + esc(p.count) + '</td><td>' + (p.list ? 'Yes' : '–') + '</td><td>' + esc(when(p.at)) + '</td></tr>').join('') + '</tbody></table></div>';
         return h + '</div>';
       }).join('');
     }

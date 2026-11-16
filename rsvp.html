@@ -12,26 +12,49 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/site.css">
 <style>
-  /* One screening, one form, on the site's ground. Tokens and the .request form come from site.css. */
-  .page { max-width: 680px; margin: 0 auto; padding: var(--s4) var(--s3) var(--s5); }
-  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(52px, 9vw, 84px); line-height: 0.95; margin: var(--s1) 0 var(--s3); }
-  .meta { display: grid; gap: 4px; margin-bottom: var(--s4); }
-  .meta .day { font-family: var(--serif); font-size: 36px; font-weight: 600; color: var(--gold); line-height: 1.05; }
-  .meta b { font-size: 24px; font-weight: 500; }
+  /* One screening, one form, on the site's ground. Tokens and the field styles come from site.css.
+     Since 2026-11-16 there is no head count: every person has a name and an email of their own,
+     and "Add another person" puts a second set of fields under the first. From Andrew the same day:
+     the film is for ages 10 and up, a parent can add a child, and anyone 16 or older gives an email. */
+  .page { max-width: 600px; margin: 0 auto; padding: var(--s4) var(--s3) var(--s5); }
+  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(44px, 10vw, 64px); line-height: 1; margin: var(--s1) 0 var(--s2); }
+  .meta { display: grid; gap: 4px; padding-bottom: var(--s4); margin-bottom: var(--s4); border-bottom: 1px solid var(--line); }
+  .meta .day { font-family: var(--serif); font-size: 32px; font-weight: 600; color: var(--gold); line-height: 1.1; }
+  .meta b { font-size: 20px; font-weight: 500; }
   .meta span { color: var(--ink2); font-size: 18px; max-width: 48ch; }
-  .request .check { grid-column: 1 / -1; display: flex; gap: 12px; align-items: flex-start; text-transform: none; letter-spacing: 0; font-size: 17px; font-weight: 400; color: var(--ink); line-height: 1.4; }
-  .request .check input { width: 22px; height: 22px; min-height: 0; padding: 0; margin: 2px 0 0; accent-color: var(--gold); flex: none; }
-  .request button { grid-column: 1 / -1; border: 0; cursor: pointer; font-family: var(--sans); }
-  .request button:hover { background: #e4cf9f; }
-  .request button:disabled { opacity: 0.6; cursor: default; }
-  .request button:focus-visible, .request input:focus-visible, .request select:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-  .msg { grid-column: 1 / -1; min-height: 1.5em; color: var(--ink2); font-size: 17px; }
+  .request form { grid-template-columns: 1fr; gap: var(--s3); }
+  #people { display: grid; gap: var(--s3); }
+  .person { display: grid; gap: var(--s2); }
+  .person + .person { padding-top: var(--s2); border-top: 1px solid var(--line); }
+  .who { display: flex; justify-content: space-between; align-items: center; gap: var(--s2); min-height: 44px; }
+  .who b { font-family: var(--serif); font-size: 28px; font-weight: 600; line-height: 1; }
+  .solo .who { display: none; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); }
+  @media (max-width: 480px) { .pair { grid-template-columns: 1fr; } }
+  .field { display: grid; gap: 8px; align-content: start; }
+  .field[hidden] { display: none; }
+  .hint { color: var(--ink2); font-size: 17px; line-height: 1.4; }
+  .ferr { color: #f3c2ad; font-size: 16px; line-height: 1.3; }
+  .ferr:empty { display: none; }
+  .request input[aria-invalid="true"] { border-color: #f3c2ad; }
+  .rm { background: none; border: 0; padding: 0 4px; min-height: 44px; color: var(--gold); font: inherit; font-size: 17px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .add { min-height: 56px; padding: 0 16px; border: 1px dashed var(--field-line); border-radius: 8px; background: transparent; color: var(--ink); font: inherit; font-size: 18px; font-weight: 500; cursor: pointer; }
+  .add:hover { border-style: solid; }
+  .request .check { display: flex; gap: 12px; align-items: flex-start; font-size: 17px; font-weight: 400; line-height: 1.4; min-height: 44px; cursor: pointer; }
+  .request .check input { width: 24px; height: 24px; min-height: 0; padding: 0; margin: 0; accent-color: var(--gold); flex: none; }
+  .request .btn { border: 0; cursor: pointer; font-family: var(--sans); width: 100%; }
+  .request .btn:hover { background: #e4cf9f; }
+  .request .btn:disabled { opacity: 0.6; cursor: default; }
+  .request button:focus-visible, .request input:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .msg { color: var(--ink2); font-size: 17px; }
+  .msg:empty { display: none; }
   .msg.err { color: #f3c2ad; }
+  .trap { position: absolute; left: -5000px; }
   .done { display: none; }
-  .done h3 { margin-top: var(--s1); }
-  .done .lead { font-size: 20px; }
+  .done .lead { font-size: 20px; color: var(--ink); margin-top: var(--s1); }
   .fine { font-size: 16px; color: var(--ink2); margin-top: var(--s3); max-width: 60ch; }
   .fine a { color: var(--gold); }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
@@ -42,27 +65,24 @@
 </div></nav>
 
 <main class="page">
-  <p class="label">Screening</p>
-  <h1>Register</h1>
+  <p class="label" id="label">Screening</p>
+  <h1 id="h1">Register</h1>
   <div class="meta" id="meta"><span>One moment.</span></div>
 
   <div class="request" id="box">
-    <form id="f" novalidate>
-      <label>First name<input name="first" required autocomplete="given-name" autocapitalize="words"></label>
-      <label>Last name<input name="last" autocomplete="family-name" autocapitalize="words"></label>
-      <label class="full">Email<input type="email" name="email" required autocomplete="email" inputmode="email" placeholder="you@example.com"></label>
-      <label class="full">How many are coming, including you
-        <select name="count"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select>
-      </label>
+    <form id="f" class="solo" novalidate>
+      <div id="people"></div>
+      <button type="button" class="add" id="add">Add another person</button>
+      <p class="hint">Ages 10 and up. Anyone 16 or older needs their own email.</p>
       <label class="check"><input type="checkbox" name="list" checked> Also add me to Andrew's mailing list. He promises to only send stuff when it's important.</label>
-      <button type="submit" class="btn">Register</button>
+      <div class="trap" aria-hidden="true"><input type="text" name="web" tabindex="-1" value="" autocomplete="off"></div>
+      <button type="submit" class="btn" id="go">Register</button>
       <p class="msg" id="msg" role="status" aria-live="polite"></p>
     </form>
   </div>
 
   <div class="request done" id="done" aria-live="polite">
     <p class="label">You're on the list</p>
-    <h3 id="doneTitle"></h3>
     <p class="lead" id="doneText"></p>
     <p class="fine"><a href="/#screenings">Back to screenings</a>.</p>
   </div>
@@ -73,16 +93,19 @@
 <footer><div class="wrap"><a href="https://www.instagram.com/andrewishak/" target="_blank" rel="noopener">Instagram</a><a href="https://youtube.com/@andrewishak" target="_blank" rel="noopener">YouTube</a><a href="https://www.facebook.com/andrewishak" target="_blank" rel="noopener">Facebook</a><p>© 2026 Abouna. Created by Andrew Ishak. All rights reserved.</p></div></footer>
 
 <script>
-  // ?s=<screening id>. The screening's details come from /api/rsvp, the
-  // sign-up goes back to it, and if the box is ticked the same details go to
-  // the Mailchimp list straight from here, the way /signup does.
+  // ?s=<screening id>. The screening's details come from /api/rsvp and the
+  // sign-up goes back to it: one name and one email per person, the person
+  // filling in the form first. If the box is ticked, that first person alone
+  // goes to the Mailchimp list straight from here, the way /signup does.
   (async function () {
+    const MAX = 6; // people on one form, the same number api/rsvp.js allows
+    const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,120}\.[^\s@]{2,24}$/;
     const esc = (t) => String(t == null ? '' : t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     const q = new URLSearchParams(location.search);
     const id = (q.get('s') || '').trim();
     const meta = document.getElementById('meta'), box = document.getElementById('box'), f = document.getElementById('f'), msg = document.getElementById('msg');
+    const list = document.getElementById('people'), add = document.getElementById('add'), go = document.getElementById('go');
     const done = document.getElementById('done');
-    const button = f.querySelector('button');
 
     let s = null;
     try {
@@ -101,32 +124,143 @@
       return;
     }
     document.title = 'Register: ' + s.city + ' | ABOUNA';
-    meta.innerHTML = '<div class="day">' + esc(s.when) + '</div><b>' + esc(s.city) + '</b><span>' + esc(s.venue) + (s.note ? ' · ' + esc(s.note) : '') + '</span>';
+    document.getElementById('label').textContent = 'Register';
+    document.getElementById('h1').textContent = s.city;
+    meta.innerHTML = '<div class="day">' + esc(s.when) + '</div><span>' + esc(s.venue) + (s.note ? ' · ' + esc(s.note) : '') + '</span>';
+
+    // One person's fields. The browser fills in the first person from what it
+    // knows about whoever is holding the phone, and leaves the others alone.
+    let made = 0, tried = false;
+    function field(n, name, label, own) {
+      const fid = name + n, email = name === 'email';
+      return '<div class="field"><label for="' + fid + '">' + label + '</label><input id="' + fid + '" name="' + name + '" type="' + (email ? 'email' : 'text') + '" required autocomplete="' + own + '"'
+        + (email ? ' inputmode="email" autocapitalize="none" spellcheck="false"' : ' autocapitalize="words"') + ' aria-describedby="' + fid + 'e"><p class="ferr" id="' + fid + 'e"></p></div>';
+    }
+    function person() {
+      const n = ++made, first = !list.children.length;
+      const el = document.createElement('div');
+      el.className = 'person';
+      el.setAttribute('role', 'group');
+      el.innerHTML = '<div class="who"><b></b>' + (first ? '' : '<button type="button" class="rm">Remove</button>') + '</div>'
+        + '<div class="pair">' + field(n, 'first', 'First name', first ? 'given-name' : 'off') + field(n, 'last', 'Last name', first ? 'family-name' : 'off') + '</div>'
+        + (first ? '' : '<label class="check"><input type="checkbox" name="kid"> Under 16</label>')
+        + field(n, 'email', 'Email', first ? 'email' : 'off');
+      list.appendChild(el);
+      count();
+      return el;
+    }
+    function count() {
+      const all = Array.from(list.children);
+      f.classList.toggle('solo', all.length === 1);
+      all.forEach((el, i) => {
+        const name = i === 0 ? 'You' : 'Person ' + (i + 1);
+        el.querySelector('.who b').textContent = name;
+        el.setAttribute('aria-label', name);
+        const rm = el.querySelector('.rm');
+        if (rm) rm.setAttribute('aria-label', 'Remove ' + name.toLowerCase());
+      });
+      add.hidden = all.length >= MAX;
+      go.textContent = all.length === 1 ? 'Register' : 'Register ' + all.length + ' people';
+    }
+
+    // What is wrong with one field, as a sentence, or '' when nothing is.
+    function problem(input) {
+      const v = input.value.trim();
+      if (input.name === 'first') return v ? '' : 'First name is missing.';
+      if (input.name === 'last') return v ? '' : 'Last name is missing.';
+      if (under16(input.closest('.person'))) return '';
+      if (!v) return 'Email is missing.';
+      if (!EMAIL.test(v)) return 'That email does not look right.';
+      for (const other of list.querySelectorAll('input[name=email]')) {
+        if (other === input) break;
+        if (under16(other.closest('.person'))) continue;
+        if (other.value.trim().toLowerCase() === v.toLowerCase()) return 'Each person needs their own email.';
+      }
+      return '';
+    }
+    function under16(el) { const k = el.querySelector('[name=kid]'); return !!(k && k.checked); }
+    function mark(input, text) {
+      document.getElementById(input.id + 'e').textContent = text;
+      if (text) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid');
+      return !text;
+    }
+    // A field is checked when you leave it, once it has something in it, and
+    // an error clears as soon as the field is right. Leaving a field by
+    // pressing on something else waits for the press to finish first: an
+    // error line appearing mid-press moves the page down and the press misses.
+    const TEXT = 'input:not([type=checkbox])';
+    let held = false, waiting = [];
+    const settle = () => { held = false; waiting.splice(0).forEach((i) => { if (i.isConnected) mark(i, problem(i)); }); };
+    document.addEventListener('pointerdown', () => { held = true; }, true);
+    document.addEventListener('pointerup', () => setTimeout(settle, 0), true);
+    document.addEventListener('pointercancel', settle, true);
+    list.addEventListener('focusout', (e) => {
+      if (!e.target.matches(TEXT) || !(tried || e.target.value.trim())) return;
+      if (held) waiting.push(e.target); else mark(e.target, problem(e.target));
+    });
+    list.addEventListener('input', (e) => {
+      if (!e.target.getAttribute('aria-invalid') || problem(e.target)) return;
+      mark(e.target, '');
+      if (!list.querySelector('[aria-invalid]')) msg.textContent = '';
+    });
+    list.addEventListener('click', (e) => {
+      const rm = e.target.closest('.rm');
+      if (!rm) return;
+      rm.closest('.person').remove();
+      count();
+      if (!list.querySelector('[aria-invalid]')) msg.textContent = '';
+      (add.hidden ? go : add).focus();
+    });
+    // Under 16: the email field goes away and the child is saved under the first person's email.
+    list.addEventListener('change', (e) => {
+      if (e.target.name !== 'kid') return;
+      const email = e.target.closest('.person').querySelector('[name=email]');
+      email.closest('.field').hidden = e.target.checked;
+      mark(email, '');
+      if (!list.querySelector('[aria-invalid]')) msg.textContent = '';
+    });
+    add.addEventListener('click', () => { person().querySelector('input').focus(); });
+    person();
 
     f.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const d = Object.fromEntries(new FormData(f));
-      const list = f.list.checked;
+      tried = true;
+      const inputs = Array.from(list.querySelectorAll(TEXT));
+      const wrong = inputs.filter((i) => !mark(i, problem(i)));
+      if (wrong.length) {
+        msg.className = 'msg err';
+        msg.textContent = wrong.length === 1 ? 'One field above needs fixing.' : wrong.length + ' fields above need fixing.';
+        wrong[0].focus();
+        return;
+      }
+      const people = Array.from(list.children).map((el) => under16(el)
+        ? { first: el.querySelector('[name=first]').value.trim(), last: el.querySelector('[name=last]').value.trim(), kid: true }
+        : { first: el.querySelector('[name=first]').value.trim(), last: el.querySelector('[name=last]').value.trim(), email: el.querySelector('[name=email]').value.trim() });
+      const onList = f.list.checked;
       msg.className = 'msg';
       msg.textContent = 'Saving.';
-      button.disabled = true;
+      go.disabled = true;
       try {
-        const r = await fetch('/api/rsvp', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ s: id, first: d.first, last: d.last, email: d.email, count: d.count, list }) });
+        const r = await fetch('/api/rsvp', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ s: id, people, list: onList, web: f.web.value }) });
         const j = await r.json().catch(() => ({}));
-        if (!r.ok) throw new Error(j.error || 'Something went wrong. Try again.');
-        if (list) mailchimp(d);
-        finish(j, d);
+        if (!r.ok) {
+          const el = list.children[j.at], input = el && el.querySelector('[name="' + j.field + '"]');
+          if (input) { mark(input, j.error); input.focus(); }
+          throw new Error(j.error || 'Something went wrong. Try again.');
+        }
+        if (onList) mailchimp(people[0]);
+        finish(people);
       } catch (err) {
         msg.className = 'msg err';
         msg.textContent = err.message;
-        button.disabled = false;
+        go.disabled = false;
       }
     });
 
-    function finish(j, d) {
-      const n = Number(j.count) || 1;
-      document.getElementById('doneTitle').textContent = s.city + ', ' + s.when;
-      document.getElementById('doneText').textContent = (n === 1 ? 'One seat' : n + ' seats') + ' under ' + (d.first + ' ' + (d.last || '')).trim() + '. ' + s.venue + '.' + (s.tba ? ' You will get the venue and time by email once they are set.' : '');
+    function finish(people) {
+      const names = people.map((p) => p.first + ' ' + p.last);
+      const said = names.length === 1 ? names[0] : names.slice(0, -1).join(', ') + ' and ' + names[names.length - 1];
+      document.getElementById('doneText').textContent = (names.length === 1 ? 'One seat' : names.length + ' seats') + ' under ' + said + '. ' + s.venue + '.' + (s.tba ? ' You will get the venue and time by email once they are set.' : '');
       box.style.display = 'none';
       document.getElementById('foot').style.display = 'none';
       done.style.display = 'block';

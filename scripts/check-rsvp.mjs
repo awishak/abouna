@@ -1,5 +1,6 @@
 // Drives the register pages in the installed Google Chrome: /rsvp for the open
-// screening at phone and laptop widths, and the closed text for a closed one, a sign-up through the form (the
+// screening at phone and laptop widths, and the closed text for a closed one, the form refusing an empty send
+// and a repeated email, a sign-up for two adults and a child under 16 through the form (the
 // mailing-list box unticked so Mailchimp is not touched), the host view with
 // its key, and the admin view with the password; then the two design rules on
 // every screen, nothing under 13px and every text colour at 4.5:1 or better
@@ -48,6 +49,7 @@ const OPEN = !!OPEN_S;
 const ID = OPEN_S && OPEN_S.id;
 const hostKey = OPEN_S && new URL(OPEN_S.host).searchParams.get('k');
 const WANT = admin.screenings.filter((s) => s.open).length;
+const BEFORE = OPEN_S ? OPEN_S.seats : 0; // real sign-ups already on that screening; the three test people land on top
 
 const browser = await chromium.launch({ channel: 'chrome' });
 let bad = 0;
@@ -61,6 +63,7 @@ async function design(page, name) {
 for (const [w, h, t] of [[390, 844, 'phone'], [1280, 900, 'laptop']]) {
   const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 2 });
   const page = await ctx.newPage();
+  page.on('pageerror', (e) => { bad++; console.log(t, 'pageerror', e.message); });
 
   await page.goto(base + '/#screenings');
   await page.waitForTimeout(800);
@@ -84,15 +87,45 @@ for (const [w, h, t] of [[390, 844, 'phone'], [1280, 900, 'laptop']]) {
   await page.screenshot({ path: join(outdir, 'rsvp-' + t + '.png'), fullPage: true });
   await design(page, 'rsvp ' + t);
 
-  await page.fill('input[name=first]', 'Test');
-  await page.fill('input[name=last]', 'Row');
-  await page.fill('input[name=email]', 'claude-test@example.com');
-  await page.selectOption('select[name=count]', '4');
+  if (await page.locator('select').count()) { bad++; console.log(t, 'the head-count box is still on the page'); }
+  /* an empty send marks all three fields and saves nothing */
+  await page.click('#go');
+  const empty = await page.locator('.ferr:not(:empty)').allTextContents();
+  if (empty.length !== 3) { bad++; console.log(t, 'empty send marked', empty); }
+  const one = page.locator('.person').nth(0);
+  await one.locator('input[name=first]').fill('Test');
+  await one.locator('input[name=last]').fill('Row');
+  await one.locator('input[name=email]').fill('claude-test@example.com');
+  /* a second person with the first person's email is refused */
+  await page.click('#add');
+  const two = page.locator('.person').nth(1);
+  await two.locator('input[name=first]').fill('Guest');
+  await two.locator('input[name=last]').fill('Row');
+  await two.locator('input[name=email]').fill('claude-test@example.com');
   await page.uncheck('input[name=list]');
-  await page.click('#f button');
+  await page.click('#go');
+  const twice = await two.locator('.ferr:not(:empty)').allTextContents();
+  if (twice.join() !== 'Each person needs their own email.') { bad++; console.log(t, 'repeated email:', twice); }
+  await page.screenshot({ path: join(outdir, 'rsvp-errors-' + t + '.png'), fullPage: true });
+  await design(page, 'rsvp errors ' + t);
+  await two.locator('input[name=email]').fill('claude-test-2@example.com');
+  /* a child under 16: no email field */
+  await page.click('#add');
+  const kid = page.locator('.person').nth(2);
+  await kid.locator('input[name=first]').fill('Kid');
+  await kid.locator('input[name=last]').fill('Row');
+  await kid.locator('input[name=kid]').check();
+  if (await kid.locator('input[name=email]').isVisible()) { bad++; console.log(t, 'under 16 still shows the email field'); }
+  /* a fourth person, added and taken away again */
+  await page.click('#add');
+  if (await page.locator('#go').textContent() !== 'Register 4 people') { bad++; console.log(t, 'button with four:', await page.locator('#go').textContent()); }
+  await page.locator('.person').nth(3).locator('.rm').click();
+  await page.screenshot({ path: join(outdir, 'rsvp-two-' + t + '.png'), fullPage: true });
+  await design(page, 'rsvp two ' + t);
+  await page.click('#go');
   await page.waitForSelector('#done', { state: 'visible' });
   const doneText = await page.locator('#doneText').textContent();
-  if (!/4 seats under Test Row/.test(doneText)) { bad++; console.log(t, 'done text wrong:', doneText); }
+  if (!/3 seats under Test Row, Guest Row and Kid Row/.test(doneText)) { bad++; console.log(t, 'done text wrong:', doneText); }
   await page.screenshot({ path: join(outdir, 'rsvp-done-' + t + '.png'), fullPage: true });
   await design(page, 'rsvp done ' + t);
 
@@ -104,7 +137,7 @@ for (const [w, h, t] of [[390, 844, 'phone'], [1280, 900, 'laptop']]) {
   await page.goto(base + '/signups?s=' + ID + '&k=' + hostKey);
   await page.waitForSelector('table');
   const seats = await page.locator('.num b').textContent();
-  if (seats !== '4') { bad++; console.log(t, 'host seats', seats); }
+  if (seats !== String(BEFORE + 3)) { bad++; console.log(t, 'host seats', seats, 'want', BEFORE + 3); }
   await page.screenshot({ path: join(outdir, 'host-' + t + '.png'), fullPage: true });
   await design(page, 'host ' + t);
 

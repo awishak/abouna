@@ -1,14 +1,14 @@
-// watchabouna.com/rsvp and /signups: sign-ups for a dated screening, with a head
-// count. Each sign-up is one row in andrewishak_data, the key-value table the
+// watchabouna.com/rsvp and /signups: sign-ups for a dated screening, one row
+// per person. Each row sits in andrewishak_data, the key-value table the
 // drewi.sh functions use on the same Supabase project. The key is
-// 'abouna-rsvp:<screening>:<hash of the email>', so signing up twice updates
-// the party size instead of doubling it. Mailchimp is not touched here: the
+// 'abouna-rsvp:<screening>:<hash of the email>', so the same email signing up
+// twice stays one row. Mailchimp is not touched here: the
 // page posts to the list itself when the box is ticked, the way /signup does.
 //
 // GET  ?s=<id>                  what the sign-up page shows: city, date, venue
 // GET  ?s=<id>&k=<host key>     the host's view: seats and names, no emails
 // GET  ?all=1&k=<admin code>    Andrew's view: every screening, every sign-up, each host link
-// POST { s, first, last, email, count, list }   saves one sign-up; { ok, count } back
+// POST { s, people: [{ first, last, email } or { first, last, kid: true }], list }   saves a row per person; { ok, count, people } back
 //
 // ABOUNA_ADMIN_CODE is the password for /signups. A screening's host key is
 // derived from it, so handing a priest a link needs no table: copy it off the
@@ -19,6 +19,7 @@ import { SCREENINGS, ID, find } from './_screenings.js';
 
 const PREFIX = 'abouna-rsvp:';
 const EMAIL = /^[^\s@]{1,64}@[^\s@]{1,120}\.[^\s@]{2,24}$/;
+const MAX = 6; // people on one form
 
 function db(path, init = {}) {
   return fetch(process.env.SUPABASE_URL + '/rest/v1/' + path, {
@@ -101,30 +102,63 @@ async function get(req, res) {
   });
 }
 
+// One row per person. The first person is whoever filled in the form; anyone
+// they add needs a name and an email of their own, and is saved with `by` set
+// to the first person's email. Rows saved before 2026-11-16 can carry a party
+// size above one from the old "how many are coming" box; those sizes are kept.
+// A child under 16 (`kid: true`, never the first person) has no email: the row
+// is keyed on the first person's email plus the child's name.
 async function post(req, res) {
   const b = body(req);
   const id = str(b.s, 40);
   const s = ID.test(id) ? find(id) : null;
   if (!s || !s.open) return send(res, 404, { error: 'Sign-ups are not open for that screening.' });
-  const first = str(b.first, 60);
-  const last = str(b.last, 60);
-  const email = str(b.email, 160).toLowerCase();
-  const count = Math.round(Number(b.count));
-  if (!first) return send(res, 400, { error: 'What is your first name?' });
-  if (!EMAIL.test(email)) return send(res, 400, { error: 'That email does not look right.' });
-  if (!(count >= 1 && count <= 10)) return send(res, 400, { error: 'How many are coming? One to ten.' });
+  if (str(b.web, 10)) return send(res, 200, { ok: true, screening: pub(s), people: [] }); // the hidden box only a script fills
+  // The page before 2026-11-16 sent one person at the top level; a copy of that page still open in a tab keeps working.
+  const given = Array.isArray(b.people) ? b.people : [{ first: b.first, last: b.last, email: b.email }];
+  if (given.length < 1 || given.length > MAX) return send(res, 400, { error: 'One form takes up to ' + MAX + ' people.' });
   const list = b.list === true || b.list === 'true' || b.list === '1' || b.list === 'on';
 
-  const key = PREFIX + s.id + ':' + createHash('sha256').update(email).digest('hex').slice(0, 16);
+  const people = [];
+  for (let i = 0; i < given.length; i++) {
+    const g = given[i] && typeof given[i] === 'object' ? given[i] : {};
+    const kid = i > 0 && (g.kid === true || g.kid === 'true');
+    const p = { first: str(g.first, 60), last: str(g.last, 60), email: kid ? '' : str(g.email, 160).toLowerCase(), kid };
+    if (!p.first) return send(res, 400, { error: 'First name is missing.', at: i, field: 'first' });
+    if (!p.last && Array.isArray(b.people)) return send(res, 400, { error: 'Last name is missing.', at: i, field: 'last' });
+    if (!kid && !EMAIL.test(p.email)) return send(res, 400, { error: 'That email does not look right.', at: i, field: 'email' });
+    if (!kid && people.some((o) => o.email === p.email)) return send(res, 400, { error: 'Each person needs their own email.', at: i, field: 'email' });
+    const who = kid ? people[0].email + '|' + (p.first + ' ' + p.last).toLowerCase() : p.email;
+    if (kid && people.some((o) => o.who === who)) return send(res, 400, { error: 'That name is on the form twice.', at: i, field: 'first' });
+    p.who = who;
+    p.key = PREFIX + s.id + ':' + createHash('sha256').update(who).digest('hex').slice(0, 16);
+    people.push(p);
+  }
+
+  const was = await db('andrewishak_data?select=key,data&key=in.(' + encodeURIComponent(people.map((p) => '"' + p.key + '"').join(',')) + ')');
+  if (!was.ok) throw new Error('db read ' + was.status);
+  const old = new Map((await was.json()).map((x) => [x.key, x.data || {}]));
+
   const at = new Date().toISOString();
-  const data = { s: s.id, first, last, email, count, list, at };
-  // Every write asks for the row back, and the answer comes from that row.
-  const r = await db('andrewishak_data?on_conflict=key&select=data', {
-    method: 'POST',
-    headers: { prefer: 'resolution=merge-duplicates,return=representation' },
-    body: JSON.stringify({ key, data, updated_at: at })
+  const write = [];
+  people.forEach((p, i) => {
+    const o = old.get(p.key);
+    if (o && i > 0) return; // somebody added a person who is already registered: that person's row stays as they left it
+    const data = { s: s.id, first: p.first, last: p.last, email: p.email, count: Math.max(1, Number(o && o.count) || 1), list: i === 0 ? list || !!(o && o.list) : false, at: (o && o.at) || at };
+    if (p.kid) data.kid = true;
+    if (i > 0) data.by = people[0].email;
+    else if (o && o.by) data.by = o.by;
+    write.push({ key: p.key, data, updated_at: at });
   });
-  const back = r.ok ? await r.json().catch(() => []) : [];
-  if (!back[0] || !back[0].data) throw new Error('db write ' + r.status + ' ' + (r.ok ? 'no row back' : (await r.text()).slice(0, 200)));
-  return send(res, 200, { ok: true, screening: pub(s), count: back[0].data.count });
+  if (write.length) {
+    // Every write asks for the rows back, and the answer waits for them.
+    const r = await db('andrewishak_data?on_conflict=key&select=key', {
+      method: 'POST',
+      headers: { prefer: 'resolution=merge-duplicates,return=representation' },
+      body: JSON.stringify(write)
+    });
+    const back = r.ok ? await r.json().catch(() => []) : [];
+    if (back.length !== write.length) throw new Error('db write ' + r.status + ' ' + (r.ok ? back.length + ' of ' + write.length + ' rows back' : (await r.text()).slice(0, 200)));
+  }
+  return send(res, 200, { ok: true, screening: pub(s), count: people.length, people: people.map((p) => ({ name: (p.first + ' ' + p.last).trim() })) });
 }

@@ -107,12 +107,16 @@ footer p { margin-top: var(--s2); }
 .poster2 { display: grid; grid-template-columns: 240px 1fr; gap: var(--s4); align-items: start; }
 .poster2 img { border-radius: 6px; border: 1px solid var(--line); }
 @media (max-width: 640px) { .poster2 { grid-template-columns: 1fr; } .poster2 img { width: 200px; } }
-.request { background: var(--tile); border: 1px solid var(--line); border-radius: 6px; padding: var(--s4); }
-.request form { display: grid; gap: var(--s2); grid-template-columns: 1fr 1fr; }
-.request label { display: grid; gap: 6px; font-size: 15px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink2); font-weight: 600; }
-.request input, .request select { font: inherit; font-size: 18px; min-height: 52px; padding: 0 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); width: 100%; }
+/* Forms, since 2026-11-16: no box around the form, labels in sentence case at reading size, and fields a step
+   lighter than the page with a border you can see. The box is kept for the panel that replaces a form once sent. */
+.request { --field: #1c1814; --field-line: rgba(217,192,143,0.5); }
+.request.done { background: var(--tile); border: 1px solid var(--line); border-radius: 8px; padding: var(--s4); }
+.request form { display: grid; gap: var(--s3) var(--s2); grid-template-columns: 1fr 1fr; }
+.request label { display: grid; gap: 8px; font-size: 17px; font-weight: 500; line-height: 1.3; color: var(--ink); }
+.request input, .request select { font: inherit; font-size: 18px; font-weight: 400; min-height: 56px; padding: 0 16px; border: 1px solid var(--field-line); border-radius: 8px; background: var(--field); color: var(--ink); width: 100%; }
+.request ::placeholder { color: #a99f90; opacity: 1; }
 .request .full { grid-column: 1 / -1; }
-@media (max-width: 640px) { .request form { grid-template-columns: 1fr; } .request { padding: var(--s3); } }
+@media (max-width: 640px) { .request form { grid-template-columns: 1fr; } .request.done { padding: var(--s3); } }
 .kit { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--s4); }
 .kit a { display: grid; gap: var(--s1); color: var(--ink); text-decoration: none; justify-items: start; }
 .kit img { border-radius: 6px; border: 1px solid var(--line); width: 100%; max-width: 320px; }
