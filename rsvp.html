@@ -135,7 +135,6 @@
       box.style.display = 'none';
       return;
     }
-    document.title = 'Register: ' + s.city + ' | ABOUNA';
     document.getElementById('city').textContent = s.city;
     meta.innerHTML = '<div><dt>When</dt><dd class="day">' + esc(s.when) + (s.time ? '<span>' + esc(s.time) + '</span>' : '') + '</dd></div>'
       + '<div><dt>Where</dt><dd>' + esc(s.venue) + (s.address ? '<span><a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(s.venue + ', ' + s.address) + '" target="_blank" rel="noopener">' + esc(s.address) + '</a></span>' : '') + '</dd></div>'

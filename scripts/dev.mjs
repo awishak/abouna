@@ -13,7 +13,8 @@ process.env.ABOUNA_ADMIN_CODE = 'tiki-test';
 const { default: rsvp } = await import(ROOT + '/api/rsvp.js');
 const { default: press } = await import(ROOT + '/api/press.js');
 const { default: request } = await import(ROOT + '/api/request.js');
-const API = { '/api/rsvp': rsvp, '/api/press': press, '/api/request': request };
+const { default: rsvpPage } = await import(ROOT + '/api/rsvp-page.js');
+const API = { '/api/rsvp': rsvp, '/api/press': press, '/api/request': request, '/rsvp': rsvpPage };
 
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.jpg': 'image/jpeg', '.png': 'image/png', '.ico': 'image/x-icon' };
 
@@ -31,11 +32,11 @@ createServer(async (req, res) => {
       send(b) { res.end(b); return shim; },
       json(o) { res.setHeader('content-type', 'application/json'); res.end(JSON.stringify(o)); return shim; }
     };
+    Object.defineProperty(shim, 'statusCode', { set(c) { res.statusCode = c; } });
     try { await fn(r, shim); } catch (e) { res.statusCode = 500; res.end(String(e)); }
     return;
   }
   let p = url.pathname;
-  if (p === '/rsvp') p = '/rsvp.html';
   if (p === '/signups') p = '/signups.html';
   if (p === '/host') p = '/host.html';
   if (p === '/request') p = '/request.html';
