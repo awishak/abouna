@@ -56,16 +56,20 @@ for (const w of ways) {
     link(a.id, b.id, d); link(b.id, a.id, d);
   }
 }
-function nearest(wayId) {
-  const shape = pts(ways.find((w) => w.id === wayId));
+// Andrew, 2026-11-16: the walk starts at the east corner of the garage and ends at the north side of Vari Hall.
+function nearest([px, py]) {
   let best = null, bd = Infinity;
   for (const id of graph.keys()) {
     const [x, y] = xy(nodes.get(id));
-    for (const [px, py] of shape) { const d = Math.hypot(x - px, y - py); if (d < bd) { bd = d; best = id; } }
+    const d = Math.hypot(x - px, y - py);
+    if (d < bd) { bd = d; best = id; }
   }
   return best;
 }
-const from = nearest(GARAGE), to = nearest(VARI);
+const gShape = pts(ways.find((w) => w.id === GARAGE)), vShape = pts(ways.find((w) => w.id === VARI));
+const eastCorner = gShape.reduce((m, p) => (p[0] > m[0] ? p : m));
+const northSide = [(Math.min(...vShape.map((p) => p[0])) + Math.max(...vShape.map((p) => p[0]))) / 2, Math.min(...vShape.map((p) => p[1]))];
+const from = nearest(eastCorner), to = nearest(northSide);
 const dist = new Map([[from, 0]]), prev = new Map(), done = new Set();
 while (true) {
   let u = null, ud = Infinity;
@@ -136,9 +140,9 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" rol
   </g>
   <g font-size="36" font-weight="700">
     <g fill="#f6f1e8" text-anchor="middle">
-      <text x="${f1(g[0] + 6)}" y="${f1(g[1] - 28)}">North</text>
-      <text x="${f1(g[0] + 6)}" y="${f1(g[1] + 12)}">Parking</text>
-      <text x="${f1(g[0] + 6)}" y="${f1(g[1] + 52)}">Garage</text>
+      <text x="${f1(g[0] - 22)}" y="${f1(g[1] - 28)}">North</text>
+      <text x="${f1(g[0] - 22)}" y="${f1(g[1] + 12)}">Parking</text>
+      <text x="${f1(g[0] - 22)}" y="${f1(g[1] + 52)}">Garage</text>
     </g>
     <g fill="#f6f1e8" stroke="#15120f" stroke-width="8" paint-order="stroke" stroke-linejoin="round">
       <text x="${f1(vb.x1 + 12)}" y="${f1(vb.y0 + 34)}">Vari Hall</text>
