@@ -8,65 +8,121 @@
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/site.css">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  /* watchabouna.com/signups, moved from /host on 2026-10-22 so /host could be the page for churches. Two views on one page. A host link (?s=<id>&k=<key>) shows one screening: seats and names.
-     Andrew's password shows every screening with emails and the host link to hand out. */
-  .page { max-width: 900px; margin: 0 auto; padding: var(--s4) var(--s3) var(--s5); }
-  h1 { font-family: var(--serif); font-weight: 600; font-size: clamp(52px, 9vw, 84px); line-height: 0.95; margin: var(--s1) 0 var(--s3); }
-  .meta { display: grid; gap: 4px; margin-bottom: var(--s3); }
-  .meta .day { font-family: var(--serif); font-size: 36px; font-weight: 600; color: var(--gold); line-height: 1.05; }
-  .meta b { font-size: 24px; font-weight: 500; }
-  .meta span { color: var(--ink2); font-size: 18px; }
-  .num { display: flex; align-items: baseline; gap: var(--s2); margin: var(--s3) 0 var(--s3); }
-  .num b { font-family: var(--serif); font-size: 88px; font-weight: 600; color: var(--gold); line-height: 1; }
-  .num span { font-size: 20px; color: var(--ink2); }
+  /* watchabouna.com/signups. Two views on one page. A host link (?s=<id>&k=<key>) shows one screening: seats and names.
+     Andrew's password shows every screening with emails and the host link to hand out, and the screening requests.
+     Redone 2026-11-16 as a dashboard on ~/.claude/DESIGN.md, not on the film site's dark ground: the paper palette,
+     Outfit with IBM Plex Mono for counts, the 13 / 15 / 17 / 20 / 26 / 32 ladder, a 4px grid, and one accent that
+     means "you can press this". Admin view starts at 15px with 34px targets; the host view is read on a phone and
+     starts at 17px. scripts/check-rsvp.mjs checks the type floor and 4.5:1 contrast on both views. */
+  :root { --page: #fafaf9; --card: #ffffff; --sunk: #f6f4f1; --ink: #1c1917; --ink2: #57534e; --muted: #6b655f;
+    --soft: #f0edea; --strong: #e3ded8; --accent: #7a5c1e; --ok: #0f766e;
+    --sans: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+  body { margin: 0; background: var(--page); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.45; }
+  p, h1, h2, h3 { margin: 0; }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
+  [hidden] { display: none !important; }
+  .page { max-width: 1040px; margin: 0 auto; padding: 24px 24px 96px; display: grid; gap: 24px; }
+  .bar { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; }
+  .bar h1 { font-size: 26px; font-weight: 600; line-height: 1.2; }
+  .bar a { font-size: 15px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pills a { display: inline-flex; align-items: center; min-height: 34px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--strong); background: var(--card); font-size: 15px; font-weight: 500; text-decoration: none; }
+  .pills a:hover { border-color: var(--accent); }
+
+  /* One card per screening across the top: the date, the city, and the count. */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  .cardlink { display: grid; gap: 4px; padding: 16px; background: var(--card); border: 1px solid var(--strong); border-radius: 16px; text-decoration: none; color: var(--ink); }
+  .cardlink:hover { border-color: var(--accent); }
+  .cardlink .when { font-size: 13px; color: var(--muted); }
+  .cardlink .city { font-size: 17px; font-weight: 600; color: var(--accent); line-height: 1.25; }
+  .cardlink .count { font-family: var(--mono); font-size: 32px; font-weight: 600; line-height: 1.1; margin-top: 4px; }
+  .cardlink .unit { font-size: 13px; color: var(--muted); }
+  .cardlink.past { background: var(--sunk); }
+
+  .panel { background: var(--card); border: 1px solid var(--strong); border-radius: 16px; padding: 24px; display: grid; gap: 16px; }
+  .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 12px 24px; }
+  .head h2 { font-size: 26px; font-weight: 600; line-height: 1.2; }
+  .head .sub { font-size: 15px; color: var(--ink2); }
+  .tag { display: inline-flex; align-items: center; min-height: 24px; padding: 0 12px; border-radius: 999px; background: var(--sunk); color: var(--ink2); font-size: 13px; font-weight: 500; margin-left: 8px; vertical-align: middle; }
+  .num { display: grid; justify-items: end; gap: 0; }
+  .num b { font-family: var(--mono); font-size: 32px; font-weight: 600; line-height: 1.1; }
+  .num span { font-size: 13px; color: var(--muted); }
+  .facts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .facts span { display: inline-flex; align-items: baseline; gap: 8px; padding: 4px 12px; border-radius: 999px; background: var(--sunk); font-size: 13px; color: var(--ink2); }
+  .facts b { font-family: var(--mono); font-weight: 600; color: var(--ink); font-size: 15px; }
+
+  .tools { display: flex; flex-wrap: wrap; align-items: end; gap: 8px; padding: 12px; background: var(--sunk); border-radius: 12px; }
+  .hostlink { display: grid; gap: 4px; flex: 1 1 320px; font-size: 13px; color: var(--ink2); }
+  .hostlink input { font: inherit; font-family: var(--mono); font-size: 16px; font-weight: 500; min-height: 36px; padding: 0 12px; border: 1px solid var(--strong); border-radius: 8px; background: var(--card); color: var(--ink); width: 100%; }
+  .btn { font: inherit; font-size: 15px; font-weight: 500; min-height: 36px; padding: 0 16px; border-radius: 12px; border: 1px solid var(--strong); background: var(--card); color: var(--accent); cursor: pointer; white-space: nowrap; }
+  .btn:hover { border-color: var(--accent); }
+  .btn.solid { background: var(--accent); border-color: var(--accent); color: #ffffff; }
+
   .tw { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 17px; }
-  th { text-align: left; font-size: 14px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink2); font-weight: 600; padding: 10px 14px 10px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
-  td { padding: 12px 14px 12px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
-  td.n { font-family: var(--serif); font-size: 26px; font-weight: 600; color: var(--gold); line-height: 1; white-space: nowrap; }
-  .screening { padding: var(--s4) 0; border-top: 1px solid var(--line); }
-  .screening:first-child { border-top: 0; padding-top: 0; }
-  .hostlink { display: grid; gap: 6px; margin: var(--s2) 0 var(--s3); font-size: 16px; color: var(--ink2); }
-  .hostlink input { font: inherit; font-size: 16px; min-height: 48px; padding: 0 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--tile); color: var(--ink); width: 100%; }
-  .request button { grid-column: 1 / -1; border: 0; cursor: pointer; font-family: var(--sans); }
-  .msg { color: var(--ink2); font-size: 17px; min-height: 1.5em; margin-top: var(--s2); }
-  .msg.err { color: #f3c2ad; }
-  .empty { color: var(--ink2); font-size: 19px; }
-  .fine { font-size: 16px; color: var(--ink2); margin-top: var(--s4); }
-  .fine a { color: var(--gold); }
-  .req { padding: var(--s2) 0; border-top: 1px solid var(--line); font-size: 17px; display: grid; gap: 4px; }
-  .req b { font-size: 22px; font-weight: 500; }
-  .req .city { color: var(--ink2); font-size: 18px; margin-left: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th { text-align: left; font-size: 13px; font-weight: 600; color: var(--muted); padding: 8px 16px 8px 0; border-bottom: 1px solid var(--strong); white-space: nowrap; }
+  td { padding: 12px 16px 12px 0; border-bottom: 1px solid var(--soft); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  th:last-child, td:last-child { padding-right: 0; }
+  td.name { font-weight: 500; }
+  td.n, th.n { font-family: var(--mono); text-align: right; }
+  td.n { font-weight: 600; }
+  td.when { color: var(--ink2); white-space: nowrap; }
+  .by { display: block; color: var(--muted); font-size: 13px; font-weight: 400; }
+  .yes { color: var(--ok); font-weight: 500; }
+  .empty { color: var(--ink2); font-size: 15px; }
+
+  .req { padding: 16px 0; border-top: 1px solid var(--soft); display: grid; gap: 4px; }
+  .req:first-of-type { border-top: 0; padding-top: 0; }
+  .req b { font-size: 17px; font-weight: 600; }
+  .req .city { color: var(--ink2); font-size: 15px; margin-left: 8px; }
   .req .who { color: var(--ink2); }
-  .req .who a { color: var(--gold); }
-  .req div span { color: var(--ink2); }
+  .req div span { color: var(--muted); }
   .req .note { white-space: pre-wrap; margin-top: 4px; }
-  .by { display: block; color: var(--ink2); font-size: 15px; }
+
+  .gate { max-width: 420px; }
+  .gate form { display: grid; gap: 12px; }
+  .gate label { display: grid; gap: 8px; font-size: 15px; font-weight: 500; }
+  .gate input { font: inherit; font-size: 17px; min-height: 44px; padding: 0 12px; border: 1px solid var(--strong); border-radius: 8px; background: var(--card); color: var(--ink); width: 100%; }
+  .gate .btn { min-height: 44px; }
+  .msg { color: var(--ink2); font-size: 15px; }
+  .msg:empty { display: none; }
+  .msg.err { color: #c81e1e; }
+  .fine { font-size: 13px; color: var(--muted); }
+
+  /* The host's view is read on a phone, so it starts one step up. */
+  .hostview { font-size: 17px; }
+  .hostview table { font-size: 17px; }
+  .hostview .head .sub { font-size: 17px; }
+  .hostview .fine { font-size: 15px; }
+  @media (max-width: 640px) { .page { padding: 16px 16px 64px; gap: 16px; } .panel { padding: 16px; } .num { justify-items: start; } }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
 </head>
 <body>
 
-<nav class="nav"><div class="wrap">
-  <a class="l" href="/">Abouna</a>
-  <a class="l gold" href="/#screenings">Screenings</a>
-</div></nav>
+<main class="page" id="page">
+  <div class="bar">
+    <h1 id="h1">Sign-ups</h1>
+    <a href="/">watchabouna.com</a>
+  </div>
 
-<main class="page">
-  <p class="label">Screening</p>
-  <h1 id="h1">Sign-ups</h1>
-
-  <div class="request" id="gate" hidden>
+  <div class="panel gate" id="gate" hidden>
     <form id="gf">
-      <label class="full">Password<input type="password" name="k" autocomplete="current-password" autofocus required></label>
-      <button type="submit" class="btn">Open</button>
+      <label>Password<input type="password" name="k" autocomplete="current-password" autofocus required></label>
+      <button type="submit" class="btn solid">Open</button>
     </form>
   </div>
 
+  <nav class="pills" id="pills" hidden aria-label="Sections"></nav>
+  <div class="cards" id="cards" hidden></div>
+  <div id="out" style="display:grid;gap:24px"></div>
   <div id="reqs"></div>
-  <div id="out"></div>
   <p class="msg" id="msg" role="status" aria-live="polite"></p>
 </main>
 
@@ -74,63 +130,100 @@
   (function () {
     const esc = (t) => String(t == null ? '' : t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
     const q = new URLSearchParams(location.search);
-    const out = document.getElementById('out'), msg = document.getElementById('msg'), gate = document.getElementById('gate');
+    const $ = (id) => document.getElementById(id);
+    const out = $('out'), msg = $('msg'), gate = $('gate');
     const plural = (n, one, many) => n === 1 ? one : many;
+    const TODAY = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD, local
 
-    function metaBlock(s) {
-      return '<div class="meta"><div class="day">' + esc(s.when) + '</div><b>' + esc(s.city) + '</b><span>' + esc(s.venue) + (s.time ? ' · ' + esc(s.time) : '') + (s.note ? ' · ' + esc(s.note) : '') + '</span></div>';
-    }
-    function seatsBlock(seats, parties) {
-      return '<div class="num"><b>' + seats + '</b><span>' + plural(seats, 'seat', 'seats') + ' across ' + parties + ' ' + plural(parties, 'sign-up', 'sign-ups') + '</span></div>';
-    }
     function when(iso) {
       const d = new Date(iso);
       return isNaN(d) ? '' : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     }
+    function days(date) {
+      const n = Math.round((new Date(date + 'T12:00:00') - new Date(TODAY + 'T12:00:00')) / 86400000);
+      return n < 0 ? 'past' : n === 0 ? 'today' : n === 1 ? 'tomorrow' : 'in ' + n + ' days';
+    }
+    const shortDay = (date) => new Date(date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    const sub = (s) => [s.when, s.time, s.venue].filter(Boolean).map(esc).join(' · ');
+    function head(s, seats, parties) {
+      return '<div class="head"><div><h2>' + esc(s.city) + (s.date < TODAY ? '<span class="tag">Past</span>' : !s.open ? '<span class="tag">Registration closed</span>' : '') + '</h2><p class="sub">' + sub(s) + '</p></div>'
+        + '<div class="num"><b>' + seats + '</b><span>' + plural(seats, 'seat', 'seats') + ' · ' + parties + ' ' + plural(parties, 'sign-up', 'sign-ups') + '</span></div></div>';
+    }
 
-    // A host: one screening, names and party sizes, nothing else.
+    // A host: one screening, names and seats, nothing else.
     async function host(id, k) {
       const r = await fetch('/api/rsvp?s=' + encodeURIComponent(id) + '&k=' + encodeURIComponent(k));
       const j = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(j.error || 'That link is not right.');
-      let h = metaBlock(j.screening) + seatsBlock(j.seats, j.people.length);
+      $('page').classList.add('hostview');
+      const party = j.people.some((p) => Number(p.count) > 1);
+      let h = '<section class="panel">' + head(j.screening, j.seats, j.people.length);
       if (!j.people.length) h += '<p class="empty">No sign-ups yet. Share the Register button on watchabouna.com.</p>';
-      else h += '<div class="tw"><table><thead><tr><th>Name</th><th>Coming</th></tr></thead><tbody>' + j.people.map((p) => '<tr><td>' + esc(p.name) + '</td><td class="n">' + esc(p.count) + '</td></tr>').join('') + '</tbody></table></div>';
-      h += '<p class="fine">This page is for the host of this screening. It updates every time someone signs up.</p>';
+      else h += '<div class="tw"><table><thead><tr><th>Name</th>' + (party ? '<th class="n">Seats</th>' : '') + '</tr></thead><tbody>' + j.people.map((p) => '<tr><td class="name">' + esc(p.name) + '</td>' + (party ? '<td class="n">' + esc(p.count) + '</td>' : '') + '</tr>').join('') + '</tbody></table></div>';
+      h += '<p class="fine">This page is for the host of this screening. It updates every time someone signs up.</p></section>';
       out.innerHTML = h;
     }
 
-    // Andrew: everything, plus the link to hand each host.
+    // Andrew: everything, plus the link to hand each host. Upcoming screenings first, soonest at the top.
     async function admin(k) {
       const r = await fetch('/api/rsvp?all=1&k=' + encodeURIComponent(k));
       const j = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(j.error || 'Not it.');
       try { sessionStorage.setItem('abouna-host', k); } catch (e) {}
       gate.hidden = true;
-      document.getElementById('h1').textContent = 'All sign-ups';
-      requests(k);
-      out.innerHTML = j.screenings.map((s) => {
-        let h = '<div class="screening">' + metaBlock(s) + seatsBlock(s.seats, s.people.length);
-        h += '<label class="hostlink">Host link, for the priest or the organizer. Shows names and the count, no emails.<input readonly value="' + esc(s.host) + '" onfocus="this.select()"></label>';
-        if (!s.people.length) h += '<p class="empty">No sign-ups yet.</p>';
-        else h += '<div class="tw"><table><thead><tr><th>Name</th><th>Email</th><th>Coming</th><th>List</th><th>When</th></tr></thead><tbody>' + s.people.map((p) => '<tr><td>' + esc((p.first + ' ' + (p.last || '')).trim()) + (p.by ? '<span class="by">added by ' + esc(p.by) + '</span>' : '') + '</td><td>' + (p.kid ? 'under 16' : esc(p.email)) + '</td><td class="n">' + esc(p.count) + '</td><td>' + (p.list ? 'Yes' : '–') + '</td><td>' + esc(when(p.at)) + '</td></tr>').join('') + '</tbody></table></div>';
-        return h + '</div>';
+      const list = j.screenings.slice().sort((a, b) => (a.date < TODAY) - (b.date < TODAY) || a.date.localeCompare(b.date));
+      const total = list.filter((s) => s.date >= TODAY).reduce((n, s) => n + s.seats, 0);
+
+      $('cards').innerHTML = list.map((s) => '<a class="cardlink' + (s.date < TODAY ? ' past' : '') + '" href="#s-' + esc(s.id) + '"><span class="when">' + esc(shortDay(s.date)) + ' · ' + days(s.date) + '</span><span class="city">' + esc(s.city) + '</span><span class="count">' + s.seats + '</span><span class="unit">' + plural(s.seats, 'seat', 'seats') + '</span></a>').join('');
+      $('cards').hidden = false;
+      $('pills').innerHTML = '<a href="#out">Sign-ups, ' + total + ' ' + plural(total, 'seat', 'seats') + ' coming up</a><a href="#reqs" id="reqPill">Screening requests</a>';
+      $('pills').hidden = false;
+
+      out.innerHTML = list.map((s) => {
+        const p = s.people, kids = p.filter((x) => x.kid).length, onList = p.filter((x) => x.list).length;
+        const emails = p.map((x) => x.email).filter(Boolean);
+        const party = p.some((x) => Number(x.count) > 1);
+        let h = '<section class="panel" id="s-' + esc(s.id) + '">' + head(s, s.seats, p.length);
+        if (p.length) h += '<div class="facts"><span>Under 16 <b>' + kids + '</b></span><span>On the mailing list <b>' + onList + '</b></span></div>';
+        h += '<div class="tools"><label class="hostlink">Host link, for the priest or the organizer. Shows names and the count, no emails.<input readonly value="' + esc(s.host) + '" onfocus="this.select()"></label>'
+          + '<button type="button" class="btn" data-copy="' + esc(s.host) + '">Copy host link</button>'
+          + (emails.length ? '<button type="button" class="btn" data-copy="' + esc(emails.join(', ')) + '">Copy ' + emails.length + ' ' + plural(emails.length, 'email', 'emails') + '</button>' : '') + '</div>';
+        if (!p.length) h += '<p class="empty">No sign-ups yet.</p>';
+        else h += '<div class="tw"><table><thead><tr><th>Name</th><th>Email</th>' + (party ? '<th class="n">Seats</th>' : '') + '<th>Mailing list</th><th>Signed up</th></tr></thead><tbody>'
+          + p.map((x) => '<tr><td class="name">' + esc((x.first + ' ' + (x.last || '')).trim()) + (x.by ? '<span class="by">added by ' + esc(x.by) + '</span>' : '') + '</td>'
+            + '<td>' + (x.kid ? 'under 16' : '<a href="mailto:' + esc(x.email) + '">' + esc(x.email) + '</a>') + '</td>'
+            + (party ? '<td class="n">' + esc(x.count) + '</td>' : '')
+            + '<td>' + (x.list ? '<span class="yes">Yes</span>' : '–') + '</td><td class="when">' + esc(when(x.at)) + '</td></tr>').join('')
+          + '</tbody></table></div>';
+        return h + '</section>';
       }).join('');
+      requests(k);
     }
 
-    // Screening requests from watchabouna.com/request, newest first, above the sign-ups.
+    // Screening requests from watchabouna.com/request, newest first, under the sign-ups.
     async function requests(k) {
-      const el = document.getElementById('reqs');
+      const el = $('reqs');
       const r = await fetch('/api/request?k=' + encodeURIComponent(k));
       const j = await r.json().catch(() => ({}));
       if (!r.ok) return;
       const list = j.requests || [];
       const line = (label, v) => v ? '<div><span>' + label + '</span> ' + esc(v) + '</div>' : '';
-      el.innerHTML = '<div class="screening"><div class="meta"><div class="day">Screening requests</div><span>' + (list.length ? list.length + (list.length === 1 ? ' request' : ' requests') + ' from watchabouna.com/request' : 'None yet. The address to send people is watchabouna.com/request.') + '</span></div>'
-        + list.map((q) => '<div class="req"><b>' + esc(q.church) + '</b> <span class="city">' + esc(q.city) + '</span><div class="who">' + esc(q.name) + (q.role ? ', ' + esc(q.role) : '') + ' · <a href="mailto:' + esc(q.email) + '">' + esc(q.email) + '</a> · ' + esc(when(q.at)) + '</div>'
+      $('reqPill').textContent = 'Screening requests, ' + list.length;
+      el.innerHTML = '<section class="panel"><div class="head"><div><h2>Screening requests</h2><p class="sub">' + (list.length ? 'From watchabouna.com/request, newest first.' : 'None yet. The address to send people is watchabouna.com/request.') + '</p></div>'
+        + '<div class="num"><b>' + list.length + '</b><span>' + plural(list.length, 'request', 'requests') + '</span></div></div><div>'
+        + list.map((q) => '<div class="req"><div><b>' + esc(q.church) + '</b><span class="city">' + esc(q.city) + '</span></div><div class="who">' + esc(q.name) + (q.role ? ', ' + esc(q.role) : '') + ' · <a href="mailto:' + esc(q.email) + '">' + esc(q.email) + '</a> · ' + esc(when(q.at)) + '</div>'
           + line('Dates:', q.dates) + line('Size or attendance:', q.size) + line('A/V:', q.av) + (q.note ? '<div class="note">' + esc(q.note) + '</div>' : '') + '</div>').join('')
-        + '</div>';
+        + '</div></section>';
     }
+
+    document.addEventListener('click', async (e) => {
+      const b = e.target.closest('[data-copy]');
+      if (!b) return;
+      const was = b.textContent;
+      try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = 'Copied'; } catch (err) { b.textContent = 'Could not copy'; }
+      setTimeout(() => { b.textContent = was; }, 1500);
+    });
+
     async function run() {
       msg.className = 'msg';
       msg.textContent = '';
@@ -148,7 +241,7 @@
       }
     }
 
-    document.getElementById('gf').addEventListener('submit', async (e) => {
+    $('gf').addEventListener('submit', async (e) => {
       e.preventDefault();
       const code = e.target.k.value.trim();
       if (!code) return;
