@@ -10,7 +10,9 @@
 // GET  ?all=1&k=<admin code>    Andrew's view: every screening, every sign-up, each host link
 // POST { s, people: [{ first, last, email, list } or { first, last, kid: true }] }   saves a row per person; { ok, count, people } back
 //
-// ABOUNA_ADMIN_CODE is the password for /signups. A screening's host key is
+// The password for /signups is ABOUNA_ADMIN_PASSWORD (made by scripts/new-password.sh
+// on 2026-11-16, when Andrew had lost the first one); ABOUNA_ADMIN_CODE, the first
+// one, still opens it too. A screening's host key is
 // derived from it, so handing a priest a link needs no table: copy it off the
 // admin view. SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are the same values
 // the andrewishak project holds.
@@ -80,7 +82,7 @@ async function get(req, res) {
   const k = str(q.k, 80);
 
   if (q.all === '1') {
-    if (!same(k, process.env.ABOUNA_ADMIN_CODE)) return send(res, 401, { error: 'Not it.' });
+    if (!same(k, process.env.ABOUNA_ADMIN_PASSWORD) && !same(k, process.env.ABOUNA_ADMIN_CODE)) return send(res, 401, { error: 'Not it.' });
     const out = [];
     for (const s of SCREENINGS) {
       const people = await rows(s.id);

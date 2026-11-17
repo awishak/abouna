@@ -61,7 +61,7 @@ export default async function handler(req, res) {
 
 async function get(req, res) {
   const q = req.query || {};
-  if (!same(str(q.k, 80), process.env.ABOUNA_ADMIN_CODE)) return send(res, 401, { error: 'Not it.' });
+  if (!same(str(q.k, 80), process.env.ABOUNA_ADMIN_PASSWORD) && !same(str(q.k, 80), process.env.ABOUNA_ADMIN_CODE)) return send(res, 401, { error: 'Not it.' });
   const r = await db('andrewishak_data?select=key,data&key=like.' + encodeURIComponent(PREFIX + '*') + '&order=key.desc');
   if (!r.ok) throw new Error('db read ' + r.status);
   const rows = (await r.json()).map((x) => ({ id: x.key.slice(PREFIX.length), ...x.data })).filter((d) => d && d.church);
