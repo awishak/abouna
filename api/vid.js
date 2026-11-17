@@ -6,6 +6,10 @@
 // token, 'abouna-vid:<token>': { opens: [{ at }], first, last, pct }.
 //
 // GET  /vid/<token>  (vercel.json rewrites it to ?t=)   the page; an unknown token gets the site's front
+// GET  /vid/<token>?preview=1                            the same page for Andrew to look at; nothing is counted
+//
+// The video is a Vimeo or a YouTube link (2026-11-16, Andrew: "it might be Vimeo, might be YouTube"). The message
+// above the video can be empty; the page is then the name and the video.
 // POST { t, seen: 1 }                                     the page loaded in a browser (not a link preview), one open
 // POST { t, pct }                                         how far the video got, kept as the furthest so far
 //
@@ -37,11 +41,15 @@ function body(req) {
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 // A Vimeo address in any of its shapes to the player's: vimeo.com/123, vimeo.com/123/abcdef (unlisted), player.vimeo.com/video/123?h=abcdef.
+// A YouTube one too: youtube.com/watch?v=ID, youtu.be/ID, /embed/ID, /shorts/ID, /live/ID.
 function player(video) {
-  const m = String(video || '').match(/vimeo\.com\/(?:video\/)?(\d+)(?:\/([a-z0-9]+))?(?:[?&]h=([a-z0-9]+))?/i) || String(video || '').match(/^(\d+)$/);
-  if (!m) return '';
+  const v = String(video || '').trim();
+  const y = v.match(/(?:youtube(?:-nocookie)?\.com\/(?:watch\?(?:[^#]*&)?v=|embed\/|shorts\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
+  if (y) return { kind: 'youtube', src: 'https://www.youtube-nocookie.com/embed/' + y[1] + '?enablejsapi=1&rel=0&playsinline=1' };
+  const m = v.match(/vimeo\.com\/(?:video\/)?(\d+)(?:\/([a-z0-9]+))?(?:[?&]h=([a-z0-9]+))?/i) || v.match(/^(\d+)$/);
+  if (!m) return null;
   const h = m[2] || m[3];
-  return 'https://player.vimeo.com/video/' + m[1] + (h ? '?h=' + h + '&' : '?') + 'title=0&byline=0&portrait=0&dnt=1';
+  return { kind: 'vimeo', src: 'https://player.vimeo.com/video/' + m[1] + (h ? '?h=' + h + '&' : '?') + 'title=0&byline=0&portrait=0&dnt=1' };
 }
 
 export default async function handler(req, res) {
@@ -80,7 +88,9 @@ async function page(req, res) {
   const kit = (await read(KEY)) || {};
   const link = TOKEN.test(t) ? (kit.links || {})[t] : null;
   if (!link) { res.statusCode = 302; res.setHeader('location', '/'); return res.end(); }
-  const src = player(link.video);
+  const pl = player(link.video);
+  const src = pl ? pl.src : '';
+  const preview = !!(req.query || {}).preview;
   res.setHeader('content-type', 'text/html; charset=utf-8');
   res.setHeader('x-robots-tag', 'noindex, nofollow');
   return res.status(200).end(`<!DOCTYPE html>
@@ -108,20 +118,35 @@ async function page(req, res) {
   <p class="label">Abouna, Episode 2</p>
   <h1>For ${esc(link.name)}</h1>
   ${kit.text ? `<p class="words">${esc(kit.text)}</p>` : ''}
+  ${preview ? '<p class="from" style="margin:0 0 var(--s3)">You are looking at this page the way it will arrive. Nothing here is counted.</p>' : ''}
   ${src ? `<div class="frame"><iframe id="v" src="${esc(src)}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Abouna, Episode 2"></iframe></div>` : ''}
   <p class="from">Andrew Ishak, <a href="mailto:aishak@scu.edu">aishak@scu.edu</a></p>
 </main>
-<script src="https://player.vimeo.com/api/player.js"></script>
+${pl && pl.kind === 'vimeo' ? '<script src="https://player.vimeo.com/api/player.js"></script>' : ''}
 <script>
 (function(){
+  if(${preview ? 'true' : 'false'})return; // Andrew looking at the page: nothing is counted
   var t=${JSON.stringify(t)}, sent=0, top=0, timer=null;
   var send=function(b){try{navigator.sendBeacon('/api/vid',new Blob([JSON.stringify(Object.assign({t:t},b))],{type:'application/json'}))}catch(e){fetch('/api/vid',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(Object.assign({t:t},b)),keepalive:true}).catch(function(){})}};
   send({seen:1});
-  var f=document.getElementById('v');if(!f||!window.Vimeo)return;
-  var p=new Vimeo.Player(f);
-  p.on('timeupdate',function(d){var pct=Math.round((d.percent||0)*100);if(pct>top){top=pct;if(!timer)timer=setTimeout(function(){timer=null;if(top>sent){sent=top;send({pct:top})}},15000)}});
-  p.on('ended',function(){top=100;sent=100;send({pct:100})});
+  var f=document.getElementById('v');if(!f)return;
+  var far=function(pct){if(pct>top){top=pct;if(!timer)timer=setTimeout(function(){timer=null;if(top>sent){sent=top;send({pct:top})}},15000)}};
+  var end=function(){top=100;sent=100;send({pct:100})};
   addEventListener('pagehide',function(){if(top>sent){sent=top;send({pct:top})}});
+  if(${JSON.stringify(pl ? pl.kind : '')}==='youtube'){
+    // YouTube has no progress event, so the player is asked where it is every five seconds while it plays.
+    var s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s);
+    window.onYouTubeIframeAPIReady=function(){var tick=null;var yp=new YT.Player('v',{events:{onStateChange:function(e){
+      if(e.data===0){clearInterval(tick);tick=null;return end()}
+      if(e.data===1&&!tick)tick=setInterval(function(){try{var d=yp.getDuration();if(d>0)far(Math.round(yp.getCurrentTime()/d*100))}catch(x){}},5000);
+      if(e.data!==1&&tick){clearInterval(tick);tick=null;try{var d2=yp.getDuration();if(d2>0)far(Math.round(yp.getCurrentTime()/d2*100))}catch(x){}}
+    }}})};
+    return;
+  }
+  if(!window.Vimeo)return;
+  var p=new Vimeo.Player(f);
+  p.on('timeupdate',function(d){far(Math.round((d.percent||0)*100))});
+  p.on('ended',end);
 })();
 </script>
 </body>
