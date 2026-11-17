@@ -32,7 +32,9 @@ export const SCREENINGS = [
     place: 'Santa Clara University',
     map: '/map-santa-clara.svg',
     steps: ['Park in or around the North Parking Garage.', 'Walk to Vari Hall.'],
-    park: 'North Garage, 1063 Alviso St, Santa Clara, CA',
+    park: 'North Garage, 1063 Alviso St, Santa Clara, CA 95050',
+    parkName: 'North Parking Garage',
+    parkAddress: '1063 Alviso St, Santa Clara, CA 95050', // the garage's address, from Andrew 2026-11-16; shown in the parking section
     parkNote: 'Parking is free around the garage. There might be a cost in the garage.', // Andrew's words, 2026-11-16; shown under the steps
     poster: '/poster-santa-clara-web.jpg',
     time: '7:30 PM',
