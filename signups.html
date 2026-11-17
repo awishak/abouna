@@ -17,7 +17,7 @@
      means "you can press this". Admin view starts at 15px with 34px targets; the host view is read on a phone and
      starts at 17px. scripts/check-rsvp.mjs checks the type floor and 4.5:1 contrast on both views. */
   :root { --page: #fafaf9; --card: #ffffff; --sunk: #f6f4f1; --ink: #1c1917; --ink2: #57534e; --muted: #6b655f;
-    --soft: #f0edea; --strong: #e3ded8; --accent: #7a5c1e; --ok: #0f766e;
+    --soft: #f0edea; --strong: #e3ded8; --accent: #7a5c1e; --ok: #0f766e; --data: #3a72b0;
     --sans: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif; --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace; }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; scroll-padding-top: 16px; }
@@ -34,27 +34,41 @@
   .pills a { display: inline-flex; align-items: center; min-height: 34px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--strong); background: var(--card); font-size: 15px; font-weight: 500; text-decoration: none; }
   .pills a:hover { border-color: var(--accent); }
 
-  /* One card per screening across the top: the date, the city, and the count. */
-  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
-  .cardlink { display: grid; gap: 4px; padding: 16px; background: var(--card); border: 1px solid var(--strong); border-radius: 16px; text-decoration: none; color: var(--ink); }
-  .cardlink:hover { border-color: var(--accent); }
-  .cardlink .when { font-size: 13px; color: var(--muted); }
-  .cardlink .city { font-size: 17px; font-weight: 600; color: var(--accent); line-height: 1.25; }
-  .cardlink .count { font-family: var(--mono); font-size: 32px; font-weight: 600; line-height: 1.1; margin-top: 4px; }
-  .cardlink .unit { font-size: 13px; color: var(--muted); }
-  .cardlink.past { background: var(--sunk); }
+  /* The screenings at a glance: one plain table, a row each, with a total. No number sits in a box of its own
+     (Andrew, 2026-11-16: he hates numbers in boxes). */
+  /* Two charts above that table: seats by screening as bars, and seats signed up per day as columns. One colour for
+     the marks (--data, checked with the dataviz palette validator); the gold stays for things you can press. Values
+     and labels are in ink, never in the mark's colour. Hovering a bar or a column shows its numbers. */
+  .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; background: var(--card); border: 1px solid var(--strong); border-radius: 16px; padding: 24px; margin-bottom: 16px; }
+  .chart { display: grid; gap: 12px; align-content: start; min-width: 0; }
+  .chart h2 { font-size: 17px; font-weight: 600; line-height: 1.3; }
+  .brow { display: grid; grid-template-columns: 150px 1fr; gap: 12px; align-items: center; min-height: 34px; text-decoration: none; }
+  .blabel { font-size: 15px; font-weight: 500; line-height: 1.25; }
+  .btrack { display: flex; align-items: center; gap: 8px; }
+  .mark { height: 16px; background: var(--data); border-radius: 0 4px 4px 0; }
+  .bval { font-family: var(--mono); font-size: 15px; font-weight: 600; color: var(--ink); }
+  .cols { display: flex; align-items: flex-end; gap: 2px; height: 140px; border-bottom: 1px solid var(--strong); }
+  .col { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; }
+  .col i { display: block; width: 100%; max-width: 24px; background: var(--data); border-radius: 4px 4px 0 0; }
+  .col b { font-family: var(--mono); font-size: 13px; font-weight: 600; line-height: 1.4; }
+  .axis { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); }
+  .tip { position: fixed; z-index: 10; max-width: 260px; background: var(--ink); color: #ffffff; font-size: 13px; line-height: 1.4; padding: 4px 8px; border-radius: 8px; pointer-events: none; }
+  @media (max-width: 760px) { .charts { grid-template-columns: 1fr; padding: 16px; gap: 24px; } .brow { grid-template-columns: 112px 1fr; } }
+
+  .glance td, .glance th { padding-top: 8px; padding-bottom: 8px; }
+  .glance td.city { font-weight: 600; }
+  .glance tr.past td, .glance tr.past td a { color: var(--muted); }
+  .glance tfoot td { border-top: 1px solid var(--strong); border-bottom: 0; font-weight: 600; }
 
   .panel { background: var(--card); border: 1px solid var(--strong); border-radius: 16px; padding: 24px; display: grid; gap: 16px; }
   .head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 12px 24px; }
   .head h2 { font-size: 26px; font-weight: 600; line-height: 1.2; }
   .head .sub { font-size: 15px; color: var(--ink2); }
   .tag { display: inline-flex; align-items: center; min-height: 24px; padding: 0 12px; border-radius: 999px; background: var(--sunk); color: var(--ink2); font-size: 13px; font-weight: 500; margin-left: 8px; vertical-align: middle; }
-  .num { display: grid; justify-items: end; gap: 0; }
-  .num b { font-family: var(--mono); font-size: 32px; font-weight: 600; line-height: 1.1; }
-  .num span { font-size: 13px; color: var(--muted); }
-  .facts { display: flex; flex-wrap: wrap; gap: 8px; }
-  .facts span { display: inline-flex; align-items: baseline; gap: 8px; padding: 4px 12px; border-radius: 999px; background: var(--sunk); font-size: 13px; color: var(--ink2); }
-  .facts b { font-family: var(--mono); font-weight: 600; color: var(--ink); font-size: 15px; }
+  .num { display: flex; align-items: baseline; gap: 8px; }
+  .num b { font-family: var(--mono); font-size: 26px; font-weight: 600; line-height: 1.2; }
+  .num span { font-size: 15px; color: var(--ink2); }
+  .facts { font-size: 15px; color: var(--ink2); }
 
   .tools { display: flex; flex-wrap: wrap; align-items: end; gap: 8px; padding: 12px; background: var(--sunk); border-radius: 12px; }
   .hostlink { display: grid; gap: 4px; flex: 1 1 320px; font-size: 13px; color: var(--ink2); }
@@ -100,7 +114,7 @@
   .hostview table { font-size: 17px; }
   .hostview .head .sub { font-size: 17px; }
   .hostview .fine { font-size: 15px; }
-  @media (max-width: 640px) { .page { padding: 16px 16px 64px; gap: 16px; } .panel { padding: 16px; } .num { justify-items: start; } }
+  @media (max-width: 640px) { .page { padding: 16px 16px 64px; gap: 16px; } .panel { padding: 16px; } }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 </style>
 </head>
@@ -120,7 +134,7 @@
   </div>
 
   <nav class="pills" id="pills" hidden aria-label="Sections"></nav>
-  <div class="cards" id="cards" hidden></div>
+  <div class="tw glance" id="cards" hidden></div>
   <div id="out" style="display:grid;gap:24px"></div>
   <div id="reqs"></div>
   <p class="msg" id="msg" role="status" aria-live="polite"></p>
@@ -147,7 +161,7 @@
     const sub = (s) => [s.when, s.time, s.venue].filter(Boolean).map(esc).join(' · ');
     function head(s, seats, parties) {
       return '<div class="head"><div><h2>' + esc(s.city) + (s.date < TODAY ? '<span class="tag">Past</span>' : !s.open ? '<span class="tag">Registration closed</span>' : '') + '</h2><p class="sub">' + sub(s) + '</p></div>'
-        + '<div class="num"><b>' + seats + '</b><span>' + plural(seats, 'seat', 'seats') + ' · ' + parties + ' ' + plural(parties, 'sign-up', 'sign-ups') + '</span></div></div>';
+        + '<div class="num"><b>' + seats + '</b><span>' + plural(seats, 'seat', 'seats') + ' from ' + parties + ' ' + plural(parties, 'sign-up', 'sign-ups') + '</span></div></div>';
     }
 
     // A host: one screening, names and seats, nothing else.
@@ -174,9 +188,26 @@
       const list = j.screenings.slice().sort((a, b) => (a.date < TODAY) - (b.date < TODAY) || a.date.localeCompare(b.date));
       const total = list.filter((s) => s.date >= TODAY).reduce((n, s) => n + s.seats, 0);
 
-      $('cards').innerHTML = list.map((s) => '<a class="cardlink' + (s.date < TODAY ? ' past' : '') + '" href="#s-' + esc(s.id) + '"><span class="when">' + esc(shortDay(s.date)) + ' · ' + days(s.date) + '</span><span class="city">' + esc(s.city) + '</span><span class="count">' + s.seats + '</span><span class="unit">' + plural(s.seats, 'seat', 'seats') + '</span></a>').join('');
+      const signups = list.filter((s) => s.date >= TODAY).reduce((n, s) => n + s.people.length, 0);
+      // Seats by screening, upcoming ones only: a bar each, the count at the tip.
+      const upcoming = list.filter((s) => s.date >= TODAY);
+      const most = Math.max(1, ...upcoming.map((s) => s.seats));
+      const bars = upcoming.map((s) => '<a class="brow" href="#s-' + esc(s.id) + '" data-tip="' + esc(s.city + ': ' + s.seats + ' ' + plural(s.seats, 'seat', 'seats') + ' from ' + s.people.length + ' ' + plural(s.people.length, 'sign-up', 'sign-ups') + '. ' + shortDay(s.date) + ', ' + days(s.date) + '.') + '"><span class="blabel">' + esc(s.city) + '</span><span class="btrack"><span class="mark" style="width:calc((100% - 48px) * ' + (s.seats / most).toFixed(4) + ')"></span><span class="bval">' + s.seats + '</span></span></a>').join('');
+      // Seats signed up on each of the last 28 days, every screening together. The tallest day carries its number.
+      const perDay = new Map();
+      for (const sc of list) for (const p of sc.people) { const d = new Date(p.at); if (!isNaN(d)) { const key = d.toLocaleDateString('en-CA'); perDay.set(key, (perDay.get(key) || 0) + (Number(p.count) || 1)); } }
+      const keys = Array.from({ length: 28 }, (_, i) => { const d = new Date(TODAY + 'T12:00:00'); d.setDate(d.getDate() - (27 - i)); return d.toLocaleDateString('en-CA'); });
+      const top = Math.max(1, ...keys.map((key) => perDay.get(key) || 0));
+      const peak = keys.find((key) => (perDay.get(key) || 0) === top && perDay.has(key));
+      const md = (key) => new Date(key + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const cols = keys.map((key) => { const n = perDay.get(key) || 0; return '<span class="col" data-tip="' + esc(md(key) + ': ' + n + ' ' + plural(n, 'seat', 'seats')) + '">' + (key === peak ? '<b>' + n + '</b>' : '') + '<i style="height:' + (n / top * 82).toFixed(1) + '%"></i></span>'; }).join('');
+      const charts = '<div class="charts"><div class="chart"><h2>Seats by screening</h2><div>' + (bars || '<p class="empty">No screenings coming up.</p>') + '</div></div>'
+        + '<div class="chart"><h2>Seats signed up per day, last 4 weeks</h2><div class="cols">' + cols + '</div><div class="axis"><span>' + md(keys[0]) + '</span><span>' + md(keys[13]) + '</span><span>Today</span></div></div></div>';
+      $('cards').innerHTML = charts + '<table><thead><tr><th>Screening</th><th>Date</th><th>When</th><th class="n">Seats</th><th class="n">Sign-ups</th></tr></thead><tbody>'
+        + list.map((s) => '<tr' + (s.date < TODAY ? ' class="past"' : '') + '><td class="city"><a href="#s-' + esc(s.id) + '">' + esc(s.city) + '</a></td><td>' + esc(shortDay(s.date)) + '</td><td>' + days(s.date) + '</td><td class="n">' + s.seats + '</td><td class="n">' + s.people.length + '</td></tr>').join('')
+        + '</tbody><tfoot><tr><td colspan="3">Coming up</td><td class="n">' + total + '</td><td class="n">' + signups + '</td></tr></tfoot></table>';
       $('cards').hidden = false;
-      $('pills').innerHTML = '<a href="#out">Sign-ups, ' + total + ' ' + plural(total, 'seat', 'seats') + ' coming up</a><a href="#reqs" id="reqPill">Screening requests</a>';
+      $('pills').innerHTML = '<a href="#out">Sign-ups</a><a href="#reqs" id="reqPill">Screening requests</a>';
       $('pills').hidden = false;
 
       out.innerHTML = list.map((s) => {
@@ -184,7 +215,7 @@
         const emails = p.map((x) => x.email).filter(Boolean);
         const party = p.some((x) => Number(x.count) > 1);
         let h = '<section class="panel" id="s-' + esc(s.id) + '">' + head(s, s.seats, p.length);
-        if (p.length) h += '<div class="facts"><span>Under 16 <b>' + kids + '</b></span><span>On the mailing list <b>' + onList + '</b></span></div>';
+        if (p.length) h += '<p class="facts">' + kids + ' under 16, ' + onList + ' on the mailing list.</p>';
         h += '<div class="tools"><label class="hostlink">Host link, for the priest or the organizer. Shows names and the count, no emails.<input readonly value="' + esc(s.host) + '" onfocus="this.select()"></label>'
           + '<button type="button" class="btn" data-copy="' + esc(s.host) + '">Copy host link</button>'
           + (emails.length ? '<button type="button" class="btn" data-copy="' + esc(emails.join(', ')) + '">Copy ' + emails.length + ' ' + plural(emails.length, 'email', 'emails') + '</button>' : '') + '</div>';
@@ -208,13 +239,28 @@
       if (!r.ok) return;
       const list = j.requests || [];
       const line = (label, v) => v ? '<div><span>' + label + '</span> ' + esc(v) + '</div>' : '';
-      $('reqPill').textContent = 'Screening requests, ' + list.length;
       el.innerHTML = '<section class="panel"><div class="head"><div><h2>Screening requests</h2><p class="sub">' + (list.length ? 'From watchabouna.com/request, newest first.' : 'None yet. The address to send people is watchabouna.com/request.') + '</p></div>'
         + '<div class="num"><b>' + list.length + '</b><span>' + plural(list.length, 'request', 'requests') + '</span></div></div><div>'
         + list.map((q) => '<div class="req"><div><b>' + esc(q.church) + '</b><span class="city">' + esc(q.city) + '</span></div><div class="who">' + esc(q.name) + (q.role ? ', ' + esc(q.role) : '') + ' · <a href="mailto:' + esc(q.email) + '">' + esc(q.email) + '</a> · ' + esc(when(q.at)) + '</div>'
           + line('Dates:', q.dates) + line('Size or attendance:', q.size) + line('A/V:', q.av) + (q.note ? '<div class="note">' + esc(q.note) + '</div>' : '') + '</div>').join('')
         + '</div></section>';
     }
+
+    // The hover note for a bar or a column.
+    const tip = document.createElement('div');
+    tip.className = 'tip';
+    tip.hidden = true;
+    document.body.appendChild(tip);
+    function showTip(el, x, y) {
+      tip.textContent = el.dataset.tip;
+      tip.hidden = false;
+      const w = tip.offsetWidth;
+      tip.style.left = Math.max(8, Math.min(x + 12, innerWidth - w - 8)) + 'px';
+      tip.style.top = Math.max(8, y - tip.offsetHeight - 12) + 'px';
+    }
+    document.addEventListener('mousemove', (e) => { const el = e.target.closest && e.target.closest('[data-tip]'); if (el) showTip(el, e.clientX, e.clientY); else tip.hidden = true; });
+    document.addEventListener('focusin', (e) => { const el = e.target.closest && e.target.closest('[data-tip]'); if (el) { const r = el.getBoundingClientRect(); showTip(el, r.left + 150, r.top); } });
+    document.addEventListener('focusout', () => { tip.hidden = true; });
 
     document.addEventListener('click', async (e) => {
       const b = e.target.closest('[data-copy]');
